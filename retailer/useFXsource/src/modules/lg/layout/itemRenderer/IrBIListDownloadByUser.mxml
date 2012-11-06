@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="100%" autoDrawBackground="true" dataChange="dataChange()">
+	<s:layout>
+		<s:HorizontalLayout paddingBottom="5" paddingLeft="10" paddingRight="10" paddingTop="5"
+							verticalAlign="middle"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Popula os dados do item render.
+			 * 
+			 *  @return void
+			 */ 
+			private function dataChange():void
+			{
+				//Verifica se recebeu data
+				if(data)
+				{
+					//lbTopUser.text = 'ID:  ' +data.register_id;
+					lbFancyName.text = data.fancy_name;
+					lbTotal.text = 'Total de downloads: ' +data.total;
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup width="100%">
+		<s:Label width="100%" id="lbFancyName"/>
+		<s:Label id="lbTotal" width="200"/>
+	</s:HGroup>
+</s:ItemRenderer>

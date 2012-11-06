@@ -1,0 +1,999 @@
+<?php if($this->params->action == 'downloads'): ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><?php else: ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<?php endif; ?>
+	<html>
+		<head>
+		<title>Parceiros LG</title>
+		
+		<!-- metatags -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		
+		<!-- styles -->
+		<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/qTip/jquery.qtip.min.css" type="text/css"/>
+			
+		<!-- scripts -->
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/craigsworks/jquery.qtip.minx.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function()
+			{
+				Use('a[title]').qtip({
+			      position: {
+			         my: 'top left',
+			         target: 'mouse',
+			         viewport: $(window), // Keep it on-screen at all times if possible
+			         adjust: {
+			            x: 10,  y: 10
+			         }
+			      },
+			      hide:{
+			         fixed: true // Helps to prevent the tooltip from hiding ocassionally when tracking!
+			      },
+			      style: 'ui-tooltip-shadow ui-tooltip-lg'
+			   });
+			});
+		</script>
+<?php 
+	//Configura scripts da home
+	if($this->params->action == 'index'):
+?>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/stylesHome.css" type="text/css"/>
+<!--[if IE 6]>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/stylesHome.css" type="text/css"/>
+<![endif]-->
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/slideshow4.css" type="text/css"/> 
+	<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/nivoSlider/themes/default/default.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/nivoSlider/nivo-slider.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/nivoSlider/scripts/jquery.nivo.slider.js"></script>
+	<script type="text/javascript">
+			$(window).load(function() {
+				$('#slider').nivoSlider({
+					effect : 'random',
+					slices : 15,
+					animSpeed : 500,
+					pauseTime : 8000,
+					directionNav : true, 		//Anterior e próximo
+					directionNavHide : true, 	//Apenas exibe os botões de navegação quando o mouse estiver em cima
+					controlNav : true, 			//Permite navegação por números 1,2,3
+					keyboardNav : true, 		//Permite a navegação pela tecla <- e ->
+					pauseOnHover : true,		//Pausa uma animação quando o mouse estiver em cima
+					manualAdvance : false, 		//Força transições manuais
+					captionOpacity : 0.8, 		//Opacidade da legenda
+					
+					
+					//Evento disparado antes da mudança de slide
+					beforeChange : function() {
+					},
+					
+					//Evento disparado após a mudança de slide
+					afterChange : function() {
+					},
+					
+					//Evento disparado quando acabar a apresentação automática de slide
+					slideshowEnd : function() {
+					} 
+				});
+			});
+		</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+		   showImages('destaques');
+		});
+		
+		function showImages(area)
+		{
+			Use.ajax({
+			  type: 'post',
+			  cache:false,
+			  url: '<?= $this->baseUrl ?>/ajax/showimages?format=html',
+			  data: {area:area},
+			  dataType: 'html',
+			  success: function(data){
+			  	$('#UiGalery').html(data);
+			  	
+			  	 /* This code is executed after the DOM has been completely loaded */
+			    var totWidth=0;
+			    var positions = new Array();
+			   
+			    $('#slides .slide').each(function(i){
+			        /* Loop through all the slides and store their accumulative widths in totWidth */
+			        positions[i]= totWidth;
+			        totWidth += $(this).width();
+			
+			        /* The positions array contains each slide's commulutative offset from the left part of the container */
+			
+			        if(!$(this).width())
+			        {
+			            alert("Please, fill in width & height for all your images!");
+			            return false;
+			        }
+			    });
+		
+		    	$('#slides').width(totWidth);
+		
+		    	/* Change the cotnainer div's width to the exact width of all the slides combined */
+		
+			    $('#menu ul li a').click(function(e){
+			
+			        /* On a thumbnail click */
+			        $('li.menuItem').removeClass('act').addClass('inact');
+			        $(this).parent().addClass('act');
+			
+			        var pos = $(this).parent().prevAll('.menuItem').length;
+			
+			        $('#slides').stop().animate({marginLeft:((-positions[pos])+50)+'px'},1500).animate({marginLeft:-positions[pos]+'px'},1000);
+			        /* Start the sliding animation */
+			
+			        e.preventDefault();
+			        /* Prevent the default action of the link */
+			    });
+		
+			    $('#menu ul li.menuItem:first').addClass('act').siblings().addClass('inact');
+			    /* On page load, mark the first thumbnail as active */
+			  	
+			  },
+			  error: function(data){ alert(data); }
+			});	
+		}
+			
+	</script>
+<?php endif; ?>
+<?php 
+	//Configura scripts da contentshowresource
+	if($this->params->action == 'contentshowresource' || $this->params->action == 'contentshow'): 
+?>
+	<!--Stylesheets-->
+	<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/qTip/jquery.qtip.min.css" type="text/css"/> 
+	<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/colorbox/colorbox.css" type="text/css"/>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+<!--[if IE 6]>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+<![endif]-->
+	<!--JavaScript-->
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jQueryRaty/jquery.raty.min.js"></script>
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/colorbox/jquery.colorbox-min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.VScrollbar').tinyscrollbar();
+			$('.HScrollbar').tinyscrollbar({ axis: 'x'});	
+			$(".iframe").colorbox({iframe:true, width:"980px", height:"610px", opacity:0.8});
+			<? if(!empty($this->params->resource_id)): ?>
+				$.colorbox({iframe:true, width:"980px", height:"610px", opacity:0.8, href:"<?= $this->baseUrl .'/contentdetail/'. $this->params->resource_id ?>"});
+			<? endif; ?>
+			Use('h2').toggle(function(){
+				//Recupera o total de itens
+				var totalItensSelected = $( this ).find('.UiTotalItems').attr('title');
+				
+				//Verifica se a quantidade de itens e maior que zero
+				if(totalItensSelected > 0)
+				{
+					$(this).next('div.accordion').slideDown("slow");
+					$(this).removeClass('active');
+					$(this).addClass('deactive');
+					$('.HScrollbar').tinyscrollbar({ axis: 'x'});	
+					$(".iframeContentShow").colorbox({iframe:true, width:"980px", height:"610px"});
+				}
+			}, function() {
+			  	$(this).next('div.accordion').slideUp("slow");
+			  	$(this).removeClass('deactive');
+				$(this).addClass('active');
+				$('.HScrollbar').tinyscrollbar({ axis: 'x'});	
+				$(".iframeContentShow").colorbox({iframe:true, width:"980px", height:"610px"});
+			});
+			Use(".UiButtonAccordion").click( function(event){
+				event.preventDefault();
+				switch (Use(this).attr('id'))
+				{
+					case 'UiBtImages':
+						
+						//Recupera o total de itens
+						var totalItens = Use('#UiSelected-img').find('.UiTotalItems').attr('title');
+						
+						//Verifica se a quantidade de itens e maior que zero
+						if(totalItens > 0)
+						{
+							//Abre o slide indicado pelo url
+							//NOTFINAL - Verificar se tem definiçao de slide
+							Use('#UiSelected-img')
+								.removeClass('active')
+								.addClass('deactive')
+								.next('div.accordion')
+								.slideDown("slow");
+						}
+					break;
+					case 'UiBtEspecificacoes':
+						//Recupera o total de itens
+						var totalItens = Use('#UiSelected-est').find('.UiTotalItems').attr('title');
+						
+						//Verifica se a quantidade de itens e maior que zero
+						if(totalItens > 0)
+						{
+							//Abre o slide indicado pelo url
+							//NOTFINAL - Verificar se tem definiçao de slide
+							Use('#UiSelected-est')
+								.removeClass('active')
+								.addClass('deactive')
+								.next('div.accordion')
+								.slideDown("slow");
+						}
+					break;
+					case 'UiBtManual':
+						//Recupera o total de itens
+						var totalItens = Use('#UiSelected-mnl').find('.UiTotalItems').attr('title');
+						
+						//Verifica se a quantidade de itens e maior que zero
+						if(totalItens > 0)
+						{
+							//Abre o slide indicado pelo url
+							//NOTFINAL - Verificar se tem definiçao de slide
+							Use('#UiSelected-mnl')
+								.removeClass('active')
+								.addClass('deactive')
+								.next('div.accordion')
+								.slideDown("slow");
+						}
+					break;
+					case 'UiBtLogoGide':
+						//Recupera o total de itens
+						var totalItens = Use('#UiSelected-lgo').find('.UiTotalItems').attr('title');
+						//Verifica se a quantidade de itens e maior que zero
+						if(totalItens > 0)
+						{
+							//Abre o slide indicado pelo url
+							//NOTFINAL - Verificar se tem definiçao de slide
+							Use('#UiSelected-lgo')
+								.removeClass('active')
+								.addClass('deactive')
+								.next('div.accordion')
+								.slideDown("slow");
+						}
+					break;
+				}
+				Use('.HScrollbar').tinyscrollbar({ axis: 'x'});	
+				Use(".iframeContentShow").colorbox({iframe:true, width:"980px", height:"610px"});
+			} );
+			//Recupera o total de itens
+			var totalItens = Use('#UiSelected-<?= $this->params->type ?>').find('.UiTotalItems').attr('title');
+			//Verifica se a quantidade de itens e maior que zero
+			if(totalItens > 0)
+			{
+				//Abre o slide indicado pelo url
+				//NOTFINAL - Verificar se tem definiçao de slide
+				Use('#UiSelected-<?= $this->params->type ?>')
+					.removeClass('active')
+					.addClass('deactive')
+					.next('div.accordion')
+					.slideDown("slow");
+			}
+			$('.HScrollbar').tinyscrollbar({ axis: 'x'});	
+			$(".iframeContentShow").colorbox({iframe:true, width:"980px", height:"610px"});
+		    //Use("#accordion").accordion();
+		  });
+ 		function addDownload(_this, lgResourcesId)
+		{
+			Use.ajax({
+			  	type: 'post',
+		  	   	url: '<?= $this->baseUrl ?>/ajax/adddownload?format=html',
+		  	  	data: {resource_id:lgResourcesId},
+		  	  	dataType: 'html',
+		   		success: function(data){
+					$(_this).removeAttr('onclick');
+					$(_this).attr('href', '<?= $this->baseUrl ?>/listdownload');
+					$(_this).find('img').attr('src', '<?= $this->useDefault->images ?>/bt/btVerLista.png');
+				},
+				error: function(data) {},
+				cache:false
+			});
+			return false;
+		}
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function()
+	{
+		Use('a[title]').qtip({
+	      position: {
+	         my: 'top left',
+	         target: 'mouse',
+	         viewport: $(window), // Keep it on-screen at all times if possible
+	         adjust: {
+	            x: 10,  y: 10
+	         }
+	      },
+	      hide: {
+	         fixed: true // Helps to prevent the tooltip from hiding ocassionally when tracking!
+	      },
+	      style: 'ui-tooltip-shadow ui-tooltip-lg'
+	   });	
+	});
+	</script>
+<?php endif; ?>
+<?php 
+	//Configura scripts da content
+	if($this->params->action == 'content'): 
+?>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+<!--[if IE 6]>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+<![endif]-->
+	<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/colorbox/colorbox.css" type="text/css"/>
+ 	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/colorbox/jquery.colorbox-min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.VScrollbar').tinyscrollbar();
+			$(".UiGalleryProduct").colorbox({rel:'UiGalleryProduct'});
+			<? if(!empty($this->params->product_id)): ?>
+			showContent('<?= $this->params->product_id ?>');
+			<? else: ?>
+			Use.ajax({
+				  type: 'post',
+				  url: '<?= $this->baseUrl ?>/ajax/showcontent?format=html',
+				  data: {id:'<?= $this->params->id ?>'},
+				  dataType: 'html',
+				  success: function(data){
+				  	$('.useRightColumn').html(data);
+				  	openImage($('#img-0').attr("src"));
+				  	getImage();
+				  	$('.VScrollbar').tinyscrollbar();
+				  	$(".UiGalleryProduct").colorbox({rel:'UiGalleryProduct'});
+				  },
+				  error: function(data){},
+				  cache:false
+			});
+			<? endif; ?>
+		});
+			function getImage(){
+				Use('.UiGaleryMini').click(function() {
+					 Use('#UiImage').empty().addClass('UiLoading');
+				  		var img = new Image();
+				        $(img).load(function () {
+				            //$(this).css('display', 'none'); // .hide() doesn't work in Safari when the element isn't on the DOM already
+				            $(this).hide();
+				            $('#UiImage').removeClass('UiLoading').append(this);
+				            Use('#UiImage').attr('href', Use(this).attr("src"));
+				            $(this).fadeIn("slow");
+				            
+							var width = this.clientWidth;
+							var height = this.clientHeight;
+							var paddind = 0;
+							if(width > height){
+								//Altura original  / Largura original  x Nova largura = Nova altura
+								height = (height/width)*335;
+								paddind = (375-height)/2; 
+								Use(this).attr({'width':335}).css( 'padding-top', paddind+'px' );
+							}
+							else{
+								//Altura original  / Largura original  x Nova largura = Nova altura
+								height = (height/width)*335;
+								paddind = ((375-height)/2) || 0;
+								Use(this).attr({'height':335}).css( 'padding-top', paddind+'px' );
+							} 				            
+				            
+				        }).error(function () {
+				            // notify the user that the image could not be loaded
+				        }).attr('src', Use(this).attr("src"));
+				});
+			}
+			function showContent(id)
+			{
+				Use.ajax({
+				  type: 'post',
+				  url: '<?= $this->baseUrl ?>/ajax/showcontent?format=html',
+				  data: {product_id:id},
+				  dataType: 'html',
+				  success: function(data){
+				  	$('.useRightColumn').html(data);
+				  	openImage($('#img-0').attr("src"));
+				  	getImage();
+				  	$('.VScrollbar').tinyscrollbar();
+				  	$(".UiGalleryProduct").colorbox({rel:'UiGalleryProduct'});
+				  },
+					error: function(data){},
+					cache:false
+				});	
+			}
+			function openImage(src){
+				 Use('#UiImage').empty().addClass('UiLoading');
+			  		var img = new Image();
+			        Use(img).load(function () {
+			            //$(this).css('display', 'none'); // .hide() doesn't work in Safari when the element isn't on the DOM already
+			            Use(this).hide();
+			            Use('#UiImage').removeClass('UiLoading').append(this);
+			            Use('#UiImage').attr('href', src);
+			            Use(this).fadeIn("slow");
+			            
+						var width = this.clientWidth;
+						var height = this.clientHeight;
+						
+						if(width > height){
+							//Altura original  / Largura original  x Nova largura = Nova altura
+							height = (height/width)*335;
+							paddind = (375-height)/2; 
+							Use(this).attr({'width':335}).css( 'padding-top', paddind+'px' );
+						}
+						else{
+							//Altura original  / Largura original  x Nova largura = Nova altura
+							height = (height/width)*335;
+							paddind = ((375-height)/2) || 0;
+							Use(this).attr({'height':335}).css( 'padding-top', paddind+'px' );
+						} 				            
+			        }).error(function () {
+			            // notify the user that the image could not be loaded
+			        }).attr('src', src);
+			}
+	</script>	
+<?php endif; ?>
+<?php 
+	//Configura scripts da account, downloads, e search
+	if($this->params->action == 'account' || $this->params->action == 'downloads' || $this->params->action == 'search' || $this->params->action == 'listdownload' || $this->params->action == 'editregister' || $this->params->action == 'institutional'):
+?>
+	<link type="text/css" href="<?= $this->useDefault->opensource ?>/jquery/ui/vader/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+	<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/colorbox/colorbox.css" type="text/css"/>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/stylesRegister.css" type="text/css"/>
+	<!--[if IE 6]>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+	<![endif]-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/colorbox/jquery.colorbox-min.js"></script>
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/UseSwf.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".iframeDownload").colorbox({iframe:true, width:"980px", height:"610px", opacity:0.8});
+			$('#errorPassword').hide();
+			$('#savePassword').click( function(){
+				var user_password = $('#user_password').val();
+				var user_password_confirm = $('#user_password_confirm').val();
+				Use.ajax({
+				  type: 'post',
+				  url: '<?= $this->baseUrl ?>/ajax/savepassword?format=html',
+				  data: {user_password:user_password, user_password_confirm:user_password_confirm},
+				  dataType: 'html',
+				  success: function(data){
+				  	if(data) 
+				  	{
+				  		$('#errorPassword').html(data);
+				  		$('#errorPassword').show();
+				  	}
+				  	else{
+					  	$('#user_password').val('');
+					  	$('#user_password_confirm').val('');
+					  	$("#formPassword").hide();
+					  	$("#changePassword").show();
+				  	}
+				  },
+					error: function(data){},
+					cache:false
+				});	
+			});
+			$('#cancelPassword').click( function(){
+				$('#user_password').val('');
+			  	$('#user_password_confirm').val('');
+			  	$("#formPassword").hide();
+			  	$("#changePassword").show();
+			});
+			$('#cancelNickname').click( function(){
+				$("#formNickname").hide();
+		  		$("#changeNickname").show();
+		  		$("#userNickname").show();
+			});
+			$('#errorNickname').hide();
+			$('#saveNickname').click( function(){
+				var nickname = $('#nickname').val();
+				Use.ajax({
+				  type: 'post',
+				  url: '<?= $this->baseUrl ?>/ajax/savenickname?format=html',
+				  data: {nickname:nickname},
+				  dataType: 'html',
+				  success: function(data){
+				  	if(data) 
+				  	{
+				  		$('#errorNickname').html(data);
+				  		$('#errorNickname').show();
+				  	}
+				  	else{
+						$("#formNickname").hide();
+				  		$("#changeNickname").show();
+				  		$("#userNickname").html(nickname);
+				  		$("#userNickname").show();
+				  	}
+				  },
+					error: function(data){},
+					cache:false
+				});
+			});
+			$("#formPassword").hide();
+			$("#changePassword").click( function() {
+				$("#formPassword").show();
+				$("#changePassword").hide();
+			});
+			$("#formNickname").hide();
+			$("#changeNickname").click( function() {
+				$("#formNickname").show();
+				$("#changeNickname").hide();
+				$("#userNickname").hide();
+			});
+			<? if($this->params->action == 'listdownload'): ?>
+				listDownload();
+			<? endif; ?>
+			
+			Use('#retailerName').hide();
+					
+				Use('#parentId').change(function(){
+					if(this.value == 'OUT')
+					{
+						Use('#retailerName').show();					
+					}else{
+						Use('#retailerName').hide();
+					}
+				});
+				
+				Use("#formRegister").validate({
+					rules: {
+						name: "required",
+						lastname: "required",
+						cpf: "required",
+						user_email: {
+							required: true,
+							email: true
+						}
+					},
+					messages: {
+						name: "O campo Nome é obrigatório",
+						lastname: "O campo Sobrenome é obrigatório",
+						cpf: "O campo CPF é obrigatório",
+						user_email: "Informe um endereço de e-mail válido"
+					}
+				});
+			
+		});
+		
+		function listDownload(url)
+		{
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/listdownload?format=html',
+			  dataType: 'json',
+			  success: function(data){
+			  	if(data) 
+			  	{
+			  		$('#UiTotalDownload').html(data.total);
+			  		$('#UiListDownload').html(data.html);
+			  		
+			  		if(url)
+			  		{
+			  			setTimeout("forceDownload('"+url+"')",1000);
+			  		}
+			  	}
+			  },
+				error: function(data){},
+				cache:false
+			});
+		}
+
+		function downloadFile(folderpath, filename, download_id, has_image_high)
+		{
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/downloadfile?format=html',
+			  data: {folderpath:folderpath, filename:filename, download_id:download_id, has_image_high:has_image_high},
+			  dataType: 'html',
+			  success: function(data){
+			  	if(data) 
+			  	{
+			  		listDownload(data);
+			  	}
+			  },
+				error: function(data){},
+				cache:false
+			});
+		}
+
+		//Remove uma mensagem, quando pressionado o botão remover
+		function removeDownload(download_id)
+		{
+			$( "#dialog-confirm-download" ).dialog({
+				resizable: false,
+				autoOpen: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"Sim": function() {
+						$( this ).dialog( "close" );
+						Use.ajax({
+						  type: 'post',
+						  url: '<?= $this->baseUrl ?>/ajax/removedownload?format=html',
+						  data: {download_id:download_id},
+						  dataType: 'html',
+						  success: function(data){
+						  	listDownload();
+						  },
+							error: function(data){},
+							cache:false
+						});
+					},
+					"Não": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			//Dispara popup de confirmcao para remover a popup
+			$( "#dialog-confirm-download" ).dialog( "open" );
+		}
+		
+		//Foca o download do arquivo
+		function forceDownload(url)
+		{
+			window.location.href = url; 
+		}
+	</script>
+<?php endif; ?>
+<?php 
+	//Configura scripts da pagina fale com lg
+	if($this->params->action == 'listdownload'): 
+?>	
+	<!-- popup de confirmacao de remocao de mensagem -->
+	<div id="dialog-confirm-download" title="Confirmação de remoção?" style="display: none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Tem certeza que deseja remover o download selecionado?</p>
+	</div>
+<?php endif;?>	
+
+<?php 
+	//Configura scripts da home fale com lg
+	if($this->params->action == 'talk'): 
+?>
+	<link type="text/css" href="<?= $this->useDefault->opensource ?>/jquery/ui/vader/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+	<!--[if IE 6]>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+	<![endif]-->		
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//Esconde o formulario de mensagem
+			$("#formMessage").hide();
+			//Mostra o formulario de mensagem, quando pressionado o botao nova mensagem
+			$("#newMessage").click( function() {
+				$("#subject").val('');
+				$("#formMessage").show();
+			});
+			$('#cancelMessage').click( function(){
+				$('#message').val('');
+				$("#subject").val('');
+				$('#formMessage').hide();
+			});
+			//Salva a mensagem no banco via ajax, quando pressionado o botão enviar
+			$('#saveMessage').click( function(){
+				var subject = $('#subject').val();
+				var message_type = $('#message_type').val();
+				var message = $('#message').val();
+				Use.ajax({
+				  type: 'post',
+				  url: '<?= $this->baseUrl ?>/ajax/savemessage?format=html',
+				  data: {subject:subject, message_type:message_type, message:message, message_status:"AEI", is_read:"0"},
+				  dataType: 'html',
+				  success: function(data){
+				  	$("#message").val('');
+				  	$("#formMessage").hide();
+				  	showMessage();
+				  },
+					error: function(data){},
+					cache:false
+				});
+			});
+			//Realiza uma buscar pelas mensagens, quando pressionado o botão de buscar
+			$('#btSearchMessage').click( function(){
+				var search = $('#searchMessage').val();
+				searchMessage(search);	
+			});
+			//Buscar por todas as mensagens, assim que inicia a pagina
+			showMessage();
+		});
+		//Realiza uma busca pelas mensagens
+		function searchMessage(search)
+		{
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/showmessage?format=html',
+			  data: {search:search},
+			  dataType: 'html',
+			  success: function(data){
+			  	$('#showMessage').html(data);
+			  },
+				error: function(data){},
+				cache:false
+			});	
+		}
+		//Mostra todas as mensagens do usuário logado
+		function showMessage()
+		{
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/showmessage?format=html',
+			  dataType: 'html',
+			  success: function(data){
+			  	$('#showMessage').html(data);
+			  },
+				error: function(data){},
+				cache:false
+			});	
+		}
+		//Marca uma mensagem como lida
+		function checkReadMessage(messageId)
+		{
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/checkreadmessage?format=html',
+			  dataType: 'html',
+			  data: {id:messageId},
+			  success: function(data){
+			  	showMessage();
+			  },
+				error: function(data){},
+				cache:false
+			});	
+		}
+		//Remove uma mensagem, quando pressionado o botão remover
+		function removeMessage(messageId)
+		{
+			$( "#dialog-confirm" ).dialog({
+				resizable: false,
+				autoOpen: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"Sim": function() {
+						$( this ).dialog( "close" );
+						Use.ajax({
+						  type: 'post',
+						  url: '<?= $this->baseUrl ?>/ajax/removemessage?format=html',
+						  dataType: 'html',
+						  data: {id:messageId},
+						  success: function(data){
+						  	showMessage();
+						  },
+							error: function(data){},
+							cache:false
+						});
+					},
+					"Não": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			//Dispara popup de confirmcao para remover a popup
+			$( "#dialog-confirm" ).dialog( "open" );
+		}
+	</script>
+<?php endif; ?>
+
+<?php 
+	//Configura scripts da home fale com lg
+	if($this->params->action == 'talkmessage'): 
+?>
+	<link type="text/css" href="<?= $this->useDefault->opensource ?>/jquery/ui/vader/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+	<!--[if IE 6]>
+	<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+	<![endif]-->		
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//Realiza uma buscar pelas mensagens, quando pressionado o botão de buscar
+			$('#btSearchMessage').click( function(){
+				var search = $('#searchMessage').val();
+				searchMessage(search);	
+			});
+			//Buscar por todas as mensagens, assim que inicia a pagina
+			showMessageList();
+		});
+		
+		function evaluateMessage()
+		{
+			var id = '<?= $this->params->id; ?>';
+			var close_note = $('input[name="close_note"]:checked').val();
+			var close_observation = $('#close_observation').val();
+			
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/evaluatemessage?format=html',
+			  data: {id:id, close_note:close_note, close_observation:close_observation, message_status:"CLS"},
+			  dataType: 'html',
+			  success: function(data){
+			  	window.location.href = '<?= $this->baseUrl ?>/talk';
+			  },
+				error: function(data){},
+				cache:false
+			});
+			
+		};
+		
+		//Realiza uma buscar pelas mensagens
+		function searchMessage(search)
+		{
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/showmessage?format=html',
+			  data: {search:search},
+			  dataType: 'html',
+			  success: function(data){
+			  	$('#showMessage').html(data);
+			  },
+				error: function(data){},
+				cache:false
+			});	
+		}
+		//Mostra todas as mensagens do usuário logado
+		function showMessageList()
+		{
+			var parent_id = '<?= $this->params->id; ?>';
+			
+			Use.ajax({
+			  type: 'post',
+			  url: '<?= $this->baseUrl ?>/ajax/showmessagelist?format=html',
+			  data: {parent_id:parent_id},
+			  dataType: 'html',
+			  success: function(data){
+			  	
+			  	$('#showMessage').html(data);
+			  	
+			  	//Salva a mensagem no banco via ajax, quando pressionado o botão enviar
+				$('#saveMessage').click( function(){
+					var parent_id = '<?= $this->params->id; ?>';
+					var message = $('#message').val();
+					Use.ajax({
+					  type: 'post',
+					  url: '<?= $this->baseUrl ?>/ajax/savemessage?format=html',
+					  data: {parent_id:parent_id, message:message, is_read:"0", message_status:"AEI"},
+					  dataType: 'html',
+					  success: function(data){
+					  	$("#message").val('');
+					  	showMessageList();
+					  },
+						error: function(data){},
+						cache:false
+					});
+				});
+				
+			  },
+				error: function(data){},
+				cache:false
+			});	
+		}
+	</script>
+<?php endif; ?>
+</head>
+<body>
+<?php 
+	//Configura scripts da pagina fale com lg
+	if($this->params->action == 'talk'): 
+?>	
+	<!-- popup de confirmacao de remocao de mensagem -->
+	<div id="dialog-confirm" title="Confirmação de remoção?" style="display: none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Tem certeza que deseja remover a mensagem selecionada?</p>
+	</div>
+<?php endif;?>
+
+	<div id="UiHeader">
+		<div class="UiWrap">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td style="width: 97px;">
+						<div class="UiLogo">
+							<a href="<?= $this->baseUrl ?>" title="">
+								<img src="<?= $this->useDefault->images ?>/logoLG.gif" width="83" height="36" alt="Logo LG"/>
+							</a>
+						</div>
+					</td>
+					<td>
+						<div class="UiMenu">
+							<ul>
+					            <li id="actives"><a href="<?= $this->baseUrl ?>" title="Encontre conteúdos em destaques, mais acessados, mais baixados e votados">Home</a></li>
+								<li><a href="<?= $this->baseUrl ?>/account" title="Atualize seu cadastro de usuário">Minha conta</a></li>
+					            <li><a href="<?= $this->baseUrl ?>/listdownload" title="Consulta sua lista de arquivos para baixar e arquivos já baixados pela sua empresa">Downloads</a></li>
+					            <!--<li><a href="<?= $this->baseUrl ?>/favorites" title="Veja sua lista de arquivos selecionados">Favoritos</a></li>-->
+								<li><a href="<?= $this->baseUrl ?>/talk" title="Entre em contato com a LG sempre que precisar">Fale com a LG</a></li>
+							</ul>
+						</div> 
+					</td>
+					<td style="width: 97px;">
+						<!-- campo de busca -->
+						<div id="UiSearch">
+							<form id="formSearch" method="get" action="<?= $this->baseUrl ?>/procurar/">
+								<div class="UiSearchWrap">
+									<input class="UiSearchText" type="text" id="por" name="por"/>
+									<input class="UiSearchButton" type="image" src="<?= $this->useDefault->images?>/usePixel.gif"/> 
+								</div>
+							</form>
+						</div>
+					</td>
+					<td>
+						<div class="UiButtonLogout">
+							<a href="<?= $this->baseUrl ?>/sair" title=""> <img src="<?= $this->useDefault->images?>/bt/btSair.gif" width="54" height="25" alt="" /></a>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+	    <td>
+			<div class="UiPage">
+				<table border="0" cellspacing="0" cellpadding="0" style="margin-left: 95px;">
+					<tr>
+						<!-- identificao do usuario -->
+						<? if(!empty($this->userInfo->image_file_corporate)): ?>
+							<td class="UiCompany">
+								<a href="<? $this->baseUrl ?>/account">
+									<img src="<?= $this->useDefault->baseUrl . $this->userInfo->image_path_corporate .'/'. $this->userInfo->image_file_corporate ?>" height="60" alt=""/>
+								</a>
+							</td>
+						<? endif; ?>
+						<? if(!empty($this->userInfo->image_file_personal)): ?>
+							<td class="UiUserImage">
+								<a href="<? $this->baseUrl ?>/account">
+									<img src="<?= $this->useDefault->baseUrl . $this->userInfo->image_path_personal .'/'. $this->userInfo->image_file_personal ?>" width="50" height="50" alt=""/>
+								</a>
+							</td>
+						<? else: ?>
+							<td class="UiUserImage">
+								<a href="<? $this->baseUrl ?>/account">
+									<img src="<?= $this->useDefault->baseUrl ?>/public/resources/default/images/thumbUser.png" width="50" height="50" alt=""/>
+								</a>
+							</td>
+						<? endif; ?>
+						<td class="UiUser">
+							<? if(!empty($this->userInfo->image_logo)): ?>
+								<a href="<? $this->baseUrl ?>/account">
+									<img src="<?= $this->userInfo->image_profile ?>" height="60" align="left" style="margin-right: 10px;" alt="" />
+								</a>
+							<? endif; ?>
+							<div class="UiUserInfo">
+								<ul>
+									<li><a href="<? $this->baseUrl ?>/account"><span style="font-weight: bold;"><?= $this->userInfo->name .' '. $this->userInfo->lastname ?></span></a></li>
+									<li><a href="<? $this->baseUrl ?>/account"><?= $this->userInfo->fancy_name ?></a></li>
+									
+									<? if(!empty($this->userInfo->city)): ?>
+									<li><a href="<? $this->baseUrl ?>/account"><?= $this->userInfo->city .' / '. $this->userInfo->state ?></a></li>
+									<? endif; ?>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div class="useClear"></div>
+			</div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+		<!-- conteudo principal -->
+		<?= $this->layout()->content ?>
+		</td>
+	  </tr>
+	  <tr>
+	    <td>
+			<!-- rodape -->
+			<div id="UiFooter">
+				<div class="UiFooterShadow">
+					<div class="UiWrap">
+					<?= $this->menuDock ?>
+					</div>
+					<div class="UiShadow">
+						<p>
+							Parceiros LG - Todos os direitos estão reservados - Copyright 2012 - Desenvolvido por Tobe App
+						</p>
+					</div>
+				</div>
+			</div>
+		</td>
+	  </tr>
+	</table>	
+</body>
+</html>

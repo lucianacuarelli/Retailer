@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="100%" height="100%" title="Total de Interação por Usuário" 
+		 skinClass="skins.panel.SkPanelBlackSkin"
+		 creationComplete="create()">
+	<s:layout>
+		<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import modules.lg.data.DataBusinessIntelligence;
+			
+			import mx.collections.ArrayCollection;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  dataBusinessIntelligence
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de consultas.  
+			 */  
+			public var dataBusinessIntelligence:DataBusinessIntelligence;
+			
+			//------------------------------------------------------------------
+			//
+			//  Configurations
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  data
+			//----------------------------------
+			/**
+			 *  Lista de registros..  
+			 */
+			public function data(value:*):GrBIUserInteraction
+			{
+				lsReport.dataProvider = new ArrayCollection(value.topUsersReport);
+				return this;
+			}
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Instância a classe gerenciadora de consultas
+				dataBusinessIntelligence = new DataBusinessIntelligence();
+			}
+		]]>
+	</fx:Script>
+		<s:List id="lsReport" width="100%" height="100%" 
+				itemRenderer="modules.lg.layout.itemRenderer.IrBIListName"/>
+</s:Panel>

@@ -1,0 +1,55 @@
+/*------------------------------------------------------------------register--*/
+.UiRegisterField {
+	border:0px solid #cccccc;
+	background:#cccccc;
+	width: 210px;
+	height: 22px;
+	padding-left: 5px;
+	font-size: 11px;
+	color: #7a7a7c;
+}
+
+.UiRegisterPhone {
+	border:0px solid #cccccc;
+	background:#cccccc;
+	width: 165px;
+	height: 22px;
+	padding-left: 5px;
+	font-size: 11px;
+	color: #7a7a7c;
+}
+
+.UiRegisterDate, .UiRegisterDdd {
+	border:0px solid #cccccc;
+	background:#cccccc;
+	width: 25px;
+	height: 22px;
+	padding-left: 5px;
+	font-size: 11px;
+	color: #7a7a7c;
+}
+
+.UiRegisterYear {
+	border:0px solid #cccccc;
+	background:#cccccc;
+	width: 35px;
+	height: 22px;
+	padding-left: 5px;
+	font-size: 11px;
+	color: #7a7a7c;
+}
+
+label.error {
+	color: #FF0000;
+	margin-left: 10px;
+	font-style: italic;
+	font-size: 11px;
+}
+
+.UiRegisterEmailError{
+	/*float: right;*/
+	margin-left: 8px;
+	color: #FF0000;
+	font-style: italic;
+	font-size: 11px;
+}

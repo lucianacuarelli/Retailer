@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="100%" autoDrawBackground="true" dataChange="dataChange()">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Popula os dados do item render.
+			 * 
+			 *  @return void
+			 */ 
+			private function dataChange():void
+			{
+				//Verifica se recebeu data
+				if(data)
+				{
+					lbName.text = data.name;
+					lbFancyName.text = data.fancy_name;
+					lbTotal.text = 'Total de Interações: ' + data.total;
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup width="100%" paddingBottom="5" paddingLeft="10" paddingRight="10" paddingTop="5"
+			  verticalAlign="middle">
+		<s:Label width="100%"  id="lbName"/>
+		<s:Label width="100%" id="lbFancyName"/>
+		<s:Label width="200" id="lbTotal"/>
+	</s:HGroup>
+</s:ItemRenderer>

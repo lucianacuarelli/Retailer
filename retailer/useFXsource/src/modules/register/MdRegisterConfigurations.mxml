@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="100%" height="100%" 
+		  creationComplete="create()" xmlns:ui="devdoo.register.layout.ui.*">
+	<s:layout>
+		<s:HorizontalLayout gap="10" paddingBottom="10" paddingTop="10"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 * Instância o componente de registro e define as configurações default  
+			 * 
+			 *  @return void
+			 */
+			public function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Configurações do Registro');
+				
+				propertiesSocialMidias.groupType('MDS')
+					.create();
+				
+				propertiesPhones.groupType('PHO')
+					.create();
+				
+				propertiesEmails.groupType('EML')
+					.create();
+				
+				propertiesAddress.groupType('ADT')
+					.create();
+				
+				//,'stTags'
+				propertiesTags.showOnlyTitle(true)
+					.create();
+				
+				registerGroups.create();
+			}
+		]]>
+	</fx:Script>
+	
+	<s:SkinnableContainer width="100%" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+		<s:layout>
+			<s:TileLayout horizontalGap="20" verticalGap="20"/>
+		</s:layout>
+		
+		<ui:UiRegisterProperties width="100%" height="100%" id="propertiesSocialMidias" title="Mídias Sociais" />
+		<ui:UiRegisterProperties width="100%" height="100%" id="propertiesPhones" title="Telefones" />
+		<ui:UiRegisterProperties width="100%" height="100%" id="propertiesEmails" title="E-mails" />
+		<ui:UiRegisterProperties width="100%" height="100%" id="propertiesAddress" title="Endereços"/>
+		<ui:UiRegisterTags width="100%" height="100%" id="propertiesTags" title="Tags"/>
+		
+	</s:SkinnableContainer>
+	
+	<s:SkinnableContainer width="100%" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerLeft">
+		
+		<ui:UiRegisterGroups id="registerGroups" width="100%" height="100%" />
+		
+	</s:SkinnableContainer>
+	
+</s:Module>

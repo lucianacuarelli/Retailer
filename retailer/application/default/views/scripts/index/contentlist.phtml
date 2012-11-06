@@ -1,0 +1,149 @@
+<div class="usePage" style="width: 850px; margin: auto;">
+	<div class="usePageTitle" style="width: 850px;">
+		<h3><?= $this->product->title ?></h3>
+	</div>
+	<div style="padding: 20px; width: 300px; border: 1px solid #FF0000;">
+	<table  cellspacing="10" cellpadding="0" width="700" border="1">
+		<? foreach ($this->listDownload as $itemDownload): ?>
+			<tr>
+				<td style="width: 100px;">
+					<div class="UiItem">
+						<table border="1" cellspacing="0" cellpadding="0">
+						  <tr>
+						  	<!-- adiciona imagem -->
+						    <td class="UiTableLeftColumn">
+						    	<div class="UiImage">
+								    <a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemDownload->resource_id .'/'. strtolower($itemDownload->resource_type) ?>">
+									<? 
+										switch ($itemDownload->resource_type) {
+											case 'IMG':
+												echo '<img alt="" src="'. $this->baseUrl . $itemDownload->folderpath .'/thumb/'. $itemDownload->filename .'" />';	
+											break;
+											
+											case 'VDO':
+												if(!empty($itemDownload->image_video))
+													echo '<img alt="" width="100" src="'. $itemDownload->image_video .'" />';
+												else
+													echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesVideos100x80.png" />';
+											break;
+											case 'EST':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesEspTecnicas100x80.png" />';
+												break;
+		
+											case 'MNL':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesManualInst100x80.png" />';
+												break;
+											
+											case 'LGO':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesLogos100x80.png" />';
+												break;
+												
+											case 'FTE':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesFeatures100x80.png" />';
+												break;
+						
+											case 'FLA':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesFlash100x80.png" />';
+												break;
+												
+											case 'HTM':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesHTML100x80.png" />';
+												break;
+												
+											case 'PSD':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesPSD100x80.png" />';
+												break;
+												
+											case 'PDF':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesPDF100x80.png" />';
+												break;
+												
+											case 'OUT':
+												echo '<img alt="" width="100" src="'. $this->useDefault->images .'/icons100/iconesOutros100x80.png" />';
+												break;
+										}
+									?>
+							</a>
+								</div>
+						    </td>
+						    
+						     <td valign="top" class="UiTableRightColumn">
+						     	<div class="UiHomeDetail UiAccordionItem">
+							    	<div class="UiFormatAccordion"><?= $itemDownload->format ?></div>
+							    	<div class="useClear"></div>
+									<div class="UiText"><?= UseZF_Util::useFileSize($itemDownload->filesize) ?></div>
+						     	</div>
+						     	<div class="UiButton" style="padding-left:30px;">
+									<div class="useDownload">
+										<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemDownload->resource_id .'/'. strtolower($itemDownload->resource_type) ?>">
+											<img alt="" src="<?= $this->useDefault->images ?>/bt/btVerDetalhes.png" />
+										</a>
+									</div>
+						     	</div>
+						    </td>
+						  </tr>
+						  <tr>
+						    <td colspan="2">
+								<div class="UiResourceTitle">
+									<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemDownload->resource_id .'/'. strtolower($itemDownload->resource_type) ?>">
+										<?= UseZF_Util::useTruncate($itemDownload->title, 40) ?>
+									</a>	
+								</div>	
+						    </td>
+						  </tr>
+						  <tr>
+						    <td colspan="2">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<? if(!empty($itemDownload->total_rating_votes)): ?>
+											<td>
+												<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemDownload->resource_id .'/'. strtolower($itemDownload->resource_type) ?>">
+													<span class="iconHomeStar">&nbsp;</span>
+													<span class="iconText"><?= round($itemDownload->total_rating/$itemDownload->total_rating_votes) ?></span>
+												</a>
+											</td>
+											<? else: ?>
+											<td>
+												<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemDownload->resource_id .'/'. strtolower($itemDownload->resource_type) ?>">
+													<span class="iconHomeStar">&nbsp;</span>
+													<span class="iconText">0</span>
+												</a>
+											</td>
+										<? endif; ?>
+										<td>
+											<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemDownload->resource_id .'/'. strtolower($itemDownload->resource_type) ?>">
+												<span class="iconHomeDownload">&nbsp;</span>
+												<span class="iconText"><?= $itemDownload->total_download ?></span>
+											</a>
+										</td>
+										<td>
+											<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemDownload->resource_id .'/'. strtolower($itemDownload->resource_type) ?>">
+												<span class="iconHomeView">&nbsp;</span>
+												<span class="iconText">
+													<?= $itemDownload->total_view ?>
+												</span>
+											</a>																
+										</td>
+									</tr>
+								</table> 	
+						    </td>
+						  </tr>
+						</table>
+					</div>
+				</td>
+				<td valign="top">
+					<span style="color: #57585b; font-weight: bold;">Download realizado por:</span>
+					<? foreach ($itemDownload->listDownloadRegister as $itemDownloadRegister): ?>
+						<span><?= $itemDownloadRegister->name ?></span>					
+					<? endforeach;?>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="2">
+					<img alt="" src="<?= $this->useDefault->images ?>/divider/linhaDivisaoSubTitle.png" />
+				</td>
+			</tr>
+		<? endforeach;?>
+	</table>
+	</div>
+</div>

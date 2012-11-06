@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:ui="devdoo.ui.*"
+			   width="280" height="167"
+			   creationComplete="create()"
+			   close="cancel(event)">
+	<s:layout>
+		<s:VerticalLayout gap="2" paddingBottom="10" paddingLeft="10" paddingRight="10"
+						  paddingTop="10"/>
+	</s:layout>
+	
+	<fx:Declarations>
+		<!-- Validadores -->
+		<mx:NumberValidator id="TRADE_MARKETING_vlRegisterGroupsId"
+							source="{ddRegisterGroupsId}"
+							lowerThanMinError="Necessário escolher uma área."
+							property="selectedIndex"
+							minValue="0"/>
+		
+		<mx:NumberValidator id="TRADE_MARKETING_vlRegisterIdTradeMarketing"
+							source="{ddRegisterIdTradeMarketing}"
+							lowerThanMinError="Necessário escolher um trade-marketing."
+							property="selectedIndex"
+							minValue="0"/>
+	</fx:Declarations>		
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataProducts;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  this._dataProducts
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			public var _dataProducts:DataProducts;
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da módulo, 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 *  Configura permissão de acesso.
+			 * 
+			 *  @return void  
+			 */
+			private function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da popup
+				useFX = UseFX.startPopup(this);
+				
+				//Cria gerenciador de dados de produto
+				this._dataProducts = new DataProducts();
+				
+				//Adiciona gerenciamento de log
+				changeLog();
+				
+				//Configura validadores de componentes
+				validade();
+				
+				//Popula os componentes pré-definidos
+				populate();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();	
+				
+				//Configura permissão de acesso
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  accessControl
+			//----------------------------------    	
+			/**
+			 * Gerência o controle de acesso e uso de usuários no módulo.
+			 *  
+			 * @return void  
+			 */	
+			private function accessControl(event:Event):void{
+				
+				useFX.accessControl( true )
+					.accessControlAdd( ddRegisterGroupsId )
+					.accessControlAdd( ddRegisterIdTradeMarketing );
+				
+				//Configura botão salvar
+				saveCheck(null);
+			}			
+			
+			//----------------------------------
+			//  changeLog
+			//----------------------------------
+			/**
+			 *  Adiciona gerenciamento de log para componentes
+			 * 
+			 *  @return void
+			 */	
+			private function changeLog():void
+			{
+				useFX.startLog(true, saveCheck)
+					.changeLog(ddRegisterGroupsId, IndexChangeEvent.CHANGE, 'Área')
+					.changeLog(ddRegisterIdTradeMarketing, IndexChangeEvent.CHANGE, 'Trade-Marketing');
+			}
+			
+			//----------------------------------
+			//  validade
+			//----------------------------------    	
+			/**
+			 * Configura lista de validadores.
+			 *  
+			 * @return void  
+			 */	
+			private function validade():void
+			{
+				//Adiciona lista de validadores do formulário cliente
+				useFX.validate('TRADE_MARKETING')
+					.addItem('Área:', TRADE_MARKETING_vlRegisterGroupsId)
+					.addItem('Trade-Marketing:', TRADE_MARKETING_vlRegisterIdTradeMarketing);
+			}			
+			
+			//----------------------------------
+			//  populate
+			//----------------------------------
+			/**
+			 *  Popula os componentes pré-definidos.
+			 * 
+			 *  @return void  
+			 */	
+			private function populate():void
+			{
+				ddRegisterIdTradeMarketing.dataProvider = useFX.populateCollection(useFX.data.useRegister);
+				ddRegisterGroupsId.dataProvider = useFX.populateCollection(useFX.data.useRegisterGroups);
+			}		
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				btCancel.addEventListener(MouseEvent.CLICK, cancel);
+				btSave.addEventListener(MouseEvent.CLICK, save);
+			}
+			
+			//----------------------------------
+			//  saveCheck
+			//----------------------------------    	
+			/**
+			 * 	Verifica se houve alguma alteração na edição, para ativar botão salvar
+			 * 
+			 *  @return void  
+			 */	
+			private function saveCheck(event:Event):void
+			{
+				useFX.accessControl(useFX.isChangedLog)
+					.accessControlAdd( btSave );
+			}
+			
+			//----------------------------------
+			//  save
+			//----------------------------------    	
+			/**
+			 * 	Prepara dados para gravar na base de dados.
+			 * 
+			 *  Atualiza modelo de tabela de cada componente necessário para 
+			 *  interação com a base de dados.
+			 * 
+			 *  @return void  
+			 */	
+			private function save(event:Event):void
+			{
+				
+				//Verifica se o formulário está validado
+				if(useFX.validate('TRADE_MARKETING').isValid())
+				{
+					//Verifica se o registro já existe na base de dados 
+					this._dataProducts.saveTradeMarketing(useFX.session('registerId'), useFX.select(ddRegisterIdTradeMarketing, "id"), useFX.select(ddRegisterGroupsId, "id"), saveResult);
+				}
+				else{
+					useFX.validate('TRADE_MARKETING').showError();
+				}
+			}
+			
+			//----------------------------------
+			//  saveResult
+			//----------------------------------
+			/**
+			 *  Evento disparado após interação com a base de dados.
+			 * 
+			 *  @return void
+			 */ 			
+			private function saveResult(useResult:*):void
+			{
+				//Processa o resultado obtido, atualizando o modelo de tabela principal
+				useResult = useFX.saveResult(this._dataProducts.useLgRegisterTrademarketingHasRegisterCollaborators, useResult);
+				
+				//Retorna dados para atualizar datagrid e fecha a popup
+				useFX.closePopup(this, useResult);
+			}			
+			
+			//----------------------------------
+			//  cancel
+			//----------------------------------
+			/**
+			 *  Fecha a popup.
+			 *  @return void
+			 */ 		
+			private function cancel(event:Event):void{
+				useFX.cancelPopup(this, save, 'Seleção de Trade-Marketing');
+			}
+			
+		]]>
+	</fx:Script>
+	<s:controlBarContent>
+		<mx:Spacer width="100%"/>
+		<s:Button id="btSave" label="Salvar" styleName="btSave"/>
+		<s:Button id="btCancel" styleName="btCancel" label="Cancelar" buttonMode="true" useHandCursor="true"/>
+	</s:controlBarContent>
+	<s:Label x="10" y="10" text="Área"/>
+	<s:DropDownList id="ddRegisterGroupsId" width="100%" labelField="title" prompt="Escolha..."/>
+	<s:Spacer width="10" height="5"/>
+	<s:Label text="Trade-Marketing"/>
+	<s:DropDownList id="ddRegisterIdTradeMarketing" width="100%" labelField="USE_REGISTER_PERSONAL_name"
+					prompt="Escolha..."/>
+</s:TitleWindow>

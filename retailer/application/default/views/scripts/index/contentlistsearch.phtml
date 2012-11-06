@@ -1,0 +1,153 @@
+<div class="usePage">
+	<div class="usePageTitle" style="width: 900px;">
+		<h3><?= $this->product->title ?></h3>
+	</div>
+	<div style="padding: 20px; width: 880px;>
+	<table  cellspacing="10" cellpadding="0" width="100%" border="0">
+		<? foreach ($this->listResource as $itemResource): ?>
+			<tr>
+				<td width="100">
+					<div class="UiItem">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						  <tr>
+						  	<!-- adiciona imagem -->
+						    <td class="UiTableLeftColumn">
+						    	<div class="UiImage">
+								    <a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemResource->id .'/'. strtolower($itemResource->resource_type) ?>">
+									<? 
+										switch ($itemResource->resource_type) {
+											case 'IMG':
+												echo '<img width="100" src="'. $this->baseUrl . $itemResource->folderpath .'/thumb/'. $itemResource->filename .'" />';	
+											break;
+											
+											case 'VDO':
+												if(!empty($itemResource->image_video))
+													echo '<img width="100" src="'. $itemResource->image_video .'" />';
+												else
+													echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesVideos100x80.png" />';
+											break;
+											
+											case 'EST':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesEspTecnicas100x80.png" />';
+												break;
+		
+											case 'MNL':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesManualInst100x80.png" />';
+												break;
+											
+											case 'LGO':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesLogos100x80.png" />';
+												break;
+												
+											case 'FTE':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesFeatures100x80.png" />';
+												break;
+						
+											case 'FLA':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesFlash100x80.png" />';
+												break;
+												
+											case 'HTM':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesHTML100x80.png" />';
+												break;
+												
+											case 'PSD':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesPSD100x80.png" />';
+												break;
+												
+											case 'PDF':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesPDF100x80.png" />';
+												break;
+												
+											case 'OUT':
+												echo '<img width="100" src="'. $this->useDefault->images .'/icons100/iconesOutros100x80.png" />';
+												break;
+										}
+									?>
+							</a>
+								</div>
+						    </td>
+						    
+						     <td valign="top" class="UiTableRightColumn">
+						     	<div class="UiHomeDetail UiAccordionItem">
+							    	<div class="UiFormatAccordion"><?= $itemResource->format ?></div>
+							    	<div class="useClear"></div>
+							    	<? if(!empty($itemResource->width)): ?>
+									    <div class="UiText"><?= $itemResource->width ?>x<?= $itemResource->height ?>pixel</div>
+									<? endif;?>
+										<div class="UiText"><?= UseZF_Util::useFileSize($itemResource->filesize) ?></div>
+						     	</div>
+						     	<div class="UiButton">
+									<div class="useDownload">
+										<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemResource->id .'/'. strtolower($itemResource->resource_type) ?>">
+											<img src="<?= $this->useDefault->images ?>/bt/btVerDetalhes.png" />
+										</a>
+									</div>
+						     	</div>
+						    </td>
+						  </tr>
+						  <tr>
+						    <td colspan="2">
+								<div class="UiResourceTitle">
+									<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemResource->id .'/'. strtolower($itemResource->resource_type) ?>">
+										<?= UseZF_Util::useTruncate($itemResource->title, 40) ?>
+									</a>	
+								</div>	
+						    </td>
+						  </tr>
+						  <tr>
+						    <td colspan="2">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<? if(!empty($itemResource->total_rating_votes)): ?>
+											<td>
+												<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemResource->id .'/'. strtolower($itemResource->resource_type) ?>">
+													<div class="iconHomeStar"></div>
+													<div class="iconText">
+														<?= round($itemResource->total_rating/$itemResource->total_rating_votes) ?>
+													</div>
+												</a>
+											</td>
+											<? else: ?>
+											<td>
+												<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemResource->id .'/'. strtolower($itemResource->resource_type) ?>">
+													<div class="iconHomeStar"></div>
+													<div class="iconText">
+														0
+													</div>
+												</a>
+											</td>
+										<? endif; ?>
+										<td>
+											<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemResource->id .'/'. strtolower($itemResource->resource_type) ?>">
+												<div class="iconHomeDownload"></div>
+												<div class="iconText">
+													<?= $itemResource->total_download ?>
+												</div>
+											</a>
+										</td>
+										<td>
+											<a target="_parent" href="<?= $this->baseUrl .'/contentshow/'. $this->product->id .'/'. $itemResource->id .'/'. strtolower($itemResource->resource_type) ?>">
+												<div class="iconHomeView"></div>
+												<div class="iconText">
+													<?= $itemResource->total_view ?>
+												</div>
+											</a>																
+										</td>
+									</tr>
+								</table> 	
+						    </td>
+						  </tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="2">
+					<img src="<?= $this->useDefault->images ?>/divider/linhaDivisaoSubTitle.png" style="margin: 10px 0px 10px 0px;" />
+				</td>
+			</tr>
+		<? endforeach;?>
+	</table>
+	</div>
+</div>

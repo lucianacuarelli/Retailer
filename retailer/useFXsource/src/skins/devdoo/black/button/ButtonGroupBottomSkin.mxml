@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		width="252" height="49">
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("spark.components.Button")]
+	</fx:Metadata>
+	
+	<!-- states -->
+	<s:states>
+		<s:State name="disabled" />
+		<s:State name="down" />
+		<s:State name="over" />
+		<s:State name="up" />
+	</s:states>
+	
+	<!-- SkinParts
+	name=iconDisplay, type=spark.primitives.BitmapImage, required=false
+	name=labelDisplay, type=spark.core.IDisplayText, required=false
+	-->
+	
+	
+	<s:Rect left="0" right="0" top="0" bottom="0" bottomLeftRadiusX="3" bottomRightRadiusX="3"
+			alpha.disabled="0.35">
+		<s:fill>
+			<s:LinearGradient rotation="0">
+				<s:GradientEntry alpha="1.0" color="0x3E4041" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="0x040404" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:LinearGradientStroke caps="none" joints="miter" miterLimit="4" rotation="0"
+									weight="1">
+				<s:GradientEntry alpha="1.0" color="#4F4F4F" ratio="0.027450980392156862"/>
+				<s:GradientEntry alpha="1.0" color="#353636" ratio="1"/>
+			</s:LinearGradientStroke>
+		</s:stroke>
+	</s:Rect>
+	<s:Rect left="0" right="0" top="0" bottom="0" bottomLeftRadiusX="3" bottomRightRadiusX="3"
+			visible.disabled="false"
+			visible.down="false"
+			visible.up="false">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="1.0" color="0x58B6EC" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="0x1A79D7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:LinearGradientStroke caps="none" joints="miter" miterLimit="4" rotation="90"
+									weight="1">
+				<s:GradientEntry alpha="1.0" color="#69CDFF" ratio="0.4980392156862745"/>
+				<s:GradientEntry alpha="1" color="0x428EDA" ratio="1"/>
+			</s:LinearGradientStroke>
+		</s:stroke>
+	</s:Rect>
+	<s:RichText id="labelDisplay" left="60" right="20" verticalCenter="0" color="#FFFFFF" fontFamily="Arial" fontSize="17"
+				fontWeight="bold" lineHeight="137%" trackingRight="0"
+				alpha.disabled="0.35" color.disabled="#999999">
+		<s:filters>
+			<s:GlowFilter alpha="1.0" blurX="3" blurY="3" color="#000000" inner="false"
+						  knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:RichText>
+	<!--<s:BitmapImage x="12" y="9" smooth="true" source="@Embed('/assets/images/Group.png')"/>-->	
+	
+</s:Skin>

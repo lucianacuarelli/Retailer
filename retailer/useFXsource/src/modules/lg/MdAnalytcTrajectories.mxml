@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:lg="modules.lg.*"
+		  xmlns:layout="modules.lg.layout.*"
+		  xmlns:ui="devdoo.ui.*"
+		  width="100%" height="100%" creationComplete="create()">
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Trajetórias - Analytc / BI ');
+				useFX.closeWelcome();
+			}				
+		]]>
+	</fx:Script>
+	
+</s:Module>

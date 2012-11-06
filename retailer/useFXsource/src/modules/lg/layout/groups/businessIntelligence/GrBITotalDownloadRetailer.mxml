@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="100%" height="100%" title="Total de downloads por Empresa" 
+		 skinClass="skins.panel.SkPanelBlackSkin"
+		 creationComplete="create()" xmlns:ui="devdoo.ui.*">
+	<fx:Script>
+		<![CDATA[
+			import modules.lg.data.DataBusinessIntelligence;
+			
+			import mx.collections.ArrayCollection;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  dataBusinessIntelligence
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de consultas.  
+			 */  
+			public var dataBusinessIntelligence:DataBusinessIntelligence;
+			
+			//------------------------------------------------------------------
+			//
+			//  Configurations
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  data
+			//----------------------------------
+			/**
+			 *  Lista de registros..  
+			 */
+			public function data(value:*):GrBITotalDownloadRetailer
+			{
+				lsReport.dataProvider = new ArrayCollection(value.downloadByUserReport);
+				return this;
+			}
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Instância a classe gerenciadora de consultas
+				dataBusinessIntelligence = new DataBusinessIntelligence();
+				//Recupera as informações necessárias da base de dados
+				dataBusinessIntelligence.populate('dashboardTotalDownloadByUser',populateResult);
+			}
+			
+			//----------------------------------
+			//  populateResult
+			//----------------------------------
+			private var isPopulated:Boolean = false;
+			/**
+			 *  Evento de retorno da consulta.
+			 * 
+			 *  @return void  
+			 */	
+			public function populateResult(useResult:*) : void
+			{
+				lsReport.dataProvider = new ArrayCollection(useResult.downloadByUserReport);
+			
+				if(!isPopulated){
+					uiDatePeriod.dateStart = useResult.minDate[0].date;
+					uiDatePeriod.dateFinish = useResult.maxDate[0].date;
+					isPopulated = true;
+				}
+			}
+			
+			//----------------------------------
+			//  filter
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			protected function filter(event:MouseEvent):void
+			{
+				//Recupera as informações necessárias da base de dados
+				dataBusinessIntelligence.populate('dashboardTotalDownloadByUser',populateResult,uiDatePeriod.dateStart,uiDatePeriod.dateFinish);
+			}
+			
+			//----------------------------------
+			//  clear
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			protected function clear(event:MouseEvent):void
+			{
+				uiDatePeriod.dateStart = '';
+				uiDatePeriod.dateFinish = '';
+				isPopulated = false;
+				//Recupera as informações necessárias da base de dados
+				dataBusinessIntelligence.populate('dashboardTotalDownloadByUser',populateResult);
+			}
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
+	</s:layout>
+	<s:BorderContainer width="100%">
+		<s:layout>
+			<s:HorizontalLayout paddingBottom="5" paddingLeft="10" paddingRight="10" paddingTop="5"
+								verticalAlign="middle"/>
+		</s:layout>
+		<ui:UiDatePeriod id="uiDatePeriod"/>
+		<s:Button id="btClear" label="Limpar" click="clear(event)"/>
+		<s:Button id="btFilter" label="Filtrar" click="filter(event)"/>
+	</s:BorderContainer>
+		<s:List id="lsReport" width="100%" height="100%"
+				itemRenderer="modules.lg.layout.itemRenderer.IrBIListDownloadByUser"
+				labelField="register_id"/>
+</s:Panel>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ui="devdoo.register.layout.ui.*"
+		  xmlns:userInterface="modules.lg.layout.userInterface.*"
+		  width="100%" height="100%" 
+		  creationComplete="create()">
+	<s:layout>
+		<s:HorizontalLayout gap="10" paddingBottom="10" paddingTop="10"
+							paddingLeft="2" paddingRight="2"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabAddress;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabCorporate;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabDetail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabEmail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabGroups;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPersonal;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPhone;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabSocialMedia;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 * Instância o componente de registro e define as configurações default  
+			 * 
+			 *  @return void
+			 */
+			public function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Colaboradores');
+				
+				registerCollaborator.start(UiRegister.PERSONAL)
+				.defaultProfile('6')
+				.statusManagerIds([1,2,5,6])
+				//.validateCpf()
+				.disableInitialPreference()
+				.addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+				.addTab('Grupos', GrRegisterTabGroups, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.disableInitialPreference()
+				.allowMultipleSelection()
+				.pageSize(25)
+				.create()
+				.populate();   
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();		
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */
+			private function addEvents():void
+			{
+				//Evento disparado sempre que a seleção de colaborador é alterada
+				registerCollaborator.addEventListener(UiRegister.SELECTION_CHANGE, showDetail);
+				//Evento disparado sempre que a lista principal for atualizada
+				registerCollaborator.addEventListener(UiRegister.REFRESH, reload);
+			}			
+			
+			//----------------------------------
+			//  reload
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function reload(reload:Event):void
+			{
+				collaboratorsSelectCompany.reset();
+				areaTradeMarketingSelect.reset();
+				registerInfo.reset();
+			}
+			
+			//----------------------------------
+			//  showDetail
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function showDetail(event:Event):void
+			{
+				registerInfo.showDetail(registerCollaborator.selectedItem);
+				collaboratorsSelectCompany.selectedRegister(registerCollaborator.selectedItem);
+				areaTradeMarketingSelect.selectedRegister(registerCollaborator.selectedItem);
+			}
+			
+			//----------------------------------
+			//  refresh
+			//----------------------------------
+			/**
+			 *  Atualiza o datagrid de colaboradores para evitar inconsistência 
+			 *  de dados visuais. Quando você acabava de atualizar a rede do colaborador,
+			 *  ela era atualizada no banco. Porém o datagrid tinha sido populado
+			 *  antes da inserção desse novo registro. Desta forma, quando você 
+			 *  selecionava outro registro e retornava a selecionar o préviamente
+			 *  selecionado, nessa consulta, ele não possuia rede. Mesmo depois
+			 *  de termos adicionado ela à ele. 
+			 *  Então, é necessário atualizar o datagrid de colaboradores.  
+			 * 
+			 *  @return void
+			 */
+			public function refresh():void
+			{
+				//Atualiza a coleção
+				var selectedItem:Object = registerCollaborator.lsRegister.selectedItem;
+				selectedItem.USE_REGISTER_parent_id = collaboratorsSelectCompany.selectedItem;
+				registerCollaborator.lsRegister.dataProvider.setItemAt(selectedItem,registerCollaborator.lsRegister.selectedIndex);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:SkinnableContainer width="100%" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+		<ui:UiRegister id="registerCollaborator" title="Colaboradores" subTitle="Colaboradores registradas no sistema"/>
+	</s:SkinnableContainer>
+	
+	<ui:UiRegisterInfo id="registerInfo"/>
+	
+	<s:VGroup height="100%">
+		<userInterface:UiCollaboratorsSelectCompany id="collaboratorsSelectCompany" x="116" y="10" width="100%"
+													height="180"/>
+		<userInterface:UiAreaTradeMarketingSelect id="areaTradeMarketingSelect" x="53" y="52" width="100%" height="100%"/>
+	</s:VGroup>
+</s:Module>

@@ -1,0 +1,1469 @@
+/* UseCSS */
+body {background:#f1f1f1; margin:0; padding:0; top:0; left:0; font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px; 
+	height:100%;
+	}
+h1,h2,h3,h4,h5,h5 {font-weight:normal; color:#CCCCCC;}
+a {text-decoration:none; color:#CCCCCC;}
+a:hover {text-decoration:none; color:#FFFFFF;}
+*{ margin: 0; padding: 0; z-index: 1; }
+img {border:0;}
+ol, ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* ----------------------------------------------------------------- Defaults */
+.useClear{
+	clear: both;
+}
+.useColor{
+	background-color: #e2e2e2;
+}
+
+.UiCursorDefault {
+	cursor: default;
+}
+.UiCursorPointer {
+	cursor: pointer;
+}
+
+/*------------------------------------------------------------------ UiPage --*/
+.UiPage{
+	padding-top: 70px;
+	width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ----------------------------------------------------------------- UiHeader */
+#UiHeader{
+	height: 57px;
+	width: 100%;
+	position: fixed;
+  	top:0;
+  	z-index:9998;
+  	background:#f1f1f1 url('../images/bg/bgMenuTopo.png') no-repeat right top;
+}
+
+#UiHeader .UiWrap{
+	height: 57px;
+	width: 990px;
+  	background:#f1f1f1 url('../images/bg/bgMenuTopo.png') no-repeat right top;
+	clear: both;
+	margin-left:auto;
+	margin-right:auto;
+}
+#UiHeader .UiLogo{
+	width: 95px;
+	padding-top: 5px;
+}
+
+/* --------------------------------------------------------- UiHeader UiMenu -*/
+#UiHeader .UiMenu {
+	height: 50px;
+	margin: 0;
+	padding: 0;
+	background: url(../images/menu/navigation-bg.jpg) repeat-x left top;
+} 
+#UiHeader .UiMenu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+} 
+#UiHeader .UiMenu ul li {
+	display: inline;
+	margin: 0px;
+} 
+#UiHeader .UiMenu ul li a {
+	height:33px;
+	display: block;
+	float: left;
+	padding: 15px 42px 0 40px;
+	font: bold 12px Arial;
+	color: #FFF;
+	text-decoration: none;
+	background: url(../images/menu/navigation-separator.png) no-repeat -1px top;
+} 
+
+#UiHeader .UiMenu ul li a:hover {
+	color:#FFF;
+	background: url(../images/menu/navigation-hover.png) repeat-x left top;
+}
+
+#UiHeader .UiMenu ul li#active a {
+	color:#FFF;
+	background: url(../images/menu/navigation-hover.png) repeat-x left top;
+}
+
+
+/* ----------------------------------------------------- UiAccordion UiMenu -*/
+#PageAccordion{
+	height:auto !important;
+	height:75%;
+	min-height:75%;
+	/*margin-bottom: 210px;	*/
+}
+
+#UiAccordion{
+	width: 990px;
+	margin: auto;
+} 
+#UiAccordion .UiMenu {
+	height: 46px;
+	margin: 0;
+	padding: 0;
+	background: url(../images/menu/bgMenuNavigationAccordion.png) repeat-x left top;
+} 
+#UiAccordion .UiMenu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+} 
+#UiAccordion .UiMenu ul li {
+	display: inline;
+	margin: 0px;
+} 
+#UiAccordion .UiMenu ul li a {
+	height:46px;
+	display: block;
+	float: left;
+	padding: 0px 5px 0 5px;
+	font: bold 12px Arial;
+	color: #FFF;
+	text-decoration: none;
+	background: url(../images/menu/divaderMenuNavigationAccordion.png) no-repeat -1px top;
+} 
+
+#UiAccordion .UiMenu ul li a:hover {
+	color:#FFF;
+	background: url(../images/menu/hoverMenuNavigationAccordion.png) repeat-x left top;
+}
+
+#UiAccordion .UiMenu ul li#active a {
+	color:#FFF;
+	background: url(../images/menu/hoverMenuNavigationAccordion.png) repeat-x left top;
+}
+
+/* -------------------------------------------------------------------- Login */
+#PageLogin .UiLogo{
+	width:340px;
+	height:194px;
+	margin: 0 auto;
+	position: absolute; top: 25%; left: 40%;
+	padding-top:50px; 
+	background:transparent url("../images/logoLG.png") no-repeat top center;
+}
+#PageLogin .UiWrap{
+	width:340px;
+	height:194px;
+	background:transparent url("../images/box.png") no-repeat center center;
+	color: #7a7a7c;
+    font-size: 11px;
+}
+
+#PageLogin .UiContent{
+    padding: 20px;
+}
+#PageLogin .UiTitle{
+	padding-bottom: 20px;
+}
+
+#PageLogin .UiSubTitle{
+	width: 70px;
+	float: left;
+	font-weight: bold;
+	font-size: 10px;
+	text-align: right;
+	padding-right: 5px;
+	padding-top: 3px;
+}
+#PageLogin .UiLink{
+	font-size: 10px;
+	padding-left: 75px;
+}
+#PageLogin .UiLink a{color: #c12a55; font-size: 11px;}
+#PageLogin .UiLink a:hover{color: #da95a8; font-size: 11px;}
+
+#PageLogin .UiButton{
+	width: 70px;
+	float: right;
+	padding-top: 15px;
+	margin-right: 40px;
+}
+#PageLogin .UiElement{
+	height: 30px;
+}
+
+#PageLogin .UiLoginText, .UiPassWord{
+	border:0px solid #cccccc;
+	background:#cccccc;
+	width: 210px;
+	height: 22px;
+	padding-left: 5px;
+	font-size: 11px;
+	color: #7a7a7c;
+}
+
+#PageLogin .UiFooter {
+	background:transparent url("../images/bg/bgLogin.png") repeat-x left top;
+	width:100%;
+	height: 90px;
+	z-index: 1;
+	position: absolute;
+	bottom: 0px;
+}
+#PageLogin .UiShadow{
+	background:transparent url("../images/bg/bgShadow.png") no-repeat center 33px;
+	padding-top:45px;
+	width:100%;
+	text-align: center;
+	color: #7a7a7c;
+	font-size: 11px;
+}
+
+
+/*--------------------------------------------------- UiSearch / PageSearch --*/
+#SearchWrap{
+	/*margin-bottom: 250px;*/
+}  
+#UiSearch{
+	background:none;
+	margin-top: -10px;
+}  
+#UiSearch .UiSearchWrap{
+	background:url('../images/campoBusca.png') no-repeat left center;
+	width: 190px;
+} 
+
+#UiSearch .UiSearchText{
+	background: none;
+	border: none;
+	padding: 5px;
+	padding-left: 8px;
+} 
+
+#UiSearch .UiSearchButton{
+	opacity: 0;
+	width: 20px;
+	height: 30px;
+	cursor: pointer;
+}
+
+#PageSearch{
+	height:auto !important;
+	height:85%;
+	min-height:85%;	
+}
+ 
+.UiLastContent{
+	padding-bottom: 40px;	
+	padding-top: 20px;	
+}
+ 
+
+
+/*-------------------------------------------------------------- pagination --*/
+.pagination{
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+}
+.current{
+	color: #c71b59;
+}
+
+
+/*---------------------------------------------------------------- UiLogout --*/
+.UiButtonLogout{
+	padding-left: 20px;
+	margin-top: -2px;
+}
+
+/*------------------------------------------------------ UiUser / UiCompany --*/
+.UiUserInfo{
+	padding-left: 3px;
+	height: 45px;
+}
+
+.UiUser{
+	float: left;
+	padding-left: 5px;
+	padding-top: 10px;
+}
+.UiUserImage{
+	float: left;
+	padding-top: 5px;
+	padding-left: 10px;
+}
+
+/*---------------------------------------------------------------- UiBanner --*/
+#UiBanner{
+	background:#e3e4e5;
+	height: 335px;
+	margin-top: 20px;
+}
+#UiBanner .UiWrap{
+	margin-top: 20px;
+	text-align: center;
+	padding: 10px;
+}
+
+/*---------------------------------------------------------------- UiFooter --*/
+#UiFooter{
+	background:#bbbbbb url('../images/bg/bgBase.png') repeat-x;
+	height: 190px;
+}
+
+#UiFooter .UiShadow{
+	padding-top:20px;
+	width:100%;
+	height:35px;
+	text-align: center;
+	color: #7a7a7c;
+	font-size: 11px;
+}
+#UiFooter .UiFooterShadow{
+	background:transparent url("../images/bg/bgFooterShadow.png") no-repeat center top;
+}
+
+
+
+
+
+
+
+
+
+
+
+.usePageTitle{
+	padding-bottom: 20px;
+	padding-left: 50px;
+	width: 920px;
+	margin-left: auto;
+	margin-right: auto;
+	background: url('../images/divider/linhaGrandeDivisao.png') no-repeat center 50px;
+}
+
+
+/*--------------------------------------------------------- accordion --*/
+h2{ 
+	cursor: pointer; color: #6e6f71; font-weight: bold; font-size: 15px;}
+	.accordion{ display: none; width: 920px; margin-top: 0px; padding-left: 50px; padding-bottom: 0px;}
+	.active { width:944px; height:26px; padding-left: 30px; background-image: url('../images/accordion/accodionA.png'); }
+	.active span { float: right; padding-right: 10px; }
+	.deactive { width:944px; height:26px; padding-left: 30px; background-image: url('../images/accordion/accodionB.png'); }
+	.deactive span { float: right; padding-right: 20px; 
+}
+
+.UiTotalItems{
+	font-size: 10px;
+	color: #cc3366;
+	font-weight: normal;
+	padding-top: 7px;
+}
+
+		
+/*--------------------------------------------------------- usePageIdentify --*/
+.usePageIdentify{
+	padding-top: 70px;
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	/*background: #ffffff;*/
+}
+
+
+.usePageTitle h3{
+	font-size: 22px;
+	font-weight: bold;
+	color: #CC3366;
+	padding-top: 20px;
+}
+
+.UiDownload {
+	background: url('../images/divider/linhaDivisaoSubTitle.png') no-repeat center 60px;
+	padding-bottom: 20px;
+}
+.UiDownload h2{
+	font-weight: bold;
+	color: #CC3366;
+	padding-top: 20px;
+	padding-left: 50px;
+	padding-bottom: 20px;
+	padding-right: 10px;
+	width: 450px;
+	margin-right: auto;
+	text-align: left;
+	font-size: 23px;
+	color: #CC3366;
+	cursor: default;
+}
+.UiCode{
+	font-size: 10px;
+	font-weight: normal;
+}
+
+
+
+/*------------------------------------------------------------- PageDownloads --*/
+#PageDownloads{
+	height:auto !important;
+	height:85%;
+	min-height:85%;	
+}
+
+#PageDownloads .UiContent{
+	/*margin-bottom: 210px;*/
+}
+
+/*------------------------------------------------------------- PageContent --*/
+#PageContent, .UiMessage{
+	height:auto !important;
+	height:100%;
+	min-height:100%;	
+}
+
+#UiListProduct{
+	padding-top: 10px;
+	/*padding-bottom: 220px;*/
+}
+
+#UiListProduct .UiShadowTop{
+	height:9px;
+	background: url('../images/bg/bgShadowContentTop.gif') no-repeat center top;
+}
+#UiListProduct .UiShadowBotton{
+	height:9px;
+	background: url('../images/bg/bgShadowContentBotton.gif') no-repeat center top;
+}
+
+#UiListProduct .UiWrap{
+	padding: 30px;
+	background: #FFFFFF;
+	height:auto !important;
+	height:100%;
+	min-height:100%;
+}
+
+#PageContent .UiImage{
+	/*border:1px #FF0000 solid;*/
+	border-bottom:1px #CCC solid;
+	height: 100%;
+}
+#PageContent .UiTitle{
+	font-weight: bold;
+}
+
+
+/*----------------------------------------------------------------- usePageContent --*/
+.useProductMenu, #PageDownloads .UiContent, #SearchWrap, #PageAccordion,
+.useResourcesMenu, .useResourcesAccordion, 
+.imageflow, .UiMessage{
+	width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.usePageDetail{
+	width: 970px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.usePageDetail .usePageContent{
+	width: 970px;
+	clear: both;
+	background:#FFFFFF;
+}
+
+
+
+
+.useProductMenu{
+	height: 45px;
+	/*border:1px #00FF00 solid;*/
+	background:url('../images/bg/bgBigMenuMagenta.png') repeat-x left top;
+}
+
+/*---------------------------------------------------------- #UiContentShow --*/
+
+#UiContentShow, #UiContentList {
+	width: 100%;
+	float: none;
+	clear: both;
+	/*border:1px #00FF00 solid;*/
+	padding-top: 0px;
+	padding-bottom: 35px;
+}
+
+
+/*-------------------------------------------------------------- #UiContent --*/
+
+#UiContent, #UiContentList {
+	width: 100%;
+	float: none;
+	clear: both;
+	/*border:1px #00FF00 solid;*/
+	padding-top: 20px;
+	padding-bottom: 35px;
+}
+
+#UiContent .useLeftColumn, #UiContentList .useLeftColumn{
+	float: left;
+	width: 170px;
+	padding-bottom: 45px;
+	padding-left: 10px;
+}
+#UiContentList .useLeftColumn{
+	height: 500px;
+	width: 0px;
+	padding:0px;
+	
+}
+
+#UiContent .useRightColumn, #UiContentList .useRightColumn{
+	float: right;
+	width: 799px;
+}
+
+#UiContentList .useRightColumn{
+	width: 989px;
+}
+
+
+.useMenuPageList .UiTitle a{color: #4d4d4f;}
+.useMenuPageList .UiTitle a:hover{color: #000000;}
+
+
+
+
+/*-------------------------------------------------------------- #UiContentDetail --*/
+#UiContentDetail{
+	width: 100%;
+	float: none;
+	clear: both;
+	/*border:1px #00FF00 solid;*/
+}
+
+#UiContentDetail .useLeftColumn{
+	float: left;
+	padding: 30px 15px 30px 15px;
+	/*border:1px #FFFF00 solid*/
+	/*background-color: #FFFF00;*/
+}
+
+#UiContentDetail .useRightColumn{
+	float: right;
+	padding: 0px 20px 0px 20px;
+	width: 387px;
+	/*border:1px #00FFFF solid*/
+	/*background-color: #00FF00;*/
+}
+
+#UiContentDetail .useProduct{
+	height: 550px;
+	/*border:1px #00FFFF solid;*/
+	/*background-color: #00FFFF;*/
+}
+#UiContentDetail .useProductInteraction{
+	width: 385px;
+	height: 550px;
+	/*border:1px #00FFFF solid;*/
+	background-color: #00FFFF;
+}
+
+#UiContentDetail .UiButtonClose{
+	height: 20px;
+}
+
+#UiContentDetail .UiComments{
+	height: 420px;
+	padding-bottom: 20px;
+}
+#UiContentDetail .UiNavBar{
+	height: 40px;
+	padding-bottom: 5px;
+}
+#UiContentDetail .UiCommentsInfo{
+	height: 20px;
+	padding-top: 5px;
+	padding-left: 60px;
+}
+#UiContentDetail .UiCommentsInfo span{
+	height: 20px;
+	padding-top: 5px;
+	font-weight: bold;
+	font-size: 9px;
+	color: #6D6E71;
+	padding-right: 18px;
+}
+
+#UiContentDetail .UiProductMenu{
+	padding-top: 20px;
+	padding-bottom: 0px;
+}
+#UiContentDetail .useMenuPage{
+	padding-left: 10px;
+	padding-top: 10px;
+	margin-left: 2px;
+	clear: both;
+	width: 370px;
+}
+
+#UiContentDetail .UiDisplay{
+	padding-left:7px;
+	padding-top:7px;
+	width: 505px;
+	height: 355px;
+	background:url('../images/bg/bgDisplayBig.png') repeat-x left top;
+}
+
+#UiContentDetail .UiComment{
+	width: 100%;
+	float: none;
+}
+#UiContentDetail .useComment{
+	width: 350px;
+	padding-bottom: 5px;
+	color: #6d6e70;
+	font-size: 11px;
+	line-height: 15px;
+}
+#UiContentDetail .UiComment li{
+	padding: 10px;
+}
+
+.useComment .UiTitle{
+	color: #C5355D;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.UiComment .useColor{
+	background-color: #e6e7e9;
+}
+.UiComment .UiWrap{
+	color: #6d6e70;
+	font-size: 10px;
+}
+.UiComment .UiDetail{
+	float: right;
+}
+
+.UiCommentButtons{
+}
+.UiCommentButtons li{
+	float: left;
+	height: 22px;
+	padding: 0px;
+}
+
+.UiButtonShow{
+	padding-right: 10px;
+}
+
+.UiButtonComment{
+	background:transparent url("../images/bt/btComentar.png") no-repeat 0px 0px;;
+}
+.UiButtonDownload{
+	background:transparent url("../images/btComment.png") no-repeat -94px 0px;
+}
+.UiButtonEmail{
+	background:transparent url("../images/bt/btEmail.png") no-repeat 0px 0px;
+}
+
+/*----------------------------------------------------------------- UiProductDetail --*/
+
+#UiContentDetail .useProduct{
+	width: 510px;
+	color: #6D6E71;
+	
+}
+#UiContentDetail .useProduct .UiDetailWrap{
+	padding-bottom: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+#UiContentDetail .useProduct .UiDetail{
+	padding-bottom: 5px;
+}
+#UiContentDetail .useProduct .UiDetail .UiRating{
+	float: right
+}
+#UiContentDetail .useProduct .UiDetail .UiTitle span{
+	font-size: 15px;
+	font-weight: bold;
+}
+#UiContentDetail .useProduct .UiDetail .UiTitle .UiDate{
+	font-size: 15px;
+	float: right
+}
+
+
+#UiContentDetail .useProduct .UiDetail .UiTitle .UiDetail{
+	font-size: 11px;
+	padding-top: 3px;
+}
+
+.UiDescriptionWrap {
+	background: #ebebeb;
+	padding: 5px;
+}
+
+.UiDescriptionWrap span{
+	line-height: 15px;
+}
+
+.UiRating{
+	font-size: 11px;
+}
+.UiRating .UiStars{
+	padding-top: 3px;
+}
+
+
+/*----------------------------------------------------------------- UiProductDetail --*/
+.UiProductDetail{
+	width: 100%;
+	padding-top: 0px;
+	padding-bottom: 30px;
+}
+
+.UiProductDetail .UiProductList{
+	width: 80px;
+	padding: 0px 0px 25px 0px;
+}
+
+.UiProductDetail .UiProductDetailImage{
+	width: 335px;
+	height: 375px;
+	/*overflow: hidden;*/
+}
+
+.UiProductDetailImage img{
+	border: none;
+	margin: auto;
+	
+}
+.UiProductDetailImage .UiImage{
+	width: 335px;
+	height: 375px;
+	text-align:center;
+}
+	
+
+.UiProductDetail .UiProductDetailInfo{
+	width: 310px;
+	padding-right: 30px;
+}
+
+.UiProductDetailInfo, .UiProductDetailImage, .UiProductList{
+	float: left;
+}
+
+.UiStarText, .UiStarRating{
+	float: left;
+	padding-right: 5px;
+}
+
+.UiRatingAdd{
+	padding-top: 10px;
+	font-weight: bold;
+}
+
+/*----------------------------------------------------- UiProductDetailInfo --*/
+.UiProductDetailInfo .UiProductDate{
+	font-size: 9px;
+	color: #6D6E71;
+	padding-bottom: 50px;
+}
+.UiProductDetailInfo .UiProductTitle{
+	font-size: 33px;
+	color: #6D6E71;
+	padding-bottom: 20px;
+}
+.UiProductDetailInfo .UiProductText{
+	font-size: 11px;
+	color: #6D6E71;
+	padding-bottom: 30px;
+	line-height: 17px;
+}
+
+
+.UiProductInfo {
+	padding-bottom: 60px;
+}
+.UiProductMenu{
+	padding-bottom: 20px;
+}
+.UiProductInfo .UiTitle{
+	font-weight: bold;
+	color: #6D6E71;
+	font-size: 10px;
+	padding-bottom: 20px;
+}
+.UiProductMenu .UiTitle{
+	font-weight: bold;
+	color: #C12752;
+	font-size: 10px;
+	padding-bottom: 20px;
+}
+
+
+/*-----------------------------------------------------------------XXresources--*/
+.useResourcesMenu{
+	height: 45px;
+	background:url('../images/bg/bgBigMenuMagenta.png') repeat-x left top;
+}
+.useResourcesAccordion{
+	border:1px #00FFFF solid;
+	height: 600px;
+	padding-top: 30px;
+	/*background:url('../images/bg/bgBannerCircle.png') no-repeat center center;*/
+}
+
+
+/*----------------------------------------------------------- UiProductList --*/
+
+.UiProductList{
+	margin-left: 15px;
+	cursor: pointer;
+	width: 140px;
+}
+.UiProductList .useTitle{
+	color: #6D6E71;
+	font-size: 10px;
+	font-weight: bold; 
+}
+.UiProductList .useTitleDate{
+	color: #6D6E71;
+	font-size: 8px;
+}
+.UiProductList .useImage{
+	width: 120px;
+	height: 110px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 5px;
+}
+
+.UiProductList li{
+	width: 120px;
+	height: 170px;
+	/*border:1px #00FF00 solid;*/
+}
+
+
+/*-------------------------------------------------------------UiProductMiniList--*/
+
+.UiProductMiniList{
+	margin-left: 15px;
+	cursor: pointer;
+	width: 75px;
+}
+.UiProductMiniList .useImage{
+	width: 60px;
+	height: 50px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 5px;
+	background: #FFFFFF;
+}
+
+.UiProductMiniList li{
+	width: 65px;
+	height: 65px;
+}
+
+
+
+/*-----------------------------------------------------------------scrollbar--*/
+.UiProductMiniList .VScrollbar .viewport { width: 60px; height: 390px; overflow: hidden; position: relative; }
+.UiProductList .VScrollbar .viewport { width: 125px; height: 630px; overflow: hidden; position: relative; }
+.UiProductDetail .UiProductList .VScrollbar .viewport { width: 60px; height: 390px; overflow: hidden; position: relative; }
+.UiComment .VScrollbar .viewport { width: 370px; height: 340px; overflow: hidden; position: relative; }
+.UiDescription .VScrollbar .viewport {  width: 425px; height: 100px; overflow: hidden; position: relative; }
+
+.VScrollbar {width: 100%;}
+.VScrollbar .overview { list-style: none; position: absolute; left: 0; top: 0; padding: 0; margin: 0; }
+.VScrollbar .scrollbar{ background: transparent url(../images/bg-scrollbar-track-y.png) no-repeat 0 0; position: relative; background-position: 0 0; float: right; width: 15px; }
+.VScrollbar .track { background: transparent url(../images/bg-scrollbar-trackend-y.png) no-repeat 0 100%; height: 100%; width:13px; position: relative; padding: 0 1px; }
+.VScrollbar .thumb { background: transparent url(../images/bg-scrollbar-thumb-y.png) no-repeat 50% 100%; height: 20px; width: 25px; cursor: pointer; overflow: hidden; position: absolute; top: 0; left: -5px; }
+.VScrollbar .thumb .end { background: transparent url(../images/bg-scrollbar-thumb-y.png) no-repeat 50% 0; overflow: hidden; height: 5px; width: 25px; }
+.VScrollbar .disable { display: none; }
+
+
+.UiAccodionWrap{
+	height: 120px;
+}
+
+.UiItem{
+	float:left;
+	width: 260px;
+	height: 155px;
+	background: url("../images/bg/bgItemResource.png") no-repeat top left transparent;
+	padding-left: 6px;
+	padding-top: 6px;
+	padding-right: 20px;
+}
+
+.UiItem table{
+}
+
+.UiTableLeftColumn{
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+	margin-top: 5px;
+}
+
+.UiResourceTitle{
+	height: 20px;
+	padding-top: 3px;
+	padding-bottom: 5px;
+}
+
+
+a.iframeContentShow{
+	height: 20px;
+	color: #3e3e3e;
+	font-size: 11px;
+	padding-top: 3px;
+	padding-bottom: 5px;
+}
+a.iframeContentShow:hover{
+	color: #be2752;
+}
+
+
+
+.UiHomeDetail {
+	padding-right: 15px;
+}
+.UiHomeDetail .UiText{
+	text-align: right;
+	font-size: 9px;
+	color: #FFFFFF;
+	
+}
+
+.UiHomeDetail .UiFormat{
+	color: #FFFFFF;
+	text-align: right;
+	font-size: 11px;
+	font-weight:bold;
+	background:transparent url("../images/bg/bgFormat.png") no-repeat 8px 1px;
+	width: 38px;
+	height: 17px;
+	float: right;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 1px;
+}
+.UiHomeDetail .UiFormatAccordion{
+	color: #FFFFFF;
+	text-align: right;
+	font-size: 11px;
+	font-weight:bold;
+	background:transparent url("../images/bg/bgFormatDark.png") no-repeat 8px 1px;
+	width: 38px;
+	height: 17px;
+	float: right;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 1px;
+}
+
+.iconHomeStar, .iconHomeDownload, .iconHomeComment, .iconHomeView{
+	text-align: right;
+	height: 22px;
+	width: 22px;
+	font-style: italic;
+	font-size: 12px;
+	color: #CCC;
+	float: left;
+}
+.iconText{
+	font-style: italic;
+	font-size: 12px;
+	color: #CCC;
+	float: left;
+	padding-left: 3px;
+	padding-right: 15px;
+	padding-top: 4px;
+}
+.iconHomeStar{
+	background: url("../images/icons/home/iconHomeStar2.gif") no-repeat left center;
+}
+.iconHomeDownload{
+	background: url("../images/icons/home/iconHomeDownload2.gif") no-repeat left center;
+}
+.iconHomeComment{
+	background: url("../images/icons/home/iconHomeComment2.gif") no-repeat left center;
+}
+.iconHomeView{
+	background: url("../images/icons/home/iconHomeView2.gif") no-repeat left center;
+}
+
+.UiTableRightColumn .UiButton{
+	padding-left: 30px;
+	padding-top: 10px;
+}
+
+border:1px solid #FF0000;
+
+.HScrollbar {
+    margin: 20px 0 10px;
+    width: 251px;
+}
+.HScrollbar .viewport {
+    overflow: hidden;
+    position: relative;
+}
+.HScrollbar .overview {
+    left: 0;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    /*width: 2500px;*/
+}
+.HScrollbar .overview img {
+    float: left;
+}
+
+.HScrollbar .scrollbar {
+    background: url("../images/bg-scrollbar-track-x.png") no-repeat scroll 0 0 transparent;
+    clear: both;
+    height: 15px;
+    margin: 0 0 5px;
+    position: relative;
+}
+.HScrollbar .track {
+    background: url("../images/bg-scrollbar-trackend-x.png") no-repeat scroll 100% 0 transparent;
+    height: 15px;
+    position: relative;
+    width: 100%;
+}
+.HScrollbar .thumb {
+    background: url("../images/bg-scrollbar-thumb-x.png") no-repeat scroll 100% 50% transparent;
+    cursor: pointer;
+    height: 25px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: -5px;
+}
+.HScrollbar .thumb .end {
+    background: url("../images/bg-scrollbar-thumb-x.png") no-repeat scroll 0 50% transparent;
+    height: 25px;
+    overflow: hidden;
+    width: 5px;
+}
+.HScrollbar .disable {
+    display: none;
+}
+
+/* ----------------------------------------------------------------- MenuPage */
+.useMenuPage{
+	font-size: 11px;
+	padding-top: 4px;
+	padding-left: 10px;
+	margin-top: 8px;
+	margin-left: 2px;
+	clear: both;
+	width: 550px;
+}
+.useMenuPage li{
+	float: left;
+	height: 19px;
+	padding-bottom: 5px;
+}
+
+.useMenuPageList{
+	font-size: 11px;
+	padding-top: 4px;
+	clear: both;
+	width: 989px;
+}
+.useMenuPageList li{
+	float: left;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.useMenuPageList .UiTitle{
+	width:250px;
+	float: left;
+	padding-left: 20px;
+	color: #4D4D4F;
+	font-size: 13px;
+	font-weight: bold;
+	margin-right: 5px;
+	padding-bottom: 4px;
+}
+
+.useMenuVideos, .useMenuLogos, .useMenuFeatures, .useMenuFlash, .useMenuHTML,
+.useMenuPSD, .useMenuPDF, .useMenuOther, .useMenuImages, .useMenuEspecificacoesTecnicas,
+.useMenuManualInstrucoes {
+	float: left;
+	padding-left: 31px;
+	padding-top: 3px;
+	width: 100px;
+	height:19px;
+	background:transparent url("../images/useMenuIcons.gif") no-repeat;
+}
+
+.UiMenuVideos, .UiMenuLogos, .UiMenuFeatures, .UiMenuFlash, .UiMenuHTML,
+.UiMenuPSD, .UiMenuPDF, .UiMenuOther, .UiMenuImages{
+	float: left;
+	padding-left: 31px;
+	padding-right: 15px;
+	padding-top: 3px;
+	width: 100px;
+	height:19px;
+	background:transparent url("../images/useMenuIcons.gif") no-repeat;
+	cursor: default;
+	opacity: 0.5;
+	
+}
+.UiMenuImages{background-position:0px -195px; color: #707071;}
+a.useMenuImages{background-position:0px -195px; color: #707071;}
+a.useMenuImages:hover{background-position: -151px -195px; color: #be2752;}
+
+.UiMenuImages{background-position:0px -195px; color: #707071;}
+a.useMenuImages{background-position:0px -195px; color: #707071;}
+a.useMenuImages:hover{background-position: -151px -195px; color: #be2752;}
+
+a.useMenuManualInstrucoes{background-position:0px 0px; color: #707071;}
+a.useMenuManualInstrucoes:hover{background-position: -150px 0px; color: #be2752;}
+
+a.useMenuEspecificacoesTecnicas{background-position:0px 0px; color: #707071;}
+a.useMenuEspecificacoesTecnicas:hover{background-position: -150px 0px; color: #be2752;}
+
+.UiMenuFeatures{background-position:0px -26px; color: #707071;}
+a.useMenuFeatures{background-position:0px -26px; color: #707071;}
+a.useMenuFeatures:hover{background-position: -150px -26px; color: #be2752;}
+
+.UiMenuPSD{background-position:0px -52px; color: #707071;}
+a.useMenuPSD{background-position:0px -52px; color: #707071;}
+a.useMenuPSD:hover{background-position: -150px -52px; color: #be2752;}
+
+.UiMenuFlash{background-position:7px -74px; color: #707071;}
+a.useMenuFlash{background-position:7px -74px; color: #707071;}
+a.useMenuFlash:hover{background-position: -143px -74px; color: #be2752;}
+
+.UiMenuHTML{background-position:0px -100px; color: #707071;}
+a.useMenuHTML{background-position:0px -100px; color: #707071;}
+a.useMenuHTML:hover{background-position: -150px -100px; color: #be2752;}
+
+.UiMenuOther{background-position:0px -125px; color: #707071;}
+a.useMenuOther{background-position:0px -125px; color: #707071;}
+a.useMenuOther:hover{background-position: -150px -125px; color: #be2752;}
+
+.UiMenuVideos{background-position:0px -150px; color: #707071;}
+a.useMenuVideos{background-position:0px -150px; color: #707071;}
+a.useMenuVideos:hover{background-position: -150px -150px; color: #be2752;}
+
+.UiMenuLogos{background-position:7px -172px; color: #707071;}
+a.useMenuLogos{background-position:7px -172px; color: #707071;}
+a.useMenuLogos:hover{background-position: -143px -172px; color: #be2752;}
+
+a{background-position:0px 0px; color: #707071;}
+a:hover{background-position: -150px 0px; color: #be2752;}
+
+a.truncate_more_link{color: #C5355D; padding-top: 14px;}
+a.truncate_more_link:hover{color:#707071;}
+
+.undefined{
+	z-index: 99999;
+}
+.UiLoading{
+	background:transparent url("../images/useLoading.gif") no-repeat center center;
+}
+
+
+
+
+
+
+    * {
+    margin: 0;
+    }
+    html, body {
+    	height: 100%;
+    }
+    .wrapper {
+	    min-height: 100%;
+	    height: auto !important;
+	    height: 60%;
+	    margin: 0 auto -4em;
+	    z-index: 20;
+    }
+    .push {
+    	height: 4em;
+    }
+    
+    
+
+    
+
+/* ------------------------------------------------------ UiRegisterCorporate */
+.UiRegisterCorporate{
+    	/*border:1px solid #FF0000;*/
+    	width: 800px;
+    	margin-left: auto;
+    	margin-right: auto;
+}
+.UiRegisterCollaborator{
+    padding-top: 30px;
+}
+.UiRegisterCorporate .UiItem{
+	width: 100%;
+	height: 70px;
+	background: none;
+}
+.UiRegisterCorporate .UiImage{
+	width: 160px;
+	padding-left:20px;
+	float: left;
+}
+.UiRegisterCorporate .UiText{
+	padding-top: 40px;
+}
+
+.UiRegisterCollaborator{
+	margin-top:70px;
+    background:#dcdcdc;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.UiRegisterCollaborator .UiSpace{
+	height: 30px;
+}
+.UiRegisterCollaborator .UiContent{
+	width: 800px;
+	height:235px;
+    margin-left: auto;
+    margin-right: auto;
+    background:transparent url("../images/linhaVertical.png") no-repeat center center;
+}
+.UiRegisterCollaborator .UiLeftColumn{
+	width: 390px;
+	height:235px;
+}
+.UiRegisterCollaborator .UiRightColumn{
+	width: 330px;
+	height:235px;
+	float: right;
+	
+}
+.UiRegisterCollaborator .UiUserInfo{
+	width: 390px;
+	height:235px;
+}
+.UiRegisterCollaborator .UiPassWord {
+	width: 240px;
+	height: 22px;
+	padding-left: 5px;
+	font-size: 11px;
+	color: #7a7a7c;
+}
+.UiRegisterCollaborator .UiCursorPointer {
+	cursor: pointer;
+}
+.UiRegisterCollaborator .UiGroup{
+	height: 40px; 
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: bold;
+}
+.UiRegisterCollaborator .UiGroup .UiIcon{
+	height: 40px; 
+	width: 40px;
+	float: left;
+}
+.UiRegisterCollaborator .UiGroup .UiEdit{
+	padding-top: 1px;
+}
+.UiRegisterCollaborator .UiForm {
+	height: 100px;
+	margin-left: 85px;
+	color: #6D6E71;
+	font-size: 11px;
+	line-height: 14px;
+}
+.UiRegisterCollaborator .UiGroup .UiEdit .UiText{
+	color: #6D6E71;
+	font-size: 13px;
+}
+.UiRegisterCollaborator .UiGroup .UiEdit .UiTextLight{
+	font-weight: normal;
+	color: #6D6E71;
+	font-size: 10px;
+}
+.UiRegisterCollaborator .UiMenu{
+	color: #be2752;
+	font-size: 10px;
+	font-weight: bold;
+	float: right;
+	padding-right: 50px; 
+}
+#errorPassword{
+	color: #be2752;
+	font-size: 10px;
+}
+
+.UiRegisterCollaborator  .UiRightColumn .UiTitle{
+	width: 150px;
+	height:25px;
+	text-align: right;
+	font-weight: bold;
+	color: #6D6E71;
+	font-size: 11px;
+}
+.UiRegisterCollaborator  .UiRightColumn .UiText{
+	height:25px;
+	color: #6D6E71;
+}
+
+.UiFormNickName {
+	margin-left: 85px;
+	color: #6D6E71;
+	font-size: 11px;
+	line-height: 14px;
+}
+
+.UiDetail {
+	/*border: 1px solid #FF0000;*/
+	height: 50px;
+	width: 300px;
+	z-index: 100;
+	position: relative;
+}
+
+.UiDetailItem {
+	/*border: 1px solid #FF0000;*/
+}
+
+.UiCursorDefault {
+	cursor: default;
+}
+.UiCursorPointer {
+	cursor: pointer;
+}
+
+.UiColorGreen {
+	color: #199a00;
+}
+
+.UiButtonBack {
+	color: #BE2752;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+
+.UiAccordion h2{
+	/*margin-bottom: 20px;*/
+	margin-top: 10px;
+	margin-left: 7px;
+}
+.UiAccordionItem .UiText{
+	color: #373636;
+}
+.UiAccordionDisabled{
+	opacity: 0.35;
+}
+
+
+.UiMessageButtons{
+	/*border: 1px solid #FF0000;*/
+	width: 330px;
+}
+#showMessage{
+	margin-bottom: 50px;
+	margin-top: 20px;
+}
+#message{
+	padding: 10px;
+	border: 1px solid #949597;
+}
+div#showMessage table tbody tr.useColor td div,
+div#showMessage table tbody tr td div{
+	margin-bottom: 50px;
+	margin-top: 20px;
+	padding-left: 10px;
+}
+
+div#showMessage table tbody tr.useColor td,
+div#showMessage table tbody tr td{
+	padding-left: 10px;
+	padding-top: 10px;
+	color: #464646;
+}
+
+
+html body div.usePage div.UiRegisterCollaborator div.UiContent div.UiRightColumn table tbody tr td ul li{
+	font-size: 12px;
+	color: #6d6e71;
+	line-height: 15px;
+}
+
+
+.UiDisable{
+	color: #cacaca;
+	cursor: default;
+}
+
+.UIDownloadMessage .UiText{
+	color: #58595b;
+	font-size: 14px;
+}
+.UIDownloadMessage .UiTextBig{
+	font-size: 17px;
+}
+.UIDownloadMessage .UiTextBold, .UIDownloadMessage .UiTextBoldColor{
+	font-size: 13px;
+	font-weight: bold;
+}
+.UIDownloadMessage .UiTextBoldColor{
+	font-size: 14px;
+	color: #c12752;
+}
+
+
+.UIDownloadMessage a{color: #c12752;}
+.UIDownloadMessage a:hover{color: #0055ff;}
+
+/*------------------------------------------------------------------register--*/
+.UiRegisterField {
+	width: 210px;
+}
+
+.UiRegisterPhone {
+	width: 165px;
+}
+
+.UiRegisterDate, .UiRegisterDdd {
+	width: 25px;
+}
+
+.UiRegisterYear {
+	width: 35px;
+}
+
+.UiContentRegister { 
+	width: 970px; 
+	margin: auto; 
+}
+
+.useDownload {
+	padding-bottom: 20px;
+}

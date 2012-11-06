@@ -1,0 +1,40 @@
+<? 
+//Recupera pos dados da view
+$view = $this->getHelper('PaginationControl')->view;
+//Monta o link default
+$link = $view->baseUrl .'/downloads';
+?>
+<div class="pagination">
+    <!-- Link para a primeira página -->
+    <?php if (isset($this->previous)): ?>
+        <a title="Primeira Página" href="<?= $link .'?pagina='. $this->first ?>">&laquo;</a>
+    <?php else: ?>
+        <span class="current">&laquo;</span>
+    <?php endif; ?>
+    <!-- Link para a página anterior -->
+    <?php if (isset($this->previous)): ?>
+        <a title="Página Anterior" href="<?= $link .'?pagina='. $this->previous ?>">&lt;</a>
+    <?php else: ?>
+        <span class="current">&lt;</span>
+    <?php endif; ?>
+    <!-- Links numerados -->
+    <?php foreach ($this->pagesInRange as $page): ?>
+        <?php if ($page != $this->current): ?>
+            <a title="<?= $page; ?>" href="<?= $link .'?pagina='. $page ?>" class="page larger"><?= $page; ?></a>
+        <?php else: ?>
+            <span class="current"><?= $page; ?></span>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <!-- Link para a Próxima página -->
+    <?php if (isset($this->next)): ?>
+        <a title="Próxima Página" href="<?= $link .'?pagina='. $this->next ?>">&gt;</a>
+    <?php else: ?>
+        <span class="current">&gt;</span>
+    <?php endif; ?>
+    <!-- Última página -->
+    <?php if (isset($this->next)): ?>
+        <a title="Última Página" href="<?= $link .'?pagina='. $this->last ?>" class="nextpostslink">&raquo;</a>
+    <?php else: ?>
+        <span class="current">&raquo;</span>
+    <?php endif; ?>
+</div>

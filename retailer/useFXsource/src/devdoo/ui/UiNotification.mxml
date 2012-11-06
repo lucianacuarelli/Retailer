@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="400" height="300" 
+		 creationComplete="create()">
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.library.notificator.NotificatorManager;
+			
+			import devdoo.fx.UseDAO;
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			import devdoo.register.model.UseRegisterNotifications;
+			
+			import spark.events.IndexChangeEvent;
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;		
+			
+			/**
+			 * The Timer that acts like a heartbeat for the application.
+			 */
+			private var ticker:Timer;
+			
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 *  Configura o gerenciador de módulos da aplicação
+			 * 
+			 *  @return void
+			 */
+			public function create():void
+			{
+				useFX = UseFX.start();
+				
+				useFX.dispatchTimer(populate);
+				
+				populate();
+			}
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Cria lista de usuários notificados  
+			 */  
+			public function populate():void
+			{
+				trace('Populate:' + (new Date()).toString() );
+				
+				var useRegisterNotifications:UseRegisterNotifications = new UseRegisterNotifications();
+				
+				//Cria adaptador DAO e configura as propriedades sql
+				var daoRegisterNotifications:UseDAO = UseDAO.create(useRegisterNotifications);
+				daoRegisterNotifications.fields(['*'])
+					.where("USE_REGISTER_NOTIFICATIONS.register_id = ?", useFX.user.info.id)
+					.order('USE_REGISTER_NOTIFICATIONS','created_in', 'DESC');
+
+				//Cria um adaptador e adiciona os objetos DAO nele e
+				//conecta ao servidor para interagir com a base de dados.				
+				useFX.adapter('POPULATE_DATA_LIST')
+					 .adapterSelect(daoRegisterNotifications)
+					 .connect(populateResult);
+			}
+			
+			//----------------------------------
+			//  populateResult
+			//----------------------------------
+			private var notID:String = ''; 
+			/**
+			 *  Processa resultado da consulta na base de dados  
+			 */  
+			public function populateResult(useResult:*):void
+			{
+				lsNotification.dataProvider = useFX.populateCollection(useResult.useRegisterNotifications);
+				
+				var message:String = useResult.useRegisterNotifications[0]['message'];
+				
+				var delay:Number = 7000;
+				if(notID != useResult.useRegisterNotifications[0]['id'])
+					NotificatorManager.show(message, NotificatorManager.SUCCESS, delay);
+				
+				notID = useResult.useRegisterNotifications[0]['id'];
+			}
+			
+			protected function changeNotification(event:IndexChangeEvent):void
+			{
+				var selectedItem:Object = lsNotification.selectedItem;
+				UseDebug.p(selectedItem);
+				
+				
+				
+				//UseFX.openModule(selectedItem.module_dir, selectedItem.module_file);
+			}
+
+		]]>
+	</fx:Script>
+	<s:List id="lsNotification" labelField="message" left="0" right="0" top="0" bottom="0" change="changeNotification(event)"/>
+</s:Group>

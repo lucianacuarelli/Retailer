@@ -1,0 +1,204 @@
+<div class="usePageRegister">
+	<div class="usePageTitle">
+		<h3>Cadastro</h3>
+	</div>
+	<div class="UiContentRegister" align="center">
+		<form id="formRegister" method="post" action="">
+			<table border="0" style="padding: 15px 0px 30px 0px;" cellspacing="5">
+				<tr>
+					<td style="width: 150px;"> Rede </td>
+					<td style="width: 490px;">
+					<select name="parent_id" id="parent_id">
+						<option value="">Selecione...</option>
+						<? foreach($this->listRetailer as $itemRetailer):
+						?>
+						<option value="<?= $itemRetailer->id ?>"><?= $itemRetailer->fancy_name
+							?></option>
+						<? endforeach; ?>
+						<option value="OUT">Outro</option>
+					</select></td>
+				</tr>
+				<tr id="retailerName">
+					<td><strong>Nome da Rede</strong></td>
+					<td>
+					<input type="text" name="retailer_name" id="retailer_name" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"> &nbsp; </td>
+				</tr>
+				<tr>
+					<td> Nome </td>
+					<td>
+					<input type="text" id="name" name="name" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> Sobrenome </td>
+					<td>
+					<input type="text" id="lastname" name="lastname" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> Sexo </td>
+					<td>
+					<input type="radio" name="sex" value="M" checked="checked"/>
+					&nbsp;Masculino
+					&nbsp;&nbsp;
+					<input type="radio" name="sex" value="F" />
+					&nbsp;Feminino </td>
+				</tr>
+				<tr>
+					<td> Data de nascimento </td>
+					<td>
+					<input type="text" name="birth_day" class="UiRegisterDate" maxlength="2" />
+					/
+					<input type="text" name="birth_month" class="UiRegisterDate" maxlength="2" />
+					/
+					<input type="text" name="birth_year" class="UiRegisterYear" maxlength="4" />
+					ex. (99/99/9999) </td>
+				</tr>
+				<tr>
+					<td> RG </td>
+					<td>
+					<input type="text" name="rg" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> CPF </td>
+					<td>
+					<input type="text" id="cpf" name="cpf" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> Website </td>
+					<td>
+					<input type="text" name="web_page" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"> &nbsp; </td>
+				</tr>
+				<tr>
+					<td> E-mail </td>
+					<td>
+						<input type="text" id="user_email" name="user_email" class="UiRegisterField" style="text-transform: lowercase;<!-- float: left; -->" />
+						<label id="user_email_message" for="user_email" class="UiRegisterEmailError"></label>
+					</td>
+				</tr>
+				<tr>
+					<td> Senha </td>
+					<td>
+					<input type="password" id="user_password" name="user_password" class="UiRegisterField" style="text-transform: lowercase" />
+					</td>
+				</tr>
+				<tr>
+					<td> Confirmar senha </td>
+					<td>
+					<input type="password" id="user_password_confirm" name="user_password_confirm" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"> &nbsp; </td>
+				</tr>
+				<tr>
+					<td> Endereço </td>
+					<td>
+					<input type="text" name="address" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> Número </td>
+					<td>
+					<input type="text" name="number" class="UiRegisterYear" />
+					</td>
+				</tr>
+				<tr>
+					<td> Cidade </td>
+					<td>
+					<input type="text" name="city" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> Bairro </td>
+					<td>
+					<input type="text" name="neighborhood" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> Estado </td>
+					<td>
+					<select name="state">
+						<option value="">Selecione...</option>
+						<option value="AC">AC</option>
+						<option value="AL">AL</option>
+						<option value="AM">AM</option>
+						<option value="AP">AP</option>
+						<option value="BA">BA</option>
+						<option value="CE">CE</option>
+						<option value="DF">DF</option>
+						<option value="ES">ES</option>
+						<option value="GO">GO</option>
+						<option value="MA">MA</option>
+						<option value="MG">MG</option>
+						<option value="MS">MS</option>
+						<option value="MT">MT</option>
+						<option value="PA">PA</option>
+						<option value="PB">PB</option>
+						<option value="PE">PE</option>
+						<option value="PI">PI</option>
+						<option value="PR">PR</option>
+						<option value="RJ">RJ</option>
+						<option value="RN">RN</option>
+						<option value="RO">RO</option>
+						<option value="RR">RR</option>
+						<option value="RS">RS</option>
+						<option value="SC">SC</option>
+						<option value="SE">SE</option>
+						<option value="SP">SP</option>
+						<option value="TO">TO</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td> Complemento </td>
+					<td>
+					<input type="text" name="complement" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td> Cep </td>
+					<td>
+					<input type="text" name="zipcode" id="zipcode" class="UiRegisterField" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"> &nbsp; </td>
+				</tr>
+				<tr>
+					<td> Telefone </td>
+					<td> (
+					<input type="text" name="ddd" class="UiRegisterDdd" maxlength="2" />
+					)&nbsp;&nbsp;
+					<input type="text" name="phone" id="phone" class="UiRegisterPhone" />
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"> Grupos </td>
+					<td><? foreach($this->listGroups as $itemGroups):
+					?>
+					<input type="checkbox" name="groups[]" value="<?= $itemGroups -> id ?>" />
+					&nbsp;<?= $itemGroups -> title ?><br /><? endforeach; ?></td>
+				</tr>
+				<tr>
+					<td colspan="2"> &nbsp; </td>
+				</tr>
+				<tr>
+					<td> &nbsp; </td>
+					<td>
+					<input id="btSend" type="image" src="<?= $this -> useDefault -> images ?>/bt/btEnviar.png" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="100%" height="100%" autoDrawBackground="true"
+				dataChange="dataChange()"
+				>
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDebug;
+			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Popula os dados do item render.
+			 * 
+			 *  @return void
+			 */ 
+			private function dataChange():void
+			{
+				//Verifica se recebeu data
+				if(data)
+				{
+					cbResourcesRetailer.label = data.USE_REGISTER_CORPORATE_fancy_name;
+					
+					//Verifica se deve selecionar o item
+					if(data.USE_LG_RESOURCES_RETAILERS_id)
+						cbResourcesRetailer.selected = true;
+					else
+						cbResourcesRetailer.selected = false;
+				}
+			}
+			
+			//----------------------------------
+			//  changeResourcesRetailer
+			//----------------------------------
+			/**
+			 *  Marca ou desmarca uma loja para associar a um recurso.
+			 * 
+			 *  @return void
+			 */ 
+			private function changeResourcesRetailer(event:MouseEvent):void
+			{
+				parentDocument.parentDocument.changeResourcesRetailer(data, cbResourcesRetailer.selected);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:HorizontalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"
+							verticalAlign="middle"/>
+	</s:layout>
+	<s:CheckBox id="cbResourcesRetailer" click="changeResourcesRetailer(event)"/>
+	
+</s:ItemRenderer>

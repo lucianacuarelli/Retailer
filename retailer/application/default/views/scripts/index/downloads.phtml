@@ -1,0 +1,83 @@
+<?php 
+
+	//Configura menu do rodape
+	$this->headTitle("LG::Retailer");
+	
+	$this->useSwf('useLgDownloads')
+		 ->src($this->useDefault->useFXapplication .'/downloadInstall')
+		 ->width('111')
+		 ->height('23')
+		 ->bgcolor('#dbdbdb')
+		 ->quality('high')
+		 ->allowscriptaccess('all')
+		 ->flashvars('appname', 'LG Downloads')
+		 ->flashvars('appurl', $this->useDefault->useFXapplication.'/LG_Downloads.air')
+		 ->flashvars('airversion', '1.5')
+		 ->flashvars('buttoncolor', '#dcdcdd')
+		 ->flashvars('messagecolor', '#dcdcdd')
+		 ->flashvars('imageurl', $this->useDefault->images.'/bt/lgDownloads.png')
+		 ->wmode("transparent");
+?>
+
+<div id="PageDownloads">
+	<div class="usePageTitle">
+		<h3>
+			<? if(!empty($this->params->type) && $this->params->type == "retailer"): ?>
+				Downloads Loja
+				<div style="float: right; font-size: 12px; font-weight:normal; margin-right: 40px;">
+					<a class="UiLinkBlue" href="<?= $this->baseUrl ?>/listdownload">Arquivos para baixar</a> | <span class="UiDisable">Downloads Loja</span> | <a class="UiLinkBlue" href="<?= $this->baseUrl ?>/downloads">Meus Downloads</a>
+				</div>
+			<? else: ?>
+				Meus Downloads
+				<div style="float: right; font-size: 12px; font-weight:normal; margin-right: 40px;">
+					<a class="UiLinkBlue" href="<?= $this->baseUrl ?>/listdownload">Arquivos para baixar</a> | <a class="UiLinkBlue" href="<?= $this->baseUrl ?>/downloads/retailer">Downloads Loja</a> | <span class="UiDisable">Meus Downloads</span>
+				</div>
+			<? endif; ?>
+			
+		</h3>
+	</div>
+	<div class="UIDownloadMessage" style="padding: 10px;">
+		<table style="margin: auto; width:970px; padding: 0px; border: none;">
+		  <tr>
+		    <td style="width:80%; padding: 0px; border: none;" class="UiText">Bem vindo à área de Downloads do <span class="UiTextBold">Portal de Conteúdos LG</span>. Aqui, você pode efetuar os downloads <br />
+		      individualmente do conteúdo que selecionou diretamente pelo site, clicando no botão <span class="UiTextBold">Baixar Agora.</span> <br />
+		      Para <span class="UiTextBold">efetuar downloads simultâneos</span>, baixe a <span class="UiTextBold">aplicação LG Downloads</span> clicando no botão <span class="UiTextBold">LG Downloads</span>.</td>
+		  </tr>
+		</table>
+	</div>
+	<? if($this->totalDownload > 0 ): ?>	
+		<div class="UIDownload" style="padding: 10px;  margin-top:25px; background: #e3e4e5;">
+			<table style="width:970px; padding: 10px; border: none; margin: auto;">
+			  <tr>
+			    <td style="width:100%; text-align:right; padding-right: 20px;"><span class="UiText UiTextBold">Você tem (<span class="UiTextBoldColor"><?= $this->totalDownload ?></span>) arquivos para download</span></td>
+			  
+			    <? if($this->totalDownload == 0 ): ?>
+			    	<td style="width:150px; text-align:center;"><img alt="" src="<?= $this->useDefault->images ?>/bt/btBaixarAgoraOff.png"/></td>
+				<? else: ?>		    	
+			    	<td style="width:150px; text-align:center;"><a href="<?= $this->baseUrl ?>/listdownload"><img alt="" src="<?= $this->useDefault->images ?>/bt/btBaixarAgora.png"/> </a> <?= $this->useSwf('useLgDownloads') ?></td>
+			    <? endif; ?>
+			    </tr>
+			    <tr>
+					<td colspan="3" class="UiText" style="width:100%; text-align:right; padding-right: 0px; font-size: 11px; padding-top: 5px;">Caso tenha problemas com o download, por favor, use os links direto, para <a class="UiLinkBlue" href="<?= $this->useDefault->useFXapplication.'/LG_Downloads.exe'?>">Windows (EXE)</a> ou <a class="UiLinkBlue" href="<?= $this->useDefault->useFXapplication.'/LG_Downloads.air'?>">Windows, Apple e Linux (AIR)</a>.</td>
+				</tr>
+			</table>
+		</div>	
+	<? endif; ?>
+	<div class="UiContent">
+		<div id="UiContentList">
+			<?= $this->showDownloads ?>	
+			<div class="useClear"></div>
+		</div>
+		<!-- Verifica se deve mostrar paginador -->
+		<? if($this->totalItens > 10): ?>
+			<div style="padding-bottom: 20px;">
+				<?= $this->paginationControl($this->paginator, 'Sliding', 'pagination-download.phtml'); ?>
+			</div>
+		<? endif; ?>
+		<div class="useClear"></div>
+	</div>
+	<div class="UiLastContent">
+		<?= $this->showLastContent ?>
+	</div>
+	<div class="useClear"></div>
+</div>

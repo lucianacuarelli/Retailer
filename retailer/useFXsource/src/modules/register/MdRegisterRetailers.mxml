@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="100%" height="100%" 
+		  creationComplete="create()" xmlns:userInterface="modules.lg.layout.userInterface.*" xmlns:ui="devdoo.register.layout.ui.*" >
+	
+	<s:layout>
+		<s:HorizontalLayout gap="10" paddingBottom="10" paddingTop="10"
+							paddingLeft="2" paddingRight="2"/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabAddress;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabCorporate;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabDetail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabEmail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabGroups;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPersonal;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPhone;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabSocialMedia;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 * Instância o componente de registro e define as configurações default  
+			 * 
+			 *  @return void
+			 */
+			public function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Gerencidor de Retailers');
+				
+				registerRetailers.start(UiRegister.COMMERCIAL)
+					.defaultProfile('5')
+					//.profileManagerIds([3,4])
+					.statusManagerIds([1,6])
+					.disableInitialPreference()
+					.addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+					.addTab('Grupos', GrRegisterTabGroups, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.pageSize(25)
+					.create()
+					.populate();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();					
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */
+			private function addEvents():void{
+				registerRetailers.addEventListener(UiRegister.SELECTION_CHANGE, showDetail);
+				registerRetailers.addEventListener(UiRegister.REFRESH, reload);
+			}
+			
+			//----------------------------------
+			//  reload
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function reload(reload:Event):void
+			{
+				registerInfo.reset();
+			}
+			
+			//----------------------------------
+			//  showDetail
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function showDetail(event:Event):void
+			{
+				registerInfo.showDetail(registerRetailers.selectedItem);
+				areaTradeMarketingSelect.selectedRegister(registerRetailers.selectedItem);
+			}			
+		]]>
+	</fx:Script>
+	
+	<s:SkinnableContainer width="100%" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+		<ui:UiRegister id="registerRetailers" title="Retailers" subTitle="Retailers registradas no sistema"/>
+	</s:SkinnableContainer>
+	
+	<ui:UiRegisterInfo id="registerInfo"/>
+	
+	<userInterface:UiAreaTradeMarketingSelect id="areaTradeMarketingSelect" x="53" y="52" width="330" height="100%" enabled="false"/>
+</s:Module>

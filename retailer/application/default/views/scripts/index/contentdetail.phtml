@@ -1,0 +1,177 @@
+<? if(!empty($this->contentDetail)): ?>
+	<div class="usePageDetail">
+		<div class="usePageTitle">
+			<h3><?= $this->product->title ?></h3>
+		</div>
+		<div class="usePageContent">
+			<div id="UiContentDetail">
+				<div class="useLeftColumn">
+					<div class="useProduct">
+						<div class="UiDisplay" style="text-align: center;">
+							<? 
+								$filedownload = $this->contentDetail->folderpath .'/'. $this->contentDetail->filename;
+								echo  $this->preview;
+							?>
+						</div>
+						<div class="UiDetailWrap">
+							<div class="UiDetail">
+								<div class="UiRating">
+									<span>Classificação</span>
+									<div id="star" class="UiStars"></div> 
+								</div>
+								<div class="UiTitle">
+									<span><?= UseZF_Util::useTruncate($this->contentDetail->title, 30) ?></span>
+									<div class="UiDetail">
+										<? if($this->contentDetail->resource_type == 'IMG' && !empty($this->contentDetail->resolution)): ?>
+											Resolução <?= $this->contentDetail->resolution ?> | 
+										<? endif; ?>
+										Tamanho do arquivo <?= UseZF_Util::useFileSize($this->contentDetail->filesize) ?>
+									</div>
+								</div>
+							</div>
+							<!-- Vertical Scroll descricao -->	
+							<div class="UiDescriptionWrap">
+								<div class="UiDescription">
+									<div class="VScrollbar">
+										<div class="scrollbar">
+											<div class="track">
+												<div class="thumb">
+													<div class="end"></div>
+												</div>
+											</div>
+										</div>
+										<div class="viewport">
+											<div class="overview">
+												<span>
+													<?= $this->contentDetail->description ?>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="UiRatingAdd">
+								<div class="UiStarText">Dê sua nota:</div>
+								<div id="UiRatingVote" class="UiStarRating UiStars"></div> 
+							</div>
+							<div id="confirRating">Seu voto foi computado com sucesso!</div> 
+						</div>
+					</div>
+				</div>
+				<div class="useRightColumn">
+					<div class="UiComments">
+						<div id="form-comment" style="position: absolute; z-index: 100;">
+							<form action="#" onsubmit="return false;">
+							  <table width="100" border="0" cellspacing="0" cellpadding="0">
+							    <tr>
+							      <td><textarea name="message" id="message" cols="41" rows="5"></textarea>
+							        <input id="lgResourcesId" type="hidden" value="<?= $this->contentDetail->id ?>" /></td>
+							    </tr>
+							    <tr>
+							      <td align="right"><table width="200" border="0" cellspacing="0" cellpadding="0">
+							          <tr>
+							            <td align="right"><input id="cancelComment" type="image" src="<?= $this->useDefault->images ?>/bt/btCancelar.png" value="Cancelar"/></td>
+							            <td align="right"><input id="saveComment" type="image" src="<?= $this->useDefault->images ?>/bt/btEnviar.png" value="Enviar"/></td>
+							          </tr>
+							        </table></td>
+							    </tr>
+							  </table>
+							</form>
+						</div>
+						<div class="UiSendMail">
+							<div id="confirSendMail">E-mail enviado com sucesso!</div>
+							<div id="form-send-mail" style="position: absolute; z-index: 100;">
+								<form action="#" onsubmit="return false;">
+								  <table border="0" width="95%">
+								    <tr>
+								      <td style="width:60px;">Para:</td>
+								      <td><input type="text" name="emailFriend" id="emailFriend" /></td>
+								    </tr>
+								    <tr>
+								      <td>Assunto:</td>
+								      <td><input type="text" name="emailSubject" id="emailSubject" value="Conteúdo Portal Parceiros LG" /></td>
+								    </tr>
+								    <tr>
+								      <td colspan="2"><textarea name="message" id="emailMessage" cols="41" rows="5"></textarea></td>
+								    </tr>
+								    <tr>
+								      <td colspan="2" align="right"><table width="200" border="0" cellspacing="0" cellpadding="0">
+								          <tr>
+								            <td align="right"><input id="cancelSendMail" type="image" src="<?= $this->useDefault->images ?>/bt/btCancelar.png" value="Cancelar"/></td>
+								            <td align="right"><input id="sendMail" type="image" src="<?= $this->useDefault->images ?>/bt/btEnviar.png" value="Enviar"/></td>
+								          </tr>
+								        </table></td>
+								    </tr>
+								  </table>
+								</form>
+							</div>
+						</div>
+						<!-- Comentarios -->	
+						<div class="UiComment">
+							<div class="VScrollbar">
+								<div class="scrollbar">
+									<div class="track">
+										<div class="thumb">
+											<div class="end"></div>
+										</div>
+									</div>
+								</div>
+								<div class="viewport">
+									<div id="showComments" class="overview"></div>
+								</div>
+							</div>
+						</div>				
+						<div class="UiNavBar"></div>
+						<div class="UiCommentButtons">
+							<ul>
+								<li style="padding: 0px 5px 0px 5px;"><img alt="" id="addComent" src="<?= $this->useDefault->images ?>/bt/btComentar.png"/></li>
+								<li id="UiLiDownload" style="padding: 0px 5px 0px 5px;">
+									<? if(!empty($this->contentDetail->download_id)): ?>
+											<a href="<?= $this->baseUrl ?>/listdownload" target="_parent"><img alt="" src="<?= $this->useDefault->images ?>/bt/btVerLista.png"/></a>
+									<? else: ?>
+											<img alt="" src="<?= $this->useDefault->images ?>/bt/btAddDownload.png" onclick="addShowDownload(this, <?= $this->contentDetail->id ?>)"/>
+									<? endif;?>
+								</li>
+								<li style="padding: 0px 5px 0px 5px;"><img alt="" id="sendMailFriend" src="<?= $this->useDefault->images ?>/bt/btEmail.png"/></li>
+							</ul>
+							<div class="useClear"></div>
+						</div>
+						<div class="UiCommentsInfo">
+							<span><?= $this->contentDetail->total_comments ?> comentários</span> <span style="padding-left: 30px;"><?= $this->contentDetail->total_download ?> downloads</span>
+						</div>
+						<div class="UiNavigatorDetail">
+							<table width="100" border="0" cellspacing="0" cellpadding="0" style="float: right; padding-right: 20px">
+							  <tr>
+							    <td>
+									<? if(!empty($this->prevResource)): ?>
+										<a href="<?= $this->baseUrl .'/contentdetail/'. $this->prevResource ?>"><img alt="Anterior" src="<?= $this->useDefault->images ?>/bt/btPrev.png" /></a>
+									<? else: ?>
+										<img alt="Anterior" src="<?= $this->useDefault->images ?>/bt/btPrevOff.png" />
+									<? endif; ?>
+							    </td>
+							    <td style="text-align: right;">
+							    	<? if(!empty($this->nextResource)): ?>
+										<a href="<?= $this->baseUrl .'/contentdetail/'. $this->nextResource ?>"><img alt="Próximo" src="<?= $this->useDefault->images ?>/bt/btNext.png" /></a>
+									<? else: ?>
+										<img alt="Próximo" src="<?= $this->useDefault->images ?>/bt/btNextOff.png" />
+									<? endif; ?>
+							    </td>
+							  </tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="useClear"></div>
+			</div>
+		</div>
+	</div>
+<? else: ?>
+	<div align="center" style="margin-top: 100px;">
+		<table border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+		    <td><img alt="" src="<?= $this->useDefault->images ?>/icons/iconAlertMenor.png" /></td>
+		    <td style="width: 300px; font-weight: bold; font-size: 14px; color: #404040;">Nenhum produto encontrado.</td>
+		  </tr>
+		</table>
+	</div>
+<? endif; ?>

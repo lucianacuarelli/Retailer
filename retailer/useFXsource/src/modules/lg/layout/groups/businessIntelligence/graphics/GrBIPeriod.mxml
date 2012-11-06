@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+		  creationComplete="create()" xmlns:ui="devdoo.ui.*">
+	<fx:Script>
+		<![CDATA[
+			import modules.lg.data.DataBusinessIntelligence;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  dataBusinessIntelligence
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de consultas.  
+			 */  
+			public var dataBusinessIntelligence:DataBusinessIntelligence;
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Instância a classe gerenciadora de consultas
+				dataBusinessIntelligence = new DataBusinessIntelligence();
+				//Recupera as informações necessárias da base de dados
+				dataBusinessIntelligence.populate('dashboardTotalInteractionPeriod',populateResult,uiDatePeriod.dateStart,uiDatePeriod.dateFinish);
+			}
+			
+			//----------------------------------
+			//  populateResult
+			//----------------------------------
+			private var isPopulated:Boolean = false;
+			/**
+			 *  Evento de retorno da consulta.
+			 * 
+			 *  @return void  
+			 */	
+			public function populateResult(useResult:*) : void
+			{
+				for each (var item:Object in useResult.periodReport) 
+				{
+					switch(item.session_period)
+					{
+						case 'MHA':
+						{
+							item.session_period = 'Manhã';
+							break;
+						}
+						case 'NTO':
+						{
+							item.session_period = 'Noite';
+							break;
+						}
+						default:
+						{
+							item.session_period = 'Tarde';
+							break;
+						}
+					}
+				}
+				pieChart.dataProvider = useResult.periodReport;
+				if(!isPopulated){
+					uiDatePeriod.dateStart = useResult.minDate[0].date;
+					uiDatePeriod.dateFinish = useResult.maxDate[0].date;
+					isPopulated = true;
+				}
+			}
+			
+			//----------------------------------
+			//  filter
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			protected function filter(event:MouseEvent):void
+			{
+				//Recupera as informações necessárias da base de dados
+				dataBusinessIntelligence.populate('dashboardTotalInteractionPeriod',populateResult,uiDatePeriod.dateStart,uiDatePeriod.dateFinish);
+			}
+			
+			//----------------------------------
+			//  clear
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			protected function clear(event:MouseEvent):void
+			{
+				uiDatePeriod.dateStart = '';
+				uiDatePeriod.dateFinish = '';
+				isPopulated = false;
+				//Recupera as informações necessárias da base de dados
+				dataBusinessIntelligence.populate('dashboardTotalInteractionPeriod',populateResult,uiDatePeriod.dateStart,uiDatePeriod.dateFinish);
+			}
+		]]>
+	</fx:Script>
+	<s:BorderContainer width="100%">
+		<s:layout>
+			<s:HorizontalLayout paddingBottom="5" paddingLeft="10" paddingRight="10" paddingTop="5"
+								verticalAlign="middle"/>
+		</s:layout>
+		<ui:UiDatePeriod id="uiDatePeriod"/>
+		<s:Button id="btClear" label="Limpar" click="clear(event)"/>
+		<s:Button id="btFilter" label="Filtrar" click="filter(event)"/>
+	</s:BorderContainer>
+	<!--Painel principal-->
+	<s:Panel width="100%" height="100%" color="#D6D6D6" skinClass="skins.panel.SkPanelBlackSkin"
+			 title="Gráfico de Total de Interação por Período">
+		<s:layout>
+			<s:HorizontalLayout/>
+		</s:layout>
+		<!--Componente de gráfico-->
+		<mx:PieChart id="pieChart" width="100%" height="100%"
+					 showDataTips="true">
+			<mx:filters>
+				<mx:BevelFilter angle="62.81888891452277" blurX="13.4" blurY="13.4" 
+								distance="10.2" highlightAlpha="0.8300000000000001"
+								highlightColor="#FFFFFF" knockout="false" quality="3" 
+								shadowAlpha="0.38" shadowColor="#000000" 
+								strength="1" type="inner"/>
+				<mx:DropShadowFilter alpha="0.26" angle="94.76364169072616" 
+									 blurX="4.0" blurY="4.0" color="#000000"
+									 distance="4.0" hideObject="false" 
+									 inner="false" knockout="false"
+									 quality="2" strength="1"/>			
+			</mx:filters>
+			<mx:series>
+				<mx:PieSeries id="pieSeries"
+							  field="total"
+							  nameField="session_period"/>
+			</mx:series>
+		</mx:PieChart>
+		<!--Legendas-->
+		<mx:Legend x="34" y="89" dataProvider="{pieChart}"/>
+	</s:Panel> 
+</s:VGroup>

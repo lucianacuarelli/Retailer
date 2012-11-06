@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="100%" autoDrawBackground="true" dataChange="dataChange()" xmlns:ui="devdoo.ui.*">
+	<s:layout>
+		<s:HorizontalLayout paddingBottom="5" paddingLeft="10" paddingRight="10" paddingTop="5"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Popula os dados do item render.
+			 * 
+			 *  @return void
+			 */ 
+			private function dataChange():void
+			{
+				if(data)
+				{
+					lbUrl.text = data.url_active;
+					lbMedia.text = 'Permanência: ' + data.media;
+					lbTotal.text = 'Visualização:' + data.total;
+					uiProgressBar.value(int(data.total));
+				}
+			}
+			
+			//----------------------------------
+			//  lbId_doubleClickHandler
+			//----------------------------------
+			/**
+			 *  Abre página com o item selecionado.
+			 * 
+			 *  @return void
+			 */ 
+			protected function lbId_doubleClickHandler(event:MouseEvent):void
+			{
+				UseFX.start().openUrl(lbUrl.text, "_blank");
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup width="100%" gap="10" verticalAlign="middle" doubleClick="lbId_doubleClickHandler(event)" doubleClickEnabled="true">
+		<s:Label width="100%" id="lbUrl"/>
+		<s:Label width="150"  id="lbMedia"/>
+		<s:Label width="100" id="lbTotal"/>
+		<ui:UiProgressBar id="uiProgressBar" visible="true" width="75" height="8"/>
+	</s:HGroup>
+</s:ItemRenderer>

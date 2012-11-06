@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<html lang="en">
+	<head>
+		<title>Demo Isolada do Nivo Slider</title>
+		<link rel="stylesheet" href="themes/default/default.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="nivo-slider.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="slider-wrapper theme-default">
+				<div id="slider" class="nivoSlider">
+					<img src="images/toystory.jpg" data-thumb="images/toystory.jpg" alt="" />
+					<a href="#"><img src="images/up.jpg" data-thumb="images/up.jpg" alt="" title="Exemplo de Legenda" /></a>
+					<img src="images/walle.jpg" data-thumb="images/walle.jpg" alt="" data-transition="slideInLeft" />
+					<img src="images/nemo.jpg" data-thumb="images/nemo.jpg" alt="" title="" />
+					<a href="#"><img src="images/up.jpg" data-thumb="images/up.jpg" alt="" title="Exemplo de Legenda" /></a>
+					<img src="images/walle.jpg" data-thumb="images/walle.jpg" alt="" data-transition="slideInLeft" />
+					<img src="images/nemo.jpg" data-thumb="images/nemo.jpg" alt="" title="" />
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="scripts/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.nivo.slider.js"></script>
+		<script type="text/javascript">
+			$(window).load(function() {
+				$('#slider').nivoSlider({
+					effect : 'random',
+					slices : 15,
+					animSpeed : 500,
+					pauseTime : 3000,
+					directionNav : true, 		//Anterior e próximo
+					directionNavHide : true, 	//Apenas exibe os botões de navegação quando o mouse estiver em cima
+					controlNav : true, 			//Permite navegação por números 1,2,3
+					keyboardNav : true, 		//Permite a navegação pela tecla <- e ->
+					pauseOnHover : true,		//Pausa uma animação quando o mouse estiver em cima
+					manualAdvance : false, 		//Força transições manuais
+					captionOpacity : 0.8, 		//Opacidade da legenda
+					
+					//Evento disparado antes da mudança de slide
+					beforeChange : function() {
+					},
+					
+					//Evento disparado após a mudança de slide
+					afterChange : function() {
+					},
+					
+					//Evento disparado quando acabar a apresentação automática de slide
+					slideshowEnd : function() {
+					} 
+				});
+			});
+		</script>
+	</body>
+</html>

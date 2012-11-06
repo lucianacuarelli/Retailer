@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:GridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					clipAndEnableScrolling="true">
+	<fx:Script>
+		<![CDATA[
+			//----------------------------------
+			//  showRetailers
+			//----------------------------------
+			/**
+			 *  Mostra o total de lojas do produto selecionado
+			 * 
+			 *  @return void
+			 */
+			private function showRetailers(event:MouseEvent):void
+			{
+				parentDocument.parentDocument.showRetailers();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label id="lbTotal" width="100%" height="100%" buttonMode="true" click="showRetailers(event)"
+			 fontWeight="bold" horizontalCenter="0" toolTip="Grupos de retailers"
+			 text="{int(data.USE_LG_PRODUCTS_total_retailer)}" textAlign="center"
+			 useHandCursor="true" verticalAlign="middle" verticalCenter="0"/>
+	
+</s:GridItemRenderer>

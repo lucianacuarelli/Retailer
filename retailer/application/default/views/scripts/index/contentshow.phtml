@@ -1,0 +1,229 @@
+<div class="usePage">
+<? if(empty($this->product)): ?>
+	<br />
+	<br />
+	<div id="UiAccordion" align="center">
+		<table border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+		    <td><img alt="" src="<?= $this->useDefault->images ?>/icons/iconAlertMenor.png" /></td>
+		    <td style="width: 300px; font-weight: bold; font-size: 14px; color: #404040;">Nenhum produto encontrado.</td>
+		  </tr>
+		</table>
+	</div>
+	<br />
+	<br />
+<? else: ?>
+	<div class="usePageTitle">
+		<h3><?= $this->product->title ?></h3>
+	</div>
+	<div id="UiAccordion">
+		<div class="UiMenu">
+			<ul>
+	            <li>
+				<? if($this->listResources['IMG']['total'] > 0): ?>
+<a id="UiBtImages" class="UiButtonAccordion" href="<?= $this->baseUrl ?>/contentshow/<?= $this->product->id ?>/imagens" title="">
+						<img alt="" width="180" height="45" src="<?= $this->useDefault->images ?>/bt/bgImages.gif"/>
+					</a>
+				<? else: ?>
+				<a href="#" title="">
+					<img alt="" width="180" height="45" src="<?= $this->useDefault->images ?>/bt/bgImages2Off.gif"/>
+					</a>
+				<? endif; ?>
+				</li>
+				<li>
+				<? if($this->listResources['EST']['total'] > 0): ?>
+<a id="UiBtEspecificacoes" class="UiButtonAccordion" href="<?= $this->baseUrl ?>/acessados" title="">
+						<img alt="" width="281" height="45" src="<?= $this->useDefault->images ?>/bt/bgEspecificacoes.gif"/>
+					</a>
+				<? else: ?>
+				<a href="#" title="">
+					<img alt="" width="281" height="45" src="<?= $this->useDefault->images ?>/bt/bgEspecificacoes2Off.gif"/>
+					</a>
+				<? endif; ?>
+				</li>
+	            <li>
+				<? if($this->listResources['MNL']['total'] > 0): ?>
+<a id="UiBtManual" class="UiButtonAccordion" href="<?= $this->baseUrl ?>/baixados" title="">
+						<img alt="" width="261" height="45" src="<?= $this->useDefault->images ?>/bt/bgManual.gif"/>
+					</a>
+				<? else: ?>
+					<a href="#" title="">
+						<img alt="" width="261" height="45" src="<?= $this->useDefault->images ?>/bt/bgManual2Off.gif"/>
+					</a>
+				<? endif; ?>
+	            </li>
+				<li>
+				<? if($this->listResources['LGO']['total'] > 0): ?>
+<a id="UiBtLogoGide" class="UiButtonAccordion" href="<?= $this->baseUrl ?>/logoguide" title="">
+						<img alt="" width="226" height="45" src="<?= $this->useDefault->images ?>/bt/bgLogoGuide.gif"/>
+					</a>
+				<? else: ?>
+				<a href="#" title="">
+					<img alt="" width="226" height="45" src="<?= $this->useDefault->images ?>/bt/bgLogoGuide2Off.gif"/>
+					</a>
+				<? endif; ?>
+				</li>
+			</ul>
+		</div> 	
+	</div> 	
+</div>
+	
+	<!-- Accordion -->
+	<div id="PageAccordion">
+				<div class="UiAccordion">
+					<? foreach ($this->listResources as $item): ?>
+						<? 
+							if($item['total'] > 0):
+								$classLink = '';
+								$classTotal = ' UiColorGreen';
+								$classDisable = '';
+							else:
+								$classLink = ' UiCursorDefault';
+								$classTotal = '';
+								$classDisable = ' UiAccordionDisabled';
+							endif;
+						?>
+						<h2 id="UiSelected-<?= strtolower( $item['id'] ) ?>" class="active<?= $classLink . $classDisable ?>">
+							<span class="UiTotalItems<?= $classTotal ?>" title="<?= $item['total'] ?>">[+] <?= $item['total'] ?> itens</span>
+							<img alt="" src="<?= $this->useDefault->images .'/accordion/'. $item['icon'] ?>" /> 
+							<?= $item['title'] ?>
+						</h2>
+						<div class="accordion">
+							<div class="HScrollbar">
+								<div class="viewport" style="width: 870px; height: 165px;">
+								    <div class="overview" style="width: <?= ($item['total'] * 286) ?>px;">
+						            	<div class="UiAccodionWrap">
+						            		<?php //Verifica se tem elementos na lista
+						            			if(!empty($item['list'])):?>	
+											<table width="100%" border="0" cellspacing="0" cellpadding="0">
+												<tr>
+													<? foreach ($item['list'] as $itemResource): ?>
+														<td>
+															<div class="UiItem">
+																<table width="100%" border="0" cellspacing="0" cellpadding="0">
+																  <tr>
+																  	<!-- adiciona imagem -->
+																    <td class="UiTableLeftColumn" align="center" valign="middle">
+																		    <a class='iframeContentShow' href="<?= $this->baseUrl .'/contentdetail/'. $itemResource->lg_resources_id ?>">
+																				<? 
+																					switch ($itemResource->resource_type):
+																						case 'VDO':
+																							if(!empty($itemResource->image_video)):
+																								echo '<img style="float: none;" alt="" src="'. $itemResource->image_video .'" />';
+																							else:
+																								echo '<img style="float: none;" alt="" src="'. $this->useDefault->images .'/icons100/'. $item['iconImage'] .'" />';
+																							endif;
+																						break;
+																		
+																						case 'IMG':
+																							echo '<img style="float: none;" alt="" src="'. $this->baseUrl . $itemResource->folderpath .'/thumb/'. $itemResource->filename .'" />';
+																						break;
+																						
+																						default:
+																							echo '<img style="float: none;" alt="" src="'. $this->useDefault->images .'/icons100/'. $item['iconImage'] .'" />';
+																						break;
+																					endswitch;
+																				?>
+																			</a>
+																    </td>
+																     <td valign="top" class="UiTableRightColumn">
+																     	<div class="UiHomeDetail UiAccordionItem">
+																	    	<div class="UiFormatAccordion"><?= strtolower( $itemResource->format ) ?></div>
+																	    	<div class="useClear"></div>
+																			<div class="UiText"><?= UseZF_Util::useFileSize($itemResource->filesize) ?></div>
+																     	</div>
+																     	<div class="UiButton">
+																	    	<? if($itemResource->register_id != $this->userInfo->id): ?>
+																				<div class="useDownload">
+																					<a href="#" onclick="addDownload(this, <?= $itemResource->lg_resources_id ?>); return false;">
+																						<img alt="" src="<?= $this->useDefault->images ?>/bt/btAddDownload.png" />
+																					</a>
+																				</div>
+																			<? else: ?>
+																				<div class="useDownload">
+																					<a href="<?= $this->baseUrl ?>/listdownload">
+																						<img alt="" src="<?= $this->useDefault->images ?>/bt/btVerLista.png" />
+																					</a>
+																				</div>
+																			<? endif;?>
+																			<div style="padding-top:8px;">
+																				<a class='iframeContentShow' href="<?= $this->baseUrl .'/contentdetail/'. $itemResource->lg_resources_id ?>">
+																					<img alt="" src="<?= $this->useDefault->images ?>/bt/btVerDetalhes.png" />
+																				</a>
+																			</div>
+																     	</div>
+																    </td>
+																  </tr>
+																  <tr>
+																    <td colspan="2">
+																		<div class="UiResourceTitle">
+																			<a class='iframeContentShow' href="<?= $this->baseUrl .'/contentdetail/'. $itemResource->lg_resources_id ?>">
+																				<?= UseZF_Util::useTruncate($itemResource->resource_title, 35) ?>
+																			</a>	
+																		</div>	
+																    </td>
+																  </tr>
+																  <tr>
+																    <td colspan="2">
+																		<table border="0" cellspacing="0" cellpadding="0">
+																			<tr>
+																				<? if(!empty($itemResource->total_rating_votes)): ?>
+																					<td>
+																						<a class="UiLinkClean iframeContentShow" href="<?= $this->baseUrl .'/contentdetail/'. $itemResource->lg_resources_id ?>" title="Total de ranking">
+																							<span class="iconHomeStar">&nbsp;</span>
+																							<span class="iconText"><?= round($itemResource->total_rating/$itemResource->total_rating_votes) ?></span>
+																						</a>
+																					</td>
+																					<? else: ?>
+																					<td>
+																						<a class="UiLinkClean iframeContentShow" href="<?= $this->baseUrl .'/contentdetail/'. $itemResource->lg_resources_id ?>" title="Total de ranking">
+																							<span class="iconHomeStar">&nbsp;</span>
+																							<span class="iconText">0</span>
+																						</a>
+																					</td>
+																				<? endif; ?>
+																				<td>
+																					<a class="iframeContentShow" href="<?= $this->baseUrl .'/contentdetail/'. $itemResource->lg_resources_id ?>" title="Total de downloads">
+																						<span class="iconHomeDownload">&nbsp;</span>
+																						<span class="iconText"><?= $itemResource->total_download ?></span>
+																					</a>
+																				</td>
+																				<td>
+																					<a class="iframeContentShow" href="<?= $this->baseUrl .'/contentdetail/'. $itemResource->lg_resources_id ?>" title="Total de visualização">
+																						<span class="iconHomeView">&nbsp;</span>
+																						<span class="iconText"><?= $itemResource->total_view ?></span>																
+																					</a>
+																				</td>
+																			</tr>
+																		</table> 	
+																    </td>
+																  </tr>
+																</table>
+															</div>
+														</td>
+													<? endforeach;?>
+												</tr>
+											</table>
+											<?php else: ?>
+											&nbsp;
+											<?php endif; ?>
+										</div>
+									</div>
+								</div>
+								<div class="scrollbar" style="width: 236px;">
+									<div class="track" style="width: 236px;">
+										<div class="thumb" style="left: 24px; width: 39.3333px;">
+											<div class="end"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<? endforeach;?>
+				</div>
+				<div class="useClear"></div>
+				<div class="UiLastContent">
+					<?= $this->showLastContent ?>
+				</div>
+				<? endif; ?>
+	</div>

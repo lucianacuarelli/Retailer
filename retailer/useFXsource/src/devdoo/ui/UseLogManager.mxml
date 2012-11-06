@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ui="devdoo.ui.*"
+		 width="100%" height="100%"
+		 creationComplete="create()">
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDAO;
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			import devdoo.fx.UseList;
+			import devdoo.register.model.UseRegisterLog;
+			import devdoo.register.model.UseRegisterPersonal;
+			
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  useList
+			//----------------------------------
+			/**
+			 *  Gerencia componente de lista  
+			 */  
+			public var useList:UseList;
+			
+			//------------------------------------------------------------------
+			//
+			//  Table Models / Collections
+			//
+			//------------------------------------------------------------------			
+			//Tabelas
+			public var useChangeLog:UseRegisterLog;
+			public var useRegisterPersonal:UseRegisterPersonal;
+			
+			//Coleções
+			public var acChangeLog:ArrayCollection;
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.start();
+				
+				//Cria modelo de tabela e coleções
+				useChangeLog =  new UseRegisterLog();
+				useRegisterPersonal = new UseRegisterPersonal();
+				
+				//Cria coleções
+				acChangeLog =  new ArrayCollection();
+				
+				//Configura o gerenciador de listas
+				useList = useFX.list(lsLogs, acChangeLog);
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();
+				
+				//Consulta base de dados para popular componentes
+				populate();
+			}	
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				lsLogs.addEventListener(IndexChangeEvent.CHANGE, logDetail);
+			}			
+			
+			//----------------------------------
+			//  populate
+			//----------------------------------
+			/**
+			 *  Consulta base de dados para popular componentes
+			 * 
+			 *  @return void  
+			 */	
+			private function populate():void
+			{
+				useChangeLog.exprMYSQL('created_in',"DATE_FORMAT(?,'%d/%m/%Y')",null,true);
+				useRegisterPersonal.exprMYSQL("name" , "CONCAT_WS(' ', USE_REGISTER_PERSONAL.name,  USE_REGISTER_PERSONAL.middle_name, USE_REGISTER_PERSONAL.lastname)","user");
+				
+				//Cria adaptador DAO e configura as propriedades sql
+				var daoChangeLog:UseDAO = UseDAO.create(useChangeLog);
+					daoChangeLog.fields(['id', 'register_id', 'source_table', 'operation', 'actions', 'operation_detail', 'created_in'],true)
+						.join(useRegisterPersonal, "USE_LOG.register_id = USE_REGISTER_PERSONAL.register_id", useRegisterPersonal.fields(['name']));
+				
+				//Cria um adaptador e adiciona os objetos DAO nele e
+				//conecta ao servidor para interagir com a base de dados.				
+				useFX.adapter('POPULATE_DATA_LIST')
+					.adapterSelect(daoChangeLog)
+					.connect(populateResult);
+			}
+			//----------------------------------
+			//  populateResult
+			//----------------------------------
+			/**
+			 *  Processa resultado obtido da consulta na base de dados.
+			 * 
+			 *  @return void  
+			 */	
+			private function populateResult(useResult:*):void
+			{
+				useList.populateResult(useResult.useChangeLog);
+				UseDebug.p(useResult);
+			}			
+			
+			private function logDetail(event:IndexChangeEvent):void
+			{
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:SkinnableContainer width="100%" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerLeft">
+		<s:Group left="0" right="410" height="100%">
+			<ui:UiContainerMenu y="18" right="30">
+				<s:DropDownList id="ddFilterResource" width="120" enabled="false"/>
+				<s:Button id="btEditResources" label="Button" enabled="false" toolTip="Editar recurso"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonEditSkin"/>
+				<s:Button id="btEditResourcesMultiples" label="Button" enabled="false"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonEditSkin" toolTip="Editar multiplos recursos"/>
+				<s:Button id="btRemoveResource" label="Button" enabled="false"  toolTip="Remover recurso"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonRemoveSkin"/>
+			</ui:UiContainerMenu>
+			<s:Label id="tiResourceTitle" x="20" y="0" height="25" styleName="title"
+					 text="Gerenciador de Logs"/>
+			<s:Label id="tiResourceSubtitle" x="20" y="28" height="12" styleName="subTitle"
+					 text="Gerencia interação de usuários"/>
+			<s:SkinnableContainer x="0" y="45" width="100%" height="100%"
+								  skinClass="devdoo.sk.container.gray.SkContainerCorner">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				<s:List id="lsLogs" width="100%" height="100%" 
+						borderVisible="false" cachePolicy="off"
+						contentBackgroundAlpha="0"
+						labelField="USE_LOG_operation_detail" change="logDetail(event)">
+					<s:layout>
+						<s:TileLayout/>
+					</s:layout>
+				</s:List>
+			</s:SkinnableContainer>
+		</s:Group>
+		<s:Group y="0" right="10" width="390" height="100%">
+			<s:Label id="tiResourceTitle0" x="20" y="0" height="25" styleName="title"
+					 text="Detalhes do Logs"/>
+			<s:Label id="tiResourceSubtitle0" x="20" y="28" height="12" styleName="subTitle"
+					 text="Apresenta os campos do registro"/>
+			<s:SkinnableContainer x="0" y="45" width="100%" height="100%"
+								  skinClass="devdoo.sk.container.gray.SkContainerCorner">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				<s:List id="lsResources0" width="100%" height="100%" borderVisible="false" cachePolicy="off"
+						contentBackgroundAlpha="0"
+						itemRenderer="modules.lg.layout.itemRenderer.IrImageThumb" allowMultipleSelection="true"
+						labelField="USE_LG_RESOURCES_title" dragEnabled="true" dragMoveEnabled="true" dropEnabled="true">
+					<s:layout>
+						<s:TileLayout/>
+					</s:layout>
+				</s:List>
+			</s:SkinnableContainer>
+		</s:Group>
+	</s:SkinnableContainer>
+</s:Group>

@@ -1,0 +1,1439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ui="devdoo.ui.*"
+		 width="100%" height="100%" xmlns:userInterface="modules.lg.layout.userInterface.*">
+	
+	<s:layout>
+		<s:HorizontalLayout gap="5" paddingBottom="10" paddingTop="10"
+							paddingLeft="2" paddingRight="2"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			import devdoo.fx.UseImage;
+			import devdoo.ui.UiUploader;
+			
+			import modules.lg.data.DataProducts;
+			import modules.lg.layout.popups.TwProductAddEdit;
+			import modules.lg.layout.popups.TwProductsGroups;
+			import modules.lg.layout.popups.TwResourcesEdit;
+			import modules.lg.layout.popups.TwResourcesEditMultiple;
+			import modules.lg.layout.popups.TwResourcesGroups;
+			import modules.lg.model.UseLgProducts;
+			import modules.lg.model.UseLgResources;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.IList;
+			import mx.collections.ISort;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.DragEvent;
+			import mx.managers.DragManager;
+			
+			import spark.collections.Sort;
+			import spark.components.gridClasses.GridColumn;
+			import spark.events.GridSelectionEvent;
+			import spark.events.GridSortEvent;
+			import spark.events.IndexChangeEvent;
+			
+			//------------------------------------------------------------------
+			//
+			//  icons
+			//
+			//------------------------------------------------------------------
+			[Embed('/assets/icons100/iconesImagens100x80.png')]
+			[Bindable] public var iconesImagens:Class;			
+			
+			//------------------------------------------------------------------
+			//
+			//  Constants
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			// TYPE_PRODUCT
+			//----------------------------------
+			/**
+			 *  Define que o tipo é produto. 
+			 */  
+			public static const TYPE_PRODUCT:String		= 'PDT';
+			
+			//----------------------------------
+			// TYPE_CAMPAIGN
+			//----------------------------------
+			/**
+			 *  Define que o tipo é campanha. 
+			 */  
+			public static const TYPE_CAMPAIGN:String	= 'CPN';	
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  productTitle
+			//----------------------------------
+			/**
+			 *  Recebe o título do componente de produto.  
+			 */
+			public function productTitle(value:String):LyProducts
+			{
+				tiProductTitle.text = value;
+				return this;
+			}
+			
+			//----------------------------------
+			//  productSubTitle
+			//----------------------------------
+			/**
+			 *  Recebe o subtítulo do componente de produto.  
+			 */
+			public function productSubTitle(value:String):LyProducts
+			{
+				tiProductSubtitle.text = value;
+				return this;
+			}
+			
+			//----------------------------------
+			//  resourceTitle
+			//----------------------------------
+			/**
+			 *  Recebe o título do componente de recurso.  
+			 */
+			public function resourceTitle(value:String):LyProducts
+			{
+				tiResourceTitle.text = value;
+				return this;
+			}
+			
+			//----------------------------------
+			//  resourceSubtitle
+			//----------------------------------
+			/**
+			 *  Recebe o subtítulo do componente de recurso.  
+			 */
+			public function resourceSubtitle(value:String):LyProducts
+			{
+				tiResourceSubtitle.text = value;
+				return this;
+			}
+			
+			//----------------------------------
+			//  productType
+			//----------------------------------
+			private var _productType:String;
+			
+			/**
+			 *  Recebe o tipo de produto que o módulo recebera 
+			 *  PDT (Produto) CPN (Campanha.  
+			 */
+			public function productType(value:String):LyProducts
+			{
+				_productType = value;
+				return this;
+			}
+			
+			//----------------------------------
+			//  useDataProducts
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			public var _dataProducts:DataProducts;
+			
+			//----------------------------------
+			//  resourceType
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			private var _resourceType:String;
+			
+			//----------------------------------
+			//  acFilter
+			//----------------------------------
+			/**
+			 *  Coleção de informações de status de publicação do produto para o filtro.  
+			 */  
+			public var acFilter:ArrayCollection = new ArrayCollection([
+				{label:"Todos", data:"ALL"},
+				{label:"Destaque", data:"HIG"},
+				{label:"Novo", data:"NEW"},
+				{label:"Publicado", data:"ACT"},
+				{label:"Não publicado", data:"NAC"}
+			]);
+			
+			//----------------------------------
+			//  acFilterResources
+			//----------------------------------
+			/**
+			 *  NOTDOC.  
+			 */  
+			public var acFilterResources:ArrayCollection = new ArrayCollection([
+				{label:"Todos", data:"ALL"},
+				{label:"Publicado", data:"ACT"},
+				{label:"Não publicado", data:"NAC"}
+			]);
+			
+			//----------------------------------
+			//  profileManagerIds
+			//----------------------------------
+			private var _profileManagerIds:Array;
+			/**
+			 *  Recebe a lista de identificadores que possuem permissão de alterar 
+			 *  o estatus do perfil, bem como o perfil do registro
+			 * 
+			 * 	@param listProfiles Lista de identificadores de perfils que podem editar registro 
+			 *  @return UiRegister  
+			 */  
+			public function profileManagerIds(listProfiles:Array):LyProducts
+			{
+				this._profileManagerIds = listProfiles;
+				
+				return this;
+			}	
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da módulo, 
+			 *  Cria instância do modelo de tabela, 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 *  Configura permissão de acesso.
+			 * 
+			 *  @return void  
+			 */	
+			public function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.start();
+				
+				useFX.session("listProfiles", this._profileManagerIds);
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();
+				
+				//Popula a lista de opções do filtro
+				ddFilterProduct.dataProvider = acFilter;
+				ddFilterProduct.selectedIndex = 0;
+				ddFilterResource.dataProvider = acFilterResources;
+				ddFilterResource.selectedIndex = 0;
+				
+				//Cria gerenciador de dados de produto
+				this._dataProducts = new DataProducts();
+				
+				//Configura o datagrid principal
+				this._dataProducts.dataGrid(dgProduct, accessControl, uiPaginator)
+					//Popula a lista de produtos
+					.populateProduct(this._productType, uiPaginator.pageNumber, uiPaginator.pageSize)
+					//Popula a sessão com a lista de categorias							  
+					.populateCategory(populateResultCategory);
+				
+				//Configura permissão de acesso
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  populateResultCategory
+			//----------------------------------
+			/**
+			 *  Processa o resultado obtido da consulta na base de dados.
+			 *  Popula o objeto de coleção do tipo de modelo de tabela,
+			 *  Grava na sessão os dados obtidos.
+			 * 
+			 *  @return void
+			 */			
+			private function populateResultCategory(useResult:*):void
+			{
+				//Popula o objeto de coleção
+				useFX.session('lgCategory', useFX.populateCollection(useResult.useRegisterGroups));
+				uiProductDetail.populateFilter();
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				//Produtos
+				btAddProducts.addEventListener(MouseEvent.CLICK, addProducts);
+				btEditProducts.addEventListener(MouseEvent.CLICK, editProducts);
+				btRemoveProducts.addEventListener(MouseEvent.CLICK, removeProduct);
+				btUpload.addEventListener(MouseEvent.CLICK, upload);
+				btGroupsProducts.addEventListener(MouseEvent.CLICK, editGroupsProducts);
+				btReload.addEventListener(MouseEvent.CLICK, filterProduct);
+				
+				//Recursos
+				btGroupsResources.addEventListener(MouseEvent.CLICK, editGroupsResources);
+				btEditResources.addEventListener(MouseEvent.CLICK, editResources);
+				btEditResourcesMultiples.addEventListener(MouseEvent.CLICK, editResourcesMultiples);
+				btRemoveResource.addEventListener(MouseEvent.CLICK, removeResources);
+				btReloadResource.addEventListener(MouseEvent.CLICK, filterResource);
+				btImageCopy.addEventListener(MouseEvent.CLICK, copyImage);
+				
+				dgProduct.addEventListener(GridSelectionEvent.SELECTION_CHANGE, countResouces);
+				dgProduct.addEventListener(GridSortEvent.SORT_CHANGING, headerRelease);
+				
+				lsResources.addEventListener(IndexChangeEvent.CHANGE, accessControl);
+				lsResources.addEventListener(DragEvent.DRAG_COMPLETE, dragCompleteOrder);
+				
+				imTrash.addEventListener(DragEvent.DRAG_ENTER, dragEnterTrash);
+				imTrash.addEventListener(DragEvent.DRAG_DROP, dragDropTrash);
+				
+				resourcesSelect.addEventListener(UiResourcesSelect.SELECTION_CHANGE, selectResources);
+				
+				ddFilterProduct.addEventListener(IndexChangeEvent.CHANGE, filterProduct);
+				ddFilterResource.addEventListener(IndexChangeEvent.CHANGE, filterResource);
+				
+				//Evento disparado quando o padrão de filtro é alterado
+				uiProductDetail.addEventListener(UiProductDetail.FILTER_PRODUCT, filterProduct);
+				//Evento disparado sempre que a página atual do Paginador é alterado
+				uiPaginator.addEventListener(UiPaginator.CHANGE_PAGE, changePage);
+			}			
+			
+			//----------------------------------
+			//  changePage
+			//----------------------------------    	
+			/**
+			 *  Seleciona o número da página, para realizar a paginação   
+			 * 
+			 *  @return void  
+			 */	 
+			private function changePage(event:Event):void
+			{
+				this._dataProducts.filterProduct(ddFilterProduct.selectedItem.data,this._productType, uiProductDetail.selectedGroups,uiPaginator,uiProductDetail.ddCategory.selectedItem.title, uiProductDetail.title)
+			}
+			
+			//----------------------------------
+			//  accessControl
+			//----------------------------------    	
+			/**
+			 * Gerência o controle de acesso e uso de usuários no módulo.
+			 *  
+			 * @return void  
+			 */	
+			private function accessControl(event:Event):void
+			{
+				useFX.accessControl(true)
+					.accessControlAdd( btAddProducts )
+				
+				useFX.accessControl( useFX.isSelected )
+					.accessControlEdit( btEditProducts )
+					.accessControlRemove( btRemoveProducts )
+					.accessControlEdit( resourcesSelect )
+					.accessControlEdit( btGroupsProducts )
+					.accessControlEdit( btUploadImage );
+				
+				useFX.accessControl( resourcesSelect.lsMenu.selectedIndex > -1 )
+					.accessControlEdit( btUpload );
+				
+				useFX.accessControl( lsResources.selectedIndices.length == 1 )
+					.accessControlEdit( btEditResources )
+					.accessControlRemove( btRemoveResource )
+					.accessControlEdit( btImageCopy );
+				
+				useFX.accessControl( lsResources.selectedIndices.length >= 1 )
+					.accessControlRemove( btRemoveResource );
+				
+				useFX.accessControl( lsResources.selectedIndex > -1 )
+					.accessControlEdit( btGroupsResources );
+				
+				useFX.accessControl( lsResources.selectedItems.length > 1 )
+					.accessControlEdit( btEditResourcesMultiples );
+			}
+			
+			//----------------------------------
+			//  headerRelease
+			//---------------------------------- 	
+			/**
+			 *  @private      
+			 *  Evento para tratar acoes executadas no header do data grid, ao clicar 
+			 *  no datagrid header e alterado a cor do titulo e adicionado uma seta 
+			 *  indicando a ordem de indexacao obtidada da base de dados
+			 * 
+			 *  @param event DataGridEvent
+			 *  @return void 
+			 */		
+			private function headerRelease(event:GridSortEvent):void
+			{
+				var dg:DataGrid = DataGrid(event.currentTarget);
+				var dgColumns:IList = dg.columns;
+				var gridColumn:GridColumn;
+				var order:String;
+				
+				for (var i:int = 0; i < dgColumns.length; i++) 
+				{
+					gridColumn = GridColumn(event.currentTarget.columns.source[i]);
+				}
+				
+				var obGridColumn:Object = dgColumns.getItemAt(gridColumn.columnIndex);
+				obGridColumn.sortDescending = !obGridColumn.sortDescending;
+				
+				if(obGridColumn.sortDescending){
+					//order = obGridColumn.dataField+ ' DESC'; 
+					order = ' DESC'; 
+				}else{
+					order = ' ASC';
+				}
+				
+				dgColumns.setItemAt(obGridColumn,gridColumn.columnIndex);
+				
+				//event.preventDefault();
+				
+				//Cria novo renderer para o header
+				/* var rHeader:ClassFactory = new ClassFactory(IrHeaderRendererX);
+				rHeader.properties = { sortDesc: gridColumn.sortDescending };
+				
+				gridColumn.headerRenderer = rHeader;  */
+				
+				//gridColumn.visible = false;
+				//populate();*/
+				
+				//Configura o datagrid principal
+				this._dataProducts.populateProduct(this._productType, uiPaginator.pageNumber, uiPaginator.pageSize, null, null, order);
+				
+				var ac:ArrayCollection = this._dataProducts.acLgProducts;
+				var sort:Sort = new Sort();
+				// There is only one sort field, so use a null 
+				// first parameter.
+				//sort.fields = [new SortField(obGridColumn.dataField, !event.newSortFields[0].descending)];
+				ac.sort = event.newSortFields as ISort;
+				ac.refresh();
+				dg.dataProvider = ac;
+			}
+			
+			//----------------------------------
+			//  filterProduct
+			//----------------------------------
+			/**
+			 *  Realiza o filtro dos produtos de acordo com a opção escolhida.
+			 * 
+			 *  @return void
+			 */	
+			private function filterProduct(event:Event):void
+			{
+				this._dataProducts.filterProduct(ddFilterProduct.selectedItem.data, this._productType, uiProductDetail.selectedGroups,uiPaginator,uiProductDetail.ddCategory.selectedItem.title, uiProductDetail.title);
+				uiProductDetail.reset();
+				resourcesSelect.reset();
+				lsResources.dataProvider = new ArrayCollection();
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  filterResource
+			//----------------------------------
+			/**
+			 *  Realiza o filtro dos recursos de acordo com a opção escolhida.
+			 * 
+			 *  @return void
+			 */	
+			private function filterResource(event:Event):void
+			{
+				this._dataProducts.filterResource(ddFilterResource.selectedItem.data, dgProduct.selectedItem.USE_LG_PRODUCTS_id, resourcesSelect.selectedId, populateResourcesResult);
+			}
+			
+			//----------------------------------
+			//  populateResources
+			//----------------------------------
+			/**
+			 *  Popula os detalhes do produto e realiza consulta para buscar 
+			 *  pelos recursos do item selecionado.
+			 * 
+			 *  @return void
+			 */	
+			private function populateResources():void
+			{
+				var selectedItem:Object  = dgProduct.selectedItem;
+				
+				//Verifica se tem produto selecionado
+				if(selectedItem){
+					uiProductDetail.populate(selectedItem);
+					
+					//Verifica se produto tem imagem
+					if(selectedItem.USE_LG_PRODUCTS_image_url){
+						imProduct.source = useFX.baseUrl + selectedItem.USE_LG_PRODUCTS_image_url +'/'+ selectedItem.USE_LG_PRODUCTS_image_filename; 
+					}else{
+						imProduct.source = iconesImagens; 
+					}
+					
+					//Verifica se tem algum item selecionado
+					if(resourcesSelect.selectedId){
+						this._dataProducts.populateResources(dgProduct.selectedItem.USE_LG_PRODUCTS_id, resourcesSelect.selectedId, populateResourcesResult);
+					}
+				}	
+			}
+			
+			//----------------------------------
+			//  populateResourcesResult
+			//----------------------------------
+			/**
+			 *  Recebe o resultado da consulta com a base de dados e popula a lista de recursos.
+			 * 
+			 *  @return void
+			 */	
+			private function populateResourcesResult(useResult:*):void
+			{
+				lsResources.dataProvider = useFX.populateCollection(useResult.useLgResources);
+				
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  addProducts
+			//----------------------------------
+			/**
+			 *  Abre tela para inclusão de novo registro de produto.
+			 * 
+			 *  @return void
+			 */	
+			private function addProducts(event:MouseEvent):void
+			{
+				//Grava na sessão o tipo de produto
+				useFX.session("productType", this._productType);
+				//Abre popup para adicionar novo registro, passando como argumento a popup que deve ser utilizada como entrada de dados
+				useFX.addPopup(TwProductAddEdit, 'Adicionar novo produto', popupResult);
+			}
+			
+			//----------------------------------
+			//  editProducts
+			//----------------------------------
+			/**
+			 *  Abre tela para edição de registro de produto.
+			 * 
+			 *  @return void
+			 */	
+			private function editProducts(event:MouseEvent):void
+			{
+				//Grava na sessão o tipo de produto
+				useFX.session("productType", this._productType);
+				
+				//Recupera o identificador do produto selecionado para edição
+				var sourceId:String = dgProduct.selectedItem.USE_LG_PRODUCTS_id;
+				
+				//Realiza consulta na base de dados, recupera o item selecionado para edição
+				this._dataProducts.editProducts(sourceId);
+				
+				useFX.editPopup("EDIT_POPUP", TwProductAddEdit, "Editar produto", popupResult);
+			}
+			
+			//----------------------------------
+			//  editResources
+			//----------------------------------
+			/**
+			 *  Abre tela para edição de registro de produto.
+			 * 
+			 *  @return void
+			 */	
+			private function editResources(event:MouseEvent):void
+			{
+				//Recupera o identificador do produto selecionado para edição
+				var resourcesId:String = lsResources.selectedItem.USE_LG_RESOURCES_id;
+				//Realiza consulta na base de dados, recupera o item selecionado para edição
+				this._dataProducts.editResources(resourcesId);
+				
+				useFX.editPopup("EDIT_POPUP_RESOURCES", TwResourcesEdit, "Editar recurso", popupResultResources);
+			}
+			
+			//----------------------------------
+			//  editResourcesMultiples
+			//----------------------------------
+			/**
+			 *  Abre tela para edição de multiplos registro de produto.
+			 * 
+			 *  @return void
+			 */	
+			private function editResourcesMultiples(event:MouseEvent):void
+			{
+				var popupResources:TwResourcesEditMultiple = useFX.openPopup(TwResourcesEditMultiple, "Editar multiplos recursos", popupResultResources);
+				popupResources.dataProvider = lsResources.selectedItems;
+			}
+			
+			//----------------------------------
+			//  editGroupsProduct
+			//----------------------------------
+			/**
+			 *  Abre tela para edição de grupo de visualização de produto.
+			 * 
+			 *  @return void
+			 */	
+			private function editGroupsProducts(event:MouseEvent):void
+			{
+				//Recupera o produto selecionado para gravar na sessão
+				var productSelected:Object = dgProduct.selectedItem;
+				useFX.session("productSelected", productSelected);
+				
+				//useFX.editPopup("EDIT_POPUP_RESOURCES", TwResourcesEdit, "Editar recurso", populateResources);
+				useFX.openPopup(TwProductsGroups, "Editar grupo de visualização de produtos", populateResources);
+			}
+			
+			//----------------------------------
+			//  editGroupsResources
+			//----------------------------------
+			/**
+			 *  Abre tela para edição de grupo de visualização de recursos.
+			 * 
+			 *  @return void
+			 */	
+			public function editGroupsResources(event:MouseEvent):void
+			{
+				//Recupera o produto selecionado para gravar na sessão
+				var productSelected:Object = dgProduct.selectedItem;
+				useFX.session("productSelected", productSelected);
+				
+				//Recupera os recursos selecionados para gravar na sessão
+				var resourcesSelected:Object = lsResources.selectedItems;
+				useFX.session("resourcesSelected", resourcesSelected);
+				
+				//useFX.editPopup("EDIT_POPUP_RESOURCES", TwResourcesEdit, "Editar recurso", populateResources);
+				useFX.openPopup(TwResourcesGroups, "Editar grupo de visualização de recursos", populateResources);
+			}
+			
+			//----------------------------------
+			//  removeProduct
+			//----------------------------------
+			/**
+			 *  Abre tela confirmação de remoção de produto.
+			 * 
+			 *  @return void
+			 */	
+			private function removeProduct(event:MouseEvent):void
+			{
+				var useLgProducts:UseLgProducts = new UseLgProducts();
+				useLgProducts.id = dgProduct.selectedItem.USE_LG_PRODUCTS_id;
+				
+				var useLgResources:UseLgResources = new UseLgResources();
+				
+				//Configura sistema de notificações
+				//useFX.notification("Produto removido:"+ useLgProducts.title, UseNotification.DELETE, null);
+				
+				var message:String = "Tem certeza que deseja remover o produto selecionado?";
+				//Abre popup para inclusão de novo registro	 	 
+				useFX.removePopup(message, "Remover produto",removeProductResult)
+					.adapterRemove(useLgProducts, true, "Produtos e conteúdos relacionados")
+					.adapterRemoveChild(useLgResources, "source_id");
+			}			
+			
+			//----------------------------------
+			//  removeProductResult
+			//----------------------------------
+			/**
+			 *  Abre tela confirmação de remoção de recurso.
+			 * 
+			 *  @return void
+			 */	
+			private function removeProductResult(useResult:*):void
+			{
+				this._dataProducts.popupResult(useResult);
+				resourcesSelect.totalCount(new Array());
+				lsResources.dataProvider = new ArrayCollection();
+				uiProductDetail.reset();
+				
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  removeResources
+			//----------------------------------
+			/**
+			 *  Abre tela confirmação de remoção de recurso.
+			 * 
+			 *  @return void
+			 */	
+			private function removeResources(event:MouseEvent):void
+			{
+				removeResourcesConfig();
+			}			
+			
+			//----------------------------------
+			//  removeResourcesConfig
+			//----------------------------------
+			/**
+			 *  Configura parametros para exclusão de registros
+			 * 
+			 *  @return void
+			 */	
+			private function removeResourcesConfig():void
+			{
+				var selectedItems:Vector.<Object> =  lsResources.selectedItems;
+				
+				var len:int =  selectedItems.length;
+				var acRemove:ArrayCollection = new ArrayCollection();
+				
+				for each (var item:Object in selectedItems)
+				{				
+					//Cria e configura modelo de tabela para exclusão de registro
+					var useLgResources:UseLgResources = new UseLgResources();
+					useLgResources.id = item.USE_LG_RESOURCES_id;
+					acRemove.addItem(useLgResources);
+				}
+				
+				var message:String;
+				//Verifica a quantidade de itens selecionado
+				if( len <=1 )
+					message = "Tem certeza que deseja remover o conteúdo selecionado ?";
+				else
+					message = "Tem certeza que deseja remover os '" + len + "' conteúdos selecionados ?";
+				
+				//Abre popup para inclusão de novo registro	 	 
+				useFX.removePopup(message, "Remover conteúdo", removeResourcestResult,true)
+					.adapterRemove(acRemove,true, 'Conteúdo'); 
+			}			
+			
+			//----------------------------------
+			//  removeResourcestResult
+			//----------------------------------
+			/**
+			 *  Recebe confirmação de que o registro foi removido da base de dados.
+			 * 
+			 *  @param useResult
+			 *  @return void 
+			 */
+			private function removeResourcestResult(useResult:*):void
+			{
+				this._dragDropTrash = false;
+				
+				var acData:ArrayCollection = new ArrayCollection();
+				
+				for each (var item:Object in lsResources.selectedItems)
+				{
+					//Cria dados de arquivos para serem removidos
+					var data:Object 		= new Object();
+					data.highFolder 	= 'alta';
+					data.thumbFolder 	= 'thumb';
+					data.miniFolder 	= 'mini';
+					data.showFolder 	= 'show';
+					data.displayFolder	= 'display';
+					data.pathFile		= item.USE_LG_RESOURCES_folderpath;
+					data.fileName		= item.USE_LG_RESOURCES_filename;
+					
+					acData.addItem(data);
+				}
+				
+				//Prepara objeto que deve ser enviado ao servidor
+				data = new Object();
+				data.removeFiles = acData.source;
+				
+				//Acessa classe no servidor e remove arquivos selecionados
+				useFX.useClass("FILE")
+					.method("removeImages")
+					.data(data)
+					.connect(removeImageFile); 
+			}
+			
+			//----------------------------------
+			//  removeImageFile
+			//----------------------------------
+			/**
+			 *  Recebe confirmação de que os arquivos foram removidos.
+			 * 
+			 *  @param useResult
+			 *  @return void 
+			 */
+			private function removeImageFile(useResult:*):void
+			{
+				//Atualiza lista de imagens
+				populateResources();
+			}			
+			
+			//----------------------------------
+			//  popupResult
+			//----------------------------------
+			/**
+			 *  Processa o resultado obtidos da interação com base de dados.
+			 *  Atualiza data grid principal.
+			 * 
+			 *  @param useResult Configurações obtidas da consulta na base de dados
+			 *  @return void 
+			 */			
+			private function popupResult(useResult:*):void
+			{
+				this._dataProducts.popupResult(useResult);
+				uiProductDetail.reset();
+				accessControl(null);
+				
+				this._dataProducts.countResouces(dgProduct.selectedItem.USE_LG_PRODUCTS_id, countResoucesResult);
+			}	
+			
+			//----------------------------------
+			//  popupResultResources
+			//----------------------------------
+			/**
+			 *  Atualiza a lista de recursos.
+			 * 
+			 *  @param useResult Configurações obtidas da consulta na base de dados
+			 *  @return void 
+			 */			
+			private function popupResultResources(useResult:*):void
+			{
+				lsResources.enabled = true;
+				populateResources();
+			}	
+			
+			//----------------------------------
+			//  upload
+			//----------------------------------
+			   /**
+			    *  Abre popup para selecionar arquivos que deverão ser enviados para o servidor.
+			    * 
+			    *  @param event Evento de mouse
+			    *  @return void 
+			    */
+			private function upload(event:MouseEvent):void
+			{
+				var selectedItem:Object =  dgProduct.selectedItem;
+				//Verifica se tem algum item selecionado
+				var categoryId:String = selectedItem.USE_LG_PRODUCTS_category_id;
+				var sourceId:String = selectedItem.USE_LG_PRODUCTS_id;
+				var sourceTitle:String = selectedItem.USE_LG_PRODUCTS_title;
+				
+				var fileFilter:Array = new Array();
+				
+				//IMG - Imagem
+				//EST - Especificações técnicas
+				//FTE - Feature (Descritivo das features com imagem)
+				//LGO - Logo e Guide da LG (item fixo para todos os produtos)
+				//MNI - Manual de instruções
+				//VDO - Vídeos
+				//FLA - Flashes (.swf e .fla)
+				//HTM - HTML
+				//PSD - PSDs
+				//PDF - PDFs
+				//OUT - Outros arquivos
+				
+				switch(this._resourceType)
+				{
+					case "IMG":
+					{
+						fileFilter['textFilter'] = "Images (*.jpg, *.jpeg, *.png, *.gif, *.rgb)";
+						fileFilter['typesFilter'] = "*.jpg; *.jpeg; *.png; *.gif; *.rgb;";
+						break;
+					}
+					case "LGO":
+					{
+						fileFilter['textFilter'] = "Images/PDF (*.jpg, *.jpeg, *.png, *.gif, *.pdf)";
+						fileFilter['typesFilter'] = "*.jpg; *.jpeg; *.png; *.gif; *.pdf;";
+						break;
+					}
+					case "VDO":
+					{
+						fileFilter['textFilter'] = "Vídeos (*.mkv, *.flv, *.f4v, *.avi, *.mov, *.wmv, *.rmvb)";
+						fileFilter['typesFilter'] = "*.mkv; *.flv; *.f4v; *.avi; *.mov; *.wmv; *.rmvb;";
+						break;
+					}
+					case "FLA":
+					{
+						fileFilter['textFilter'] = "Flashes (*.swf, *.fla, *.zip))";
+						fileFilter['typesFilter'] = "*.swf; *.fla;, *.zip;";
+						break;
+					}
+					case "HTM":
+					{
+						fileFilter['textFilter'] = "HTML (*.zip)";
+						fileFilter['typesFilter'] = "*.zip;";
+						break;
+					}
+					case "PSD":
+					{
+						fileFilter['textFilter'] = "Images PSD (*.psd)";
+						fileFilter['typesFilter'] = "*.psd;";
+						break;
+					}
+					case "MNL":
+					case "EST":
+					{
+						fileFilter['textFilter'] = "Arquivos (*.*)";
+						fileFilter['typesFilter'] = "*.*;";
+						break;
+					}						
+					case "PDF":
+					{
+						fileFilter['textFilter'] = "PDF (*.pdf)";
+						fileFilter['typesFilter'] = "*.pdf;";
+						break;
+					}
+					case "FTE":
+					case "OUT":
+					{
+						fileFilter['textFilter'] = "Arquivos (*.*)";
+						fileFilter['typesFilter'] = "*.*";
+						break;
+					}
+				}
+				
+				//Cria objeto de configuração de imagem
+				var useImage:UseImage = new UseImage();
+				useImage.displayWidth(981)
+					.displayHeight(400)
+					
+					.showWidth(498)
+					.showHeight(335)
+					
+					.thumbWidth(100)
+					.thumbHeight(95)
+					
+					.miniWidth(50)
+					.miniHeight(50);
+				
+				//Configura e abre popup para adicionar sub-menu 
+				var useUploader:UiUploader = useFX.openPopup(UiUploader, "Upload de imagem", uploadPopupResult);
+				       useUploader.folderPath("/public/lg/products/"+ categoryId +"/"+sourceId+"/resources")
+					         	  .fileNameType(UiUploader.FILE_NAME_TYPE_RESOURCE_ORIGINAL)
+					              .fileFilter(fileFilter['textFilter'], fileFilter['typesFilter'])
+					              .allowMultipleFiles(true)
+					.image(useImage)
+					              .resource(sourceId, sourceTitle);
+			}
+			
+			//----------------------------------
+			//  uploadPopupResult
+			//----------------------------------
+			   /**
+			    *  Porcessa dados resultados da operação de upload de imagens
+			    *  Salva na base de dados as informações referente a cada imagem publicada.
+			    * 
+			    *  @param event Evento de mouse
+			    *  @return void 
+			    */
+			private function uploadPopupResult(useResult:*):void
+			{
+				this._dataProducts.saveUploadFile(useResult, this._resourceType, popupResultResources);
+			}
+			
+			//----------------------------------
+			//  selectResources
+			//----------------------------------
+			/**
+			 *  Evento dexecutado toda vez que um item é selecionado
+			 * 
+			 *  @return void 
+			 */		
+			private function selectResources(event:Event):void
+			{
+				this._resourceType = resourcesSelect.selectedId	
+				populateResources();
+			}
+			
+			//----------------------------------
+			//  countResouces
+			//----------------------------------
+			/**
+			 *  Conta os resursos relacionado ao item selecionado 
+			 * 
+			 *  @return void 
+			 */		
+			private function countResouces(event:GridSelectionEvent):void
+			{
+				this._dataProducts.countResouces(dgProduct.selectedItem.USE_LG_PRODUCTS_id, countResoucesResult);
+			}
+			
+			//----------------------------------
+			//  countResoucesResult
+			//----------------------------------
+			/**
+			 *  Processa resultado obtido da consulta na base de dados,
+			 *  prepara atauliza a lista de tipos de resursos com seus respectivos
+			 *  valores de quantidade de itens encontrados
+			 * 
+			 *  @return void 
+			 */		
+			private function countResoucesResult(useResult:*):void
+			{
+				resourcesSelect.totalCount(useResult.useLgResources);
+				populateResources();
+			}
+			
+			//----------------------------------
+			//  uploadImagePopup
+			//----------------------------------
+			/**
+			 *  Abre popup para publicar imagem no servidor
+			 * 
+			 *  @param event Evento de mouse
+			 *  @return void 
+			 */				
+			public function uploadImagePopup(event:MouseEvent):void
+			{
+				//Cria objeto de configuração de imagem
+				var useImage:UseImage = new UseImage();
+				useImage.displayWidth(981)
+					.displayHeight(400)
+					
+					.showWidth(498)
+					.showHeight(335)
+					
+					.thumbWidth(100)
+					.thumbHeight(95)
+					
+					.miniWidth(50)
+					.miniHeight(50);
+				
+				var selectedItem:Object = dgProduct.selectedItem;
+				
+				var categoryId:String = selectedItem.USE_LG_PRODUCTS_category_id;
+				var sourceId:String = selectedItem.USE_LG_PRODUCTS_id;
+				var title:String = selectedItem.USE_LG_PRODUCTS_title;
+				
+				//Configura e abre popup para adicionar sub-menu 
+				var useUploader:UiUploader = useFX.openPopup(UiUploader, "Upload de imagem", uploadImagePopupResult);
+				useUploader.folderPath("/public/lg/products/"+ categoryId +"/"+sourceId+"/images")
+					.fileNameType(UiUploader.FILE_NAME_TYPE_RESOURCE_TITLE)
+					.fileFilter()
+					.image(useImage)
+					.allowMultipleFiles(false)
+					.resource(sourceId, title);
+			}
+			
+			//----------------------------------
+			//  uploadPopupResult
+			//----------------------------------
+			private var _sorceImage:String;
+			   /**
+			    *  Processa os dados resultados da operação de upload de imagens
+			    *  Salva na base de dados as informações referente a cada imagem publicada.
+			    * 
+			    *  @param event Evento de mouse
+			    *  @return void 
+			    */
+			public function uploadImagePopupResult(useResult:*):void
+			{
+				//Verifica se conseguiu publicar a imagem
+				if(useResult.length){
+					useResult = useResult[0]; 
+					
+					var productId:String = dgProduct.selectedItem.USE_LG_PRODUCTS_id;
+					
+					this._sorceImage = useFX.baseUrl + useResult.folderPath +'/'+ useResult.fullName; 
+					
+					//Salva imagem na base de dados
+					var useLgProducts:UseLgProducts = new UseLgProducts();
+					useLgProducts.image_url = useResult.folderPath;
+					useLgProducts.image_filename = useResult.fullName;
+					useLgProducts.update('id='+productId, uploadImageSaveResult);
+				}
+			}	
+			
+			//----------------------------------
+			//  uploadImageSaveResult
+			//----------------------------------
+			/**
+			 *  NOTDOC
+			 * 
+			 *  @return void 
+			 */		
+			public function uploadImageSaveResult(useResult:*):void{
+				imProduct.source = this._sorceImage;
+			}
+			
+			//----------------------------------
+			//  uploadBannerPopup
+			//----------------------------------
+			/**
+			 *  Abre popup para publicar banner no servidor
+			 * 
+			 *  @param event Evento de mouse
+			 *  @return void 
+			 */
+			public function uploadBannerPopup():void
+			{
+				//Cria objeto de configuração de imagem
+				var useImage:UseImage = new UseImage();
+				useImage.displayWidth(990)
+					.displayHeight(316)
+					
+					.showWidth(600)
+					.showHeight(192)
+					
+					.thumbWidth(290)
+					.thumbHeight(93)
+					
+					.miniWidth(100)
+					.miniHeight(32);
+				
+				var selectedItem:Object = dgProduct.selectedItem;
+				
+				var categoryId:String = selectedItem.USE_LG_PRODUCTS_category_id;
+				var sourceId:String = selectedItem.USE_LG_PRODUCTS_id;
+				var title:String = selectedItem.USE_LG_PRODUCTS_title;				
+				
+				//Configura e abre popup para adicionar sub-menu 
+				var useUploader:UiUploader = useFX.openPopup(UiUploader, "Upload de banner", uploadBannerPopupResult);
+				useUploader.folderPath("/public/lg/products/"+ categoryId +"/"+sourceId+"/banner")
+					.fileNameType(UiUploader.FILE_NAME_TYPE_RESOURCE_TITLE)
+					.fileFilter()
+					.image(useImage)
+					.allowMultipleFiles(false)
+					.resource(sourceId, title);
+			}
+			
+			//----------------------------------
+			//  uploadBannerPopupResult
+			//----------------------------------
+			private var _sourceBanner:String;
+			   /**
+			    *  Porcessa dados resultados da operação de upload de banner.
+			    *  Salva na base de dados as informações referente a cada imagem publicada.
+			    * 
+			    *  @param event Evento de mouse
+			    *  @return void 
+			    */
+			public function uploadBannerPopupResult(useResult:*):void
+			{
+				//Verifica se conseguiu publicar a imagem
+				if(useResult.length){
+					useResult = useResult[0]; 
+					
+					var productId:String = dgProduct.selectedItem.USE_LG_PRODUCTS_id;
+					
+					this._sourceBanner = useFX.baseUrl + useResult.folderPath +'/'+ useResult.fullName; 
+					
+					//Salva imagem na base de dados
+					var useLgProducts:UseLgProducts = new UseLgProducts();
+					useLgProducts.banner_url = useResult.folderPath;
+					useLgProducts.banner_filename = useResult.fullName;
+					useLgProducts.update('id='+productId, uploadBannerSaveResult);
+				}
+			}
+			
+			public function uploadBannerSaveResult(useResult:*):void{
+				//imBanner.source = this._sourceBanner;
+			}			
+			
+			//----------------------------------
+			//  showRetailers
+			//----------------------------------
+			   /**
+			    *  Mostra as lojas associados ao produto selecionado.
+			    * 
+			    *  @return void 
+			    */
+			public function showRetailers():void
+			{
+				editGroupsProducts(null);
+			}			
+			
+			
+			//------------------------------------------------------------------
+			//
+			//  DragDrop Trash / Order
+			//
+			//------------------------------------------------------------------			
+			//----------------------------------
+			//  dragEnterTrash
+			//----------------------------------
+			private var _dragDropTrash:Boolean;
+			/**
+			 *  Prepara dragDrop para realizar remover recursos na base de dados
+			 * 
+			 *  @param event Evento de dragDrop
+			 *  @return void 
+			 */
+			private function dragEnterTrash(event:DragEvent):void
+			{
+				this._dragDropTrash = true;
+				var dropTarget:Image = event.currentTarget as Image;
+				DragManager.acceptDragDrop(dropTarget);
+			}
+			
+			//----------------------------------
+			//  dragDropTrash
+			//----------------------------------
+			/**
+			 *  Remove recursos na base de dados
+			 * 
+			 *  @param event Evento de dragDrop
+			 *  @return void 
+			 */
+			private function dragDropTrash(event:DragEvent):void
+			{
+				removeResourcesConfig();
+			}
+			
+			//----------------------------------
+			//  dragEnterOrder
+			//----------------------------------
+			/**
+			 *  Prepara dragDrop para realizar ordenação de recursos na base de dados
+			 * 
+			 *  @param event Evento de dragDrop
+			 *  @return void 
+			 */
+			private function dragEnterOrder(event:DragEvent):void
+			{
+				this._dragDropTrash = false;
+				var dropTarget:Image = event.currentTarget as Image;
+				DragManager.acceptDragDrop(dropTarget);
+			}
+			
+			//----------------------------------
+			//  dragDropOrder
+			//----------------------------------
+			/**
+			 *  Atualiza a ordenação de recursos na base de dados
+			 * 
+			 *  @param event Evento de dragDrop
+			 *  @return void 
+			 */
+			private function dragDropOrder(event:DragEvent):void
+			{
+				lsResources.enabled = false;
+			}			
+			
+			//----------------------------------
+			//  dragCompleteOrder
+			//----------------------------------
+			/**
+			 *  Atualiza a ordenação de recursos na base de dados
+			 * 
+			 *  @param event Evento de dragDrop
+			 *  @return void 
+			 */
+			private function dragCompleteOrder(event:DragEvent):void
+			{
+				//Verifica se deve esta em modo de remover
+				if(this._dragDropTrash){
+					lsResources.enabled = true;
+				}
+				else{
+					this._dataProducts.resoucesOrder(lsResources.dataProvider, popupResultResources);
+					lsResources.enabled = false;
+				} 
+			}			
+			
+			//----------------------------------
+			//  copyImage
+			//----------------------------------
+			/**
+			 *  Exibe alerta para confirmação de escolha de imagem modelo.
+			 * 
+			 *  @return void 
+			 */
+			private function copyImage(event:MouseEvent):void
+			{
+				Alert.show("Tem certeza que deseja tornar essa imagem modelo?", "Aviso", Alert.YES | Alert.NO, null, copyImageResult);
+			}
+			
+			//----------------------------------
+			//  copyImageResult
+			//----------------------------------
+			/**
+			 *  Salva na base de dados a imagem modelo.
+			 * 
+			 *  @return void 
+			 */
+			private function copyImageResult(event:CloseEvent):void
+			{
+				//Verifica se o usuário confirma a exclusão do registro
+				if (event.detail == Alert.NO) return;
+				
+				var selectedResource:Object = lsResources.selectedItem;
+				
+				//Salva imagem na base de dados
+				var useLgProducts:UseLgProducts = new UseLgProducts();
+				useLgProducts.image_url = selectedResource.USE_LG_RESOURCES_folderpath;
+				useLgProducts.image_filename = selectedResource.USE_LG_RESOURCES_filename;
+				
+				//Atualiza a coleção
+				var selectedItem:Object = this._dataProducts.acLgProducts.getItemAt(dgProduct.selectedIndex);
+				selectedItem.USE_LG_PRODUCTS_image_url = useLgProducts.image_url;
+				selectedItem.USE_LG_PRODUCTS_image_filename = useLgProducts.image_filename; 
+				this._dataProducts.acLgProducts.setItemAt(selectedItem,dgProduct.selectedIndex);
+				
+				imProduct.source = useFX.baseUrl + useLgProducts.image_url +'/'+ useLgProducts.image_filename; 
+				
+				useLgProducts.update('id='+dgProduct.selectedItem.USE_LG_PRODUCTS_id, uploadCopyImageResult);
+			}
+			
+			//----------------------------------
+			//  uploadCopyImageResult
+			//----------------------------------
+			/**
+			 *  NOTDOC.
+			 * 
+			 *  @return void 
+			 */
+			private function uploadCopyImageResult(useResult:*):void{}
+		]]>
+	</fx:Script>
+	
+	<s:SkinnableContainer left="5" top="14" bottom="24" width="500" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+		<s:layout>
+			<s:VerticalLayout gap="30"/>
+		</s:layout>
+		
+		<s:Group width="100%" height="100%">
+			<ui:UiContainerMenu y="18" right="30">
+				<s:DropDownList id="ddFilterProduct" width="120"/>
+				<s:Button id="btReload" label="Button" buttonMode="true"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonReloadSkin"
+						  toolTip="Adicionar produto" useHandCursor="true"/>
+				<s:Button id="btFilter" label="Button" buttonMode="true" enabled="false"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonFilterSkin"
+						  toolTip="Adicionar produto" useHandCursor="true"/>
+				<s:Button id="btAddProducts" label="Button" toolTip="Adicionar produto" 
+						  skinClass="devdoo.sk.button.iconMini.UiButtonAddSkin"/>
+				<s:Button id="btEditProducts" label="Button" toolTip="Editar produto"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonEditSkin"/>
+				<s:Button id="btRemoveProducts" label="Button" enabled="false" toolTip="Remover produto"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonRemoveSkin"/>
+			</ui:UiContainerMenu>
+			
+			<s:SkinnableContainer y="45" width="100%" height="100%"
+								  skinClass="devdoo.sk.container.gray.SkContainerCorner">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				
+				<s:HGroup width="100%" verticalAlign="bottom">
+					<s:VGroup width="100%" height="100%">
+						<s:Group height="120" width="120">
+							<s:Rect top="0" left="0" right="0" bottom="0" radiusX="5">
+								<s:fill>
+									<s:SolidColor color="#FFFFFF"/>
+								</s:fill>
+								<s:filters>
+									<s:DropShadowFilter alpha="0.1" angle="45.0" blurX="4.0" blurY="4.0" color="#000000"
+														distance="2.0" hideObject="false" inner="false" knockout="false"
+														quality="2" strength="1"/>
+								</s:filters>
+							</s:Rect>
+							
+							<!--Imagem do Produto-->
+							<s:Image id="imProduct" left="5" right="5" top="5" bottom="5" source="{iconesImagens}"/>
+							<s:Group right="5" bottom="3" width="20" height="20">
+								<s:Rect width="100%" height="100%" radiusX="2">
+									<s:fill>
+										<s:SolidColor color="#333333"/>
+									</s:fill>
+								</s:Rect>
+								<s:Button id="btRemoveImage" buttonMode="true"
+										  enabled="false" skinClass="devdoo.sk.button.iconMini.UiButtonRemoveSkin"
+										  useHandCursor="true"/>
+							</s:Group>
+							<s:Group right="30" bottom="3" width="20" height="20">
+								<s:Rect width="100%" height="100%" radiusX="2">
+									<s:fill>
+										<s:SolidColor color="#333333"/>
+									</s:fill>
+								</s:Rect>
+								<s:Button id="btUploadImage" buttonMode="true" click="uploadImagePopup(event)"
+										  skinClass="devdoo.sk.button.iconMini.UiButtonAddSkin" useHandCursor="true"/>
+							</s:Group>
+							<s:Spacer height="100%"/>
+						</s:Group> 
+					</s:VGroup>
+					<!--Detalhe do Produto-->
+					<userInterface:UiProductDetail id="uiProductDetail" width="100%"/>
+				</s:HGroup>
+				
+				<s:DataGrid id="dgProduct" width="100%" height="100%" requestedRowCount="4"
+							selectionMode="multipleRows"/>
+				
+				<s:BorderContainer x="102" y="349" width="100%" height="51" backgroundColor="#CCCCCC"
+								   borderVisible="false" cornerRadius="5">
+					
+					<s:layout>
+						<s:HorizontalLayout paddingLeft="10" paddingRight="10" verticalAlign="middle"/>
+					</s:layout>
+					<ui:UiPaginator id="uiPaginator" pageSize="20"/>
+					<s:Spacer width="100%" height="10"/>
+					<s:Button id="btGroupsProducts" x="291" y="3" height="40" label="Grupo produtos"
+							  color="#C9C9C9" enabled="true" focusColor="#49A3FF"
+							  skinClass="skins.button.skButtonSkin"/>
+				</s:BorderContainer>
+				
+			</s:SkinnableContainer>
+			<s:Label id="tiProductTitle" x="20" y="0" height="25" styleName="title"/>
+			<s:Label id="tiProductSubtitle" x="20" y="28" height="12" styleName="subTitle"/>
+		</s:Group>
+		
+	</s:SkinnableContainer>
+	<s:VGroup height="100%" horizontalAlign="center">
+		<userInterface:UiResourcesSelect id="resourcesSelect" width="176"/>
+		<s:Spacer width="10" height="100%"/>
+		<!--<ui:UiNotification x="501" y="324" width="100%" height="122"/>
+		<s:Spacer width="10" height="50"/>-->
+		<s:Image id="imTrash" x="94" width="68" height="68" source="@Embed('assets/icons/trash.png')"/>
+	</s:VGroup>
+	<s:SkinnableContainer width="100%" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerLeft">
+		<s:Group width="100%" height="100%">
+			<ui:UiContainerMenu y="18" right="30">
+				
+				<s:DropDownList id="ddFilterResource" width="120" enabled="false"/>
+				
+				<s:Button id="btReloadResource" label="Button" buttonMode="true" enabled="false"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonReloadSkin"
+						  toolTip="Adicionar produto" useHandCursor="true"/>
+				<s:Button id="Resource" label="Button" buttonMode="true" enabled="false"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonFilterSkin"
+						  toolTip="Adicionar produto" useHandCursor="true"/>
+				
+				<s:Button id="btEditResources" label="Button" enabled="false" toolTip="Editar recurso"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonEditSkin"/>
+				
+				<s:Button id="btEditResourcesMultiples" label="Button" enabled="false"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonEditSkin" toolTip="Editar multiplos recursos"/>
+				<s:Button id="btRemoveResource" label="Button" enabled="false"  toolTip="Remover recurso"
+						  skinClass="devdoo.sk.button.iconMini.UiButtonRemoveSkin"/>
+				<s:Button id="btImageCopy" width="26" label="Button" enabled="false" toolTip="Definir imagem principal"/>
+				
+			</ui:UiContainerMenu>
+			<s:Label id="tiResourceTitle" x="20" y="0" height="25" styleName="title"/>
+			<s:Label id="tiResourceSubtitle" x="20" y="28" height="12" styleName="subTitle"/>
+			<s:SkinnableContainer x="0" y="45" width="100%" height="100%"
+								  skinClass="devdoo.sk.container.gray.SkContainerCorner">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				<s:List id="lsResources" width="100%" height="100%" borderVisible="false" cachePolicy="off"
+						contentBackgroundAlpha="0"
+						itemRenderer="modules.lg.layout.itemRenderer.IrImageThumb" allowMultipleSelection="true"
+						labelField="USE_LG_RESOURCES_title" dragEnabled="true" dragMoveEnabled="true" dropEnabled="true">
+					<s:layout>
+						<s:TileLayout/>
+					</s:layout>
+				</s:List>
+				<s:BorderContainer width="100%" height="51" backgroundColor="#CCCCCC" borderVisible="false"
+								   cornerRadius="5">
+					<s:layout>
+						<s:HorizontalLayout paddingLeft="10" paddingRight="10" verticalAlign="middle"/>
+					</s:layout>
+					<ui:UiPaginator id="uiPaginator0" pageSize="20" enabled="false"/>
+					<s:Spacer width="100%" height="10"/>
+					<s:Button id="btGroupsResources" height="40" label="Grupo de recursos"
+							  color="#C9C9C9" enabled="false" focusColor="#49A3FF"
+							  skinClass="skins.button.skButtonSkin"/>
+					<s:Button id="btUpload" x="291" y="3" width="180" height="40"
+							  label="Upload de Arquivo" enabled="true"
+							  icon="@Embed('assets/icons/iconsDefault/arrowUP.png')"
+							  skinClass="skins.button.skButtonSkin"/>
+				</s:BorderContainer>
+			</s:SkinnableContainer>
+		</s:Group>
+	</s:SkinnableContainer>
+</s:Group>

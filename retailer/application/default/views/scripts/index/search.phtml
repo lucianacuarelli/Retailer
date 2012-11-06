@@ -1,0 +1,18 @@
+<div id="PageSearch">
+	<div class="usePageTitle">
+		<h3>Resultado da busca</h3>
+	</div>
+	<div id="SearchWrap">
+		<div id="UiContentList">
+			<?= $this->showSearch ?>
+			<? if($this->totalItens > 20): ?>
+				<?= $this->paginationControl($this->paginator, 'Sliding', 'pagination-search.phtml'); ?>
+			<? endif; ?>
+		</div>
+			<div class="useClear"></div>
+	<div class="UiLastContent">
+		<?= $this->showLastContent ?>
+	</div>
+	</div>
+	<div class="useClear"></div>
+</div>

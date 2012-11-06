@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="100%" autoDrawBackground="true" useHandCursor="true" buttonMode="true">
+	<s:layout>
+		<s:VerticalLayout gap="3" paddingBottom="5" paddingLeft="10" paddingRight="10" paddingTop="5"/>
+	</s:layout>
+	
+	<s:Label fontWeight="bold" text="{data.USE_REGISTER_GROUPS_title}"/>
+	<s:Label text="{data.USE_REGISTER_PERSONAL_name}"/>
+	
+</s:ItemRenderer>

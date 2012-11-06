@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+					  xmlns:s="library://ns.adobe.com/flex/spark"
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:ui="devdoo.ui.*"
+					  width="100%" height="301" creationComplete="create()"
+					  skinClass="devdoo.sk.container.white.SkContainerCornerLeft">
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataProducts;
+			import modules.lg.layout.popups.TwTradeMarketingAdd;
+			
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  this._dataProducts
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			public var _dataProducts:DataProducts;
+			
+			//----------------------------------
+			//  selectedRegister
+			//----------------------------------
+			private var _itemRegister:Object;
+			/**
+			 *  Recebe os dados do registro selecionado  
+			 */
+			public function selectedRegister(itemRegister:Object):void
+			{
+				this._itemRegister = itemRegister;
+				this._dataProducts.populateCollaboratorArea(itemRegister.USE_REGISTER_id, groupResult);
+			}
+			
+			//----------------------------------
+			//  groupResult
+			//----------------------------------
+			/**
+			 *  Procesa resultado obtido da consulta na base de dados.  
+			 */
+			public function groupResult(useResult:Object):void
+			{
+				lsTradeMarketing.dataProvider = useFX.populateCollection(useResult.useLgRegisterTrademarketingHasRegisterCollaborators);
+				
+				accessControl(null);
+			}
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da módulo, 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 *  Configura permissão de acesso.
+			 * 
+			 *  @return void  
+			 */
+			private function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da popup
+				useFX = UseFX.start();
+				
+				//Cria gerenciador de dados de produto
+				this._dataProducts = new DataProducts();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();				
+				
+				//Configura permissão de acesso
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				btEdit.addEventListener(MouseEvent.CLICK, editPopup);
+				btModuleTradeMarketing.addEventListener(MouseEvent.CLICK, openModuleTradeMarketing);
+				btRemove.addEventListener(MouseEvent.CLICK, removePopup);
+				lsTradeMarketing.addEventListener(IndexChangeEvent.CHANGE, accessControl);
+			}
+			
+			//----------------------------------
+			//  removePopup
+			//----------------------------------
+			/**
+			 *  Abre popup para confirmar a exclusão do registro selecionado
+			 * 
+			 *  @param event Evento de mouse
+			 *  @return void 
+			 */
+			public function removePopup(event:MouseEvent):void
+			{
+				this._dataProducts.useLgRegisterTrademarketingHasRegisterCollaborators.data = lsTradeMarketing.selectedItem; 
+					
+				var message:String = "Tem certeza que deseja remover o trade-marketing "+ lsTradeMarketing.selectedItem.USE_REGISTER_GROUPS_title +' - '+lsTradeMarketing.selectedItem.USE_REGISTER_PERSONAL_name + " ?";
+				
+				//Abre popup para inclusão de novo registro	 	 
+				useFX.removePopup(message, "Remover grupo", editPopupResources)
+					.adapterRemove(this._dataProducts.useLgRegisterTrademarketingHasRegisterCollaborators);
+			}
+			
+			//----------------------------------
+			//  accessControl
+			//----------------------------------    	
+			/**
+			 * Gerência o controle de acesso e uso de usuários no módulo.
+			 *  
+			 * @return void  
+			 */	
+			private function accessControl(event:Event):void
+			{
+				useFX.accessControl(true)
+					 .accessControlAdd( btEdit )
+					 .accessControlEdit( btModuleTradeMarketing );
+				
+				useFX.accessControl(lsTradeMarketing.selectedIndex > -1)
+					 .accessControlRemove( btRemove );
+			}
+			
+			//----------------------------------
+			//  editPopup
+			//----------------------------------
+			/**
+			 *  Abre popup para inclusão de trade marketing
+			 * 
+			 *  @return void
+			 */	
+			private function editPopup(event:MouseEvent):void
+			{
+				//Realiza consulta na base de dados, recupera o item selecionado para edição
+				this._dataProducts.editListTradeMarketing(this._itemRegister.USE_REGISTER_id);
+				
+				useFX.session('registerId',this._itemRegister.USE_REGISTER_id); 
+				
+				//this._itemRegister.USE_REGISTER_id
+				useFX.editPopup("EDIT_POPUP_TRADE_MARKETING", TwTradeMarketingAdd, "Adicionar Trade-Marketing", editPopupResources);
+			}
+			
+			//----------------------------------
+			//  editPopupResources
+			//----------------------------------
+			/**
+			 *  Abre popup para inclusão de trade marketing
+			 * 
+			 *  @return void
+			 */	
+			private function editPopupResources(useResult:*):void
+			{
+				this._dataProducts.populateCollaboratorArea(this._itemRegister.USE_REGISTER_id, groupResult);
+			}			
+			
+			//----------------------------------
+			//  openModuleTradeMarketing
+			//----------------------------------    	
+			/**
+			 * Abre módulo para edição de novo retailer
+			 *  
+			 * @return void  
+			 */	
+			private function openModuleTradeMarketing(event:MouseEvent):void
+			{
+				UseFX.openModule("register", "MdRegisterTradeMarketing");
+			}
+			
+			//----------------------------------
+			//  openCollaborators
+			//----------------------------------    	
+			/**
+			 * Abre módulo para edição de colaboradores
+			 *  
+			 * @return void  
+			 */	
+			private function openCollaborators(event:MouseEvent):void
+			{
+				UseFX.openModule("register", "MdRegisterCollaborators");
+			}
+			
+			//----------------------------------
+			//  reset
+			//----------------------------------
+			/**
+			 *  Limpa todos os componentes.  
+			 * 
+			 *  @return void
+			 */
+			public function reset():void
+			{
+				lsTradeMarketing.dataProvider = new ArrayCollection();
+			}
+		]]>
+	</fx:Script>
+	<s:Label id="tiTitle" x="7" top="1" height="20" styleName="miniTitle" text="Trade Marketing"/>
+	<s:Label id="tiSubTitle" x="7" top="21" height="12" styleName="subTitle"
+			 text="Contatos Colaborador"/>
+	<s:SkinnableContainer left="0" right="0" top="39" bottom="38"
+						  skinClass="devdoo.sk.container.gray.SkContainerCorner">
+		<s:layout>
+			<s:VerticalLayout gap="20"/>
+		</s:layout>
+		<s:List id="lsTradeMarketing" width="100%" height="100%"
+				itemRenderer="modules.lg.layout.itemRenderer.IrTradeMarketingCollaborator">
+			<s:layout>
+				<s:VerticalLayout paddingBottom="5" paddingTop="5" gap="2"/>
+			</s:layout>
+		</s:List>
+		
+	</s:SkinnableContainer>
+	<ui:UiContainerMenu y="13" right="0">
+		<s:Button id="btEdit" label="Button" toolTip="Adicionar Trade-Marketing" 
+				  skinClass="devdoo.sk.button.iconMini.UiButtonAddSkin"/>
+		
+		<s:Button id="btRemove" label="Button" enabled="false" toolTip="Remover Trade-Marketing"
+				  skinClass="devdoo.sk.button.iconMini.UiButtonRemoveSkin"/>
+	</ui:UiContainerMenu>
+	<s:Button id="btModuleTradeMarketing" x="0" bottom="0" width="100%" height="30"
+			  label="Abrir Módulo Trade-Marketing"/>
+	
+</s:SkinnableContainer>

@@ -1,0 +1,16 @@
+/*------------------------------------------------------------------register--*/
+.UiRegisterField {
+	width: 210px;
+}
+
+.UiRegisterPhone {
+	width: 165px;
+}
+
+.UiRegisterDate, .UiRegisterDdd {
+	width: 25px;
+}
+
+.UiRegisterYear {
+	width: 35px;
+}

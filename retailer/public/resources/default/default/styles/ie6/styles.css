@@ -1,0 +1,74 @@
+/* -------------------------------------------------------------------- Login */
+#PageLogin .UiLogo{
+	background:transparent url("../../images/logoLG.gif") no-repeat top center;
+}
+#PageLogin .UiWrap{
+	background:transparent url("../../images/box.gif") no-repeat center center;
+}
+
+#PageLogin .UiShadow{
+	background:transparent url("../../images/bg/bgShadow.gif") no-repeat center 33px;
+}
+
+#PageLogin .UiButton{
+	margin-right: 0px;
+}
+
+#PageLogin .UiLoginText, #PageLogin .UiPassWord{
+	padding: 0px;
+	padding-top: 4px;
+	padding-left: 5px;
+	height: 18px;
+}
+
+.UiPage{
+	padding: 0px;
+	width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 80px;
+	padding-top: 20px;
+}
+
+#UiSearch{
+	filter: alpha(opacity = 0);
+} 
+
+#UiFooter .UiShadow{
+	background:transparent url("../images/bg/bgShadow.gif") no-repeat center 8px;
+}
+
+.UiDetailItem .UiInfo{
+	background: url("../../images/bg/bgHomeInfoResource.gif") no-repeat center right;
+}
+
+.UiHomeDetail .UiFormat{
+	background:transparent url("../../images/bg/bgFormat.gif") no-repeat 8px 1px;
+}
+
+#UiSearch .UiSearchWrap{
+	background:url('../../images/campoBusca.gif') no-repeat left 8px;
+} 
+
+.UiItem{
+	background: url("../../images/bg/bgItemResource.gif") no-repeat top left transparent;
+}
+
+
+
+
+/*-----------------------------------------------------------------scrollbar--*/
+
+.HScrollbar .scrollbar {
+    background: url("../../images/bg-scrollbar-track-x.gif") no-repeat scroll 0 0 transparent;
+}
+.HScrollbar .track {
+    background: url("../../images/bg-scrollbar-trackend-x.gif") no-repeat scroll 100% 0 transparent;
+}
+.HScrollbar .thumb {
+    background: url("../../images/bg-scrollbar-thumb-x.gif") no-repeat scroll 100% 50% transparent;
+}
+.HScrollbar .thumb .end {
+    background: url("../../images/bg-scrollbar-thumb-x.gif") no-repeat scroll 0 50% transparent;
+}
+

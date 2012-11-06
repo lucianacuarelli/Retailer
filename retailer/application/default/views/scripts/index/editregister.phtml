@@ -1,0 +1,212 @@
+<div class="usePageRegister">
+	<div class="usePageTitle">
+		<h3>Editar Cadastro</h3>
+	</div>
+	<div class="UiContentRegister">
+		<? if(!empty($this->messageSuccess)): ?>
+			<div class="useMessageSucess"><?= $this->messageSuccess ?></div>
+		<? else: ?>
+			<form id="formRegister" method="post" action="">
+				<table border="0" cellspacing="5">
+					<tr>
+						<td>
+							Nome					
+						</td>
+						<td>
+							<input type="text" id="name" name="name" class="UiRegisterField" value="<?= $this->register->name ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Sobrenome					
+						</td>
+						<td>
+							<input type="text" id="lastname" name="lastname" class="UiRegisterField" value="<?= $this->register->lastname ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Sexo					
+						</td>
+						<td>
+							<? if($this->register->sex == 'M'): ?>
+								<input type="radio" name="sex" value="M" checked="checked" />&nbsp;Masculino
+								&nbsp;&nbsp;
+								<input type="radio" name="sex" value="F" />&nbsp;Feminino
+							<? else: ?>
+								<input type="radio" name="sex" value="M" />&nbsp;Masculino
+								&nbsp;&nbsp;
+								<input type="radio" name="sex" value="F" checked="checked" />&nbsp;Feminino
+							<? endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Data de nascimento					
+						</td>
+						<td>
+							<input type="text" name="birth_day" class="UiRegisterDate" maxlength="2" value="<?= $this->register->birth_day ?>" />/<input type="text" name="birth_month" class="UiRegisterDate" maxlength="2" value="<?= $this->register->birth_month ?>" />/<input type="text" name="birth_year" class="UiRegisterYear" maxlength="4" value="<?= $this->register->birth_year ?>" /> ex. (99/99/9999)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							RG					
+						</td>
+						<td>
+							<input type="text" name="rg" class="UiRegisterField" value="<?= $this->register->rg ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							CPF					
+						</td>
+						<td>
+							<input type="text" id="cpf" name="cpf" class="UiRegisterField" value="<?= $this->register->cpf ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Website					
+						</td>
+						<td>
+							<input type="text" name="web_page" class="UiRegisterField" value="<?= $this->register->web_page ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>
+							E-mail					
+						</td>
+						<td>
+							<input type="text" id="user_email" name="user_email" class="UiRegisterField" value="<?= strtolower($this->register->user_email) ?>" style="text-transform: lowercase" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Endereço					
+						</td>
+						<td>
+							<input type="text" name="address" class="UiRegisterField" value="<?= $this->register->address ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Número					
+						</td>
+						<td>
+							<input type="text" name="number" class="UiRegisterYear" value="<?= $this->register->number ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Cidade					
+						</td>
+						<td>
+							<input type="text" name="city" class="UiRegisterField" value="<?= $this->register->city ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Bairro					
+						</td>
+						<td>
+							<input type="text" name="neighborhood" class="UiRegisterField" value="<?= $this->register->neighborhood ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Estado					
+						</td>
+						<td>
+							<select name="state">
+								<option value="<?= $this->register->state ?>"><?= $this->register->state ?></option>  
+								<option value="AC">AC</option>  
+								<option value="AL">AL</option>  
+								<option value="AM">AM</option>  
+								<option value="AP">AP</option>  
+								<option value="BA">BA</option>  
+								<option value="CE">CE</option>  
+								<option value="DF">DF</option>  
+								<option value="ES">ES</option>  
+								<option value="GO">GO</option>  
+								<option value="MA">MA</option>  
+								<option value="MG">MG</option>  
+								<option value="MS">MS</option>  
+								<option value="MT">MT</option>  
+								<option value="PA">PA</option>  
+								<option value="PB">PB</option>  
+								<option value="PE">PE</option>  
+								<option value="PI">PI</option>  
+								<option value="PR">PR</option>  
+								<option value="RJ">RJ</option>  
+								<option value="RN">RN</option>  
+								<option value="RO">RO</option>  
+								<option value="RR">RR</option>  
+								<option value="RS">RS</option>  
+								<option value="SC">SC</option>  
+								<option value="SE">SE</option>  
+								<option value="SP">SP</option>  
+								<option value="TO">TO</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Complemento					
+						</td>
+						<td>
+							<input type="text" name="complement" class="UiRegisterField" value="<?= $this->register->complement ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Cep					
+						</td>
+						<td>
+							<input type="text" name="zipcode" id="zipcode" class="UiRegisterField" value="<?= $this->register->zipcode ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Telefone					
+						</td>
+						<td>
+							(<input type="text" name="ddd" class="UiRegisterDdd" maxlength="2" value="<?= $this->register->ddd ?>" />)&nbsp;&nbsp;<input type="text" name="phone" id="phone" class="UiRegisterPhone" value="<?= $this->register->phone ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&nbsp;
+							<input type="hidden" name="register_id" value="<?= $this->register->register_id ?>" />
+							<input type="hidden" name="register_personal_id" value="<?= $this->register->register_personal_id ?>" />
+							<input type="hidden" name="register_address_id" value="<?= $this->register->register_address_id ?>" />
+							<input type="hidden" name="register_phone_id" value="<?= $this->register->register_phone_id ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							&nbsp;
+						</td>
+						<td>
+							<input type="image" src="<?= $this->useDefault->images ?>/bt/btEnviar.png" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		<? endif; ?>
+	</div>
+</div>

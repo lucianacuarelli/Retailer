@@ -1,0 +1,30 @@
+<!-- minha conta -->
+<div class="usePage">
+	<div class="usePageTitle">
+		<h3>Campanhas</h3>
+	</div>
+	<div class="UiText" align="center">
+		<table cellspacing="20">
+			<tr>
+			<? foreach ($this->listCampain as $key => $itemCampain): ?>
+					<td align="center" valign="top">
+						<a href="<?= $this->baseUrl .'/contentshow/'. $itemCampain->id .'/resources' ?>">
+							<img style="border: 2px solid #C12752;" width="200" src="<?= $this->baseUrl . $itemCampain->image_url .'/show/'. $itemCampain->image_filename ?>" alt="<?= $itemCampain->image_filename ?>"/>
+						</a>
+					</td>
+					<td valign="top">
+						<div style="font-size: 14px;"><a href="<?= $this->baseUrl .'/contentshow/'. $itemCampain->id .'/resources' ?>"><strong><?= $itemCampain->title ?></strong></a></div>
+						<div><strong>Código:</strong>&nbsp;<?= $itemCampain->code ?></div>
+						<div><strong>Categoria:</strong>&nbsp;<?= $itemCampain->category_title ?></div>
+						<div><strong>Destaque até:</strong>&nbsp;<?= date('d/m/Y', $itemCampain->highlight_date_out) ?></div>
+						<div><strong>Novo até:</strong>&nbsp;<?= date('d/m/Y', $itemCampain->status_new_date_out) ?></div>
+						<div><strong>Publicado em:</strong>&nbsp;<?= date('d/m/Y', $itemCampain->date_in) ?></div>
+						<div><strong>Publicado até:</strong>&nbsp;<?= date('d/m/Y', $itemCampain->date_out) ?></div>
+					</td>
+					<? if(($key+1) % 2 == 0): ?> </tr><tr> <? endif; ?>
+			<? endforeach; ?>
+			</tr>
+		</table>
+	</div>
+	<div class="useClear" style="padding-bottom: 15px;"></div>
+</div>

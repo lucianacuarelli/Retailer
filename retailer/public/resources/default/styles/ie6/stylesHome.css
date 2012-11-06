@@ -1,0 +1,30 @@
+.UiPage{
+	padding: 0px;
+	width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 80px;
+	padding-top: 20px;
+}
+
+#UiSearch{
+	filter: alpha(opacity = 0);
+} 
+
+#UiFooter .UiShadow{
+	/*background:transparent url("../../images/bg/bgShadow.gif") no-repeat center 33px;*/
+	background:transparent url("../images/bg/bgShadow.gif") no-repeat center 8px;
+}
+
+.UiDetailItem .UiInfo{
+	background: url("../../images/bg/bgHomeInfoResource.gif") no-repeat center right;
+}
+
+.UiHomeDetail .UiFormat{
+	background:transparent url("../../images/bg/bgFormat.gif") no-repeat 8px 1px;
+}
+
+#UiSearch .UiSearchWrap{
+	background:url('../../images/campoBusca.gif') no-repeat left 8px;
+} 
+

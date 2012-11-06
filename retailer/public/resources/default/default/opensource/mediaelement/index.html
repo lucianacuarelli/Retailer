@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="jquery.js"></script>	
+	<script src="mediaelement-and-player.min.js"></script>
+	<link rel="stylesheet" href="mediaelementplayer.min.css" />
+</head>
+<body>
+<!-- simple single file method -->
+<h1>Com Plugin</h1>
+<video width="640" height="360" src="echo-hereweare.mp4" type="video/mp4" 
+	id="player1" poster="echo-hereweare.jpg" 
+	controls="controls" preload="none"></video>
+<br />
+<br />
+<br />
+<br />
+<h1>Sem Plugin</h1>
+<video width="640" height="360" src="echo-hereweare.mp4" type="video/mp4" 
+	id="player2" poster="echo-hereweare.jpg" 
+	controls="controls" preload="none"></video>
+	
+<script>
+$('#player1').mediaelementplayer();
+</script>
+
+</body>
+</html>

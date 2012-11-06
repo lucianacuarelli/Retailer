@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:ui="devdoo.ui.*"
+				width="600" height="500" close="cancel(event)" 
+				creationComplete="create()">
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataProducts;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  this._dataProducts
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			public var _dataProducts:DataProducts;
+			
+			//----------------------------------
+			//  productSelected;
+			//----------------------------------
+			/**
+			 *  Recebeo produto selecionado.  
+			 */  
+			private var _productSelected:Object;
+
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da módulo, 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 * 
+			 *  @return void  
+			 */
+			private function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da popup
+				useFX = UseFX.startPopup(this);
+				
+				//Cria gerenciador de dados de produto
+				this._dataProducts = new DataProducts();
+				
+				this._productSelected = useFX.session("productSelected");
+				
+				populate();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();				
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				btSearch.addEventListener(MouseEvent.CLICK, searchRetailer);
+				
+				btCancel.addEventListener(MouseEvent.CLICK, cancel);
+				btSave.addEventListener(MouseEvent.CLICK, cancel);
+			}
+			
+			//----------------------------------
+			//  populate
+			//----------------------------------    	
+			/**
+			 * Popula o titulo do produto,
+			 * Popula a categoria do produto,
+			 * Popula a lista de recursos selecionados.
+			 *  
+			 * @return void  
+			 */	
+			private function populate():void
+			{
+				//Popula o titulo do produto
+				lbProductTitle.text = this._productSelected.USE_LG_PRODUCTS_title;
+				//Popula a categoria do produto
+				lbProductCategory.text = this._productSelected.USE_REGISTER_GROUPS_title;
+				
+				this._dataProducts.populateProductsRetailers(this._productSelected.USE_REGISTER_GROUPS_id, this._productSelected.USE_LG_PRODUCTS_id, searchRetailerResult, tiSearch.text, true);
+			}			
+			
+			//----------------------------------
+			//  searchRetailer
+			//----------------------------------    	
+			/**
+			 * Realiza consulta para buscar pela loja de acordo com o texto digitado.
+			 *  
+			 * @return void  
+			 */	
+			private function searchRetailer(event:MouseEvent):void
+			{
+				this._dataProducts.populateProductsRetailers(this._productSelected.USE_REGISTER_GROUPS_id, this._productSelected.USE_LG_PRODUCTS_id, searchRetailerResult, tiSearch.text);
+			}			
+
+			//----------------------------------
+			//  selectedResourceResult
+			//----------------------------------    	
+			/**
+			 * Recebe o resultado da consulta e trata os dados recebidos
+			 * Marca as lojas que já estão associadas ao recurso selecionado
+			 *  
+			 * @return void  
+			 */	
+			private function searchRetailerResult(useResult:*):void
+			{
+				lsRetaliers.dataProvider = useFX.populateCollection(useResult.useRegisterCorporate);
+			}
+
+			//----------------------------------
+			//  changeResourcesRetailer
+			//----------------------------------    	
+			/**
+			 * Adiciona ou remove a relação da loja com o recurso selecionado
+			 *  
+			 * @return void  
+			 */	
+			public function changeProductsRetailer(data:Object, selected:Boolean):void
+			{
+				this._dataProducts.changeProductsRetailer(this._productSelected.USE_LG_PRODUCTS_id, this._productSelected.USE_LG_PRODUCTS_total_retailer, data, selected, changeProductsRetailerResult);
+			}
+			
+			//----------------------------------
+			//  changeProductsRetailerResult
+			//----------------------------------    	
+			/**
+			 * Recebe o resultado da consulta e trata os dados recebidos
+			 * Marca as lojas que já estão associadas ao recurso selecionado
+			 *  
+			 * @return void  
+			 */	
+			private function changeProductsRetailerResult(useResult:*):void
+			{
+				searchRetailer(null);
+			}
+			
+			//----------------------------------
+			//  cancel
+			//----------------------------------
+			/**
+			 *  Fecha a popup.
+			 *  @return void
+			 */ 		
+			private function cancel(event:Event):void{
+				useFX.closePopup(this);
+			}			
+			
+		]]>
+	</fx:Script>
+	<s:HGroup width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10"
+			  paddingTop="10">
+		<s:VGroup width="100%" height="100%">
+			<s:Label id="lbProductTitle" fontSize="16" fontWeight="bold"/>
+			<s:Label id="lbProductCategory" fontSize="14" fontWeight="normal"/>
+			<s:HGroup id="hgSearch" width="100%">
+				<s:TextInput id="tiSearch" width="100%"/>
+				<s:Button id="btSearch" label="Buscar"/>
+			</s:HGroup>
+			<s:Spacer width="10" height="3"/>
+			<s:Label text="Lojas"/>
+			<s:List id="lsRetaliers" width="100%" height="100%" itemRenderer="modules.lg.layout.itemRenderer.IrProductsGroupsRetailer"/>
+		</s:VGroup>
+	</s:HGroup>
+	<s:controlBarContent>
+		<s:Spacer width="100%" height="10"/>
+		<s:Button id="btSave" label="Salvar e Fechar" buttonMode="true" styleName="btSave"
+				  useHandCursor="true"/>
+		<s:Button id="btCancel" styleName="btCancel" label="Cancelar" buttonMode="true" useHandCursor="true"/>
+	</s:controlBarContent>
+</s:TitleWindow>

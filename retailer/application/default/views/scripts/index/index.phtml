@@ -1,0 +1,35 @@
+<?
+$this->useNivoSlider('BANNER')
+ 	 ->limit(15)
+ 	 ->render();
+			  
+?>
+
+<!-- sitema de banner -->
+<div class="UiWrap">
+	<div class="UiWrapSlider" >
+		<?= $this->useNivoSlider('BANNER') ?>
+	</div>
+</div>
+<!-- filtros -->
+<div id="UiFilterMenu">
+	<div class="UiMenu">
+		<ul>
+			<li id="activesx">
+				<a onclick="showImages('destaques')" style="cursor: pointer;" title="Veja os principais conteúdos em destaque">Destaques</a>
+			</li>
+			<li>
+				<a onclick="showImages('acessados')" style="cursor: pointer;" title="Veja os mais acessados conteúdos">Mais acessados</a>
+			</li>
+			<li>
+				<a onclick="showImages('baixados')" style="cursor: pointer;" title="Veja os conteúdos mais baixados">Mais Baixados</a>
+			</li>
+			<li>
+				<a onclick="showImages('ranking')" style="cursor: pointer;" title="Veja os conteúdos mais preferidos">Ranking</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- galeria de imagem -->
+<div id="UiGalery" class="UiSlideShow" style="height: 500px;">
+</div>

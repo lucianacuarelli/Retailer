@@ -1,0 +1,353 @@
+/* UseCSS */
+body {background:#f1f1f1; margin:0; padding:0; top:0; left:0; font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+h1,h2,h3,h4,h5,h5 {font-weight:normal; color:#CCCCCC;}
+a {text-decoration:none; color:#CCCCCC;}
+a:hover {text-decoration:none; color:#FFFFFF;}
+*{ margin: 0; padding: 0; z-index: 1; }
+img {border:0;}
+ol, ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* ----------------------------------------------------------------- Defaults */
+.useClear{
+	clear: both;
+}
+.useColor{
+	background-color: #e2e2e2;
+}
+
+.UiCursorDefault {
+	cursor: default;
+}
+.UiCursorPointer {
+	cursor: pointer;
+}
+
+/*------------------------------------------------------------------ UiPage --*/
+.UiPage{
+	padding-top: 70px;
+	width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ----------------------------------------------------------------- UiHeader */
+#UiHeader{
+	height: 57px;
+	width: 100%;
+	position: fixed;
+  	top:0;
+  	z-index:9998;
+  	background:#f1f1f1 url('../images/bg/bgMenuTopo.png') no-repeat right top;
+}
+
+#UiHeader .UiWrap{
+	height: 57px;
+	width: 990px;
+  	background:#f1f1f1 url('../images/bg/bgMenuTopo.png') no-repeat right top;
+	clear: both;
+	margin-left:auto;
+	margin-right:auto;
+}
+#UiHeader .UiLogo{
+	width: 95px;
+	padding-top: 5px;
+}
+
+/* --------------------------------------------------------- UiHeader UiMenu -*/
+#UiHeader .UiMenu {
+	height: 50px;
+	margin: 0;
+	padding: 0;
+	background: url(../images/menu/navigation-bg.jpg) repeat-x left top;
+} 
+#UiHeader .UiMenu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+} 
+#UiHeader .UiMenu ul li {
+	display: inline;
+	margin: 0px;
+} 
+#UiHeader .UiMenu ul li a {
+	height:33px;
+	display: block;
+	float: left;
+	padding: 15px 42px 0 40px;
+	font: bold 12px Arial;
+	color: #FFF;
+	text-decoration: none;
+	background: url(../images/menu/navigation-separator.png) no-repeat -1px top;
+} 
+
+#UiHeader .UiMenu ul li a:hover {
+	color:#FFF;
+	background: url(../images/menu/navigation-hover.png) repeat-x left top;
+}
+
+#UiHeader .UiMenu ul li#active a {
+	color:#FFF;
+	background: url(../images/menu/navigation-hover.png) repeat-x left top;
+}
+
+/* ----------------------------------------------------- UiFilterMenu UiMenu -*/
+#UiFilterMenu{
+	width: 990px;
+	margin: auto;
+	margin-top: 25px;
+} 
+#UiFilterMenu .UiMenu {
+	height: 33px;
+	margin: 0;
+	padding: 0;
+	background: url(../images/menu/bgMenuNavigationDestaque.png) repeat-x left top;
+} 
+#UiFilterMenu .UiMenu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+} 
+#UiFilterMenu .UiMenu ul li {
+	display: inline;
+	margin: 0px;
+} 
+#UiFilterMenu .UiMenu ul li a {
+	height:33px;
+	width:247px;
+	display: block;
+	float: left;
+	padding: 10px 0px;
+	text-align:center;
+	font: bold 12px Arial;
+	color: #FFF;
+	text-decoration: none;
+	background: url(../images/menu/divaderMenuNavigationDestaque.png) no-repeat -1px top;
+} 
+
+#UiFilterMenu .UiMenu ul li a:hover {
+	color:#FFF;
+	background: url(../images/menu/hoverMenuNavigationDestaque.png) repeat-x left top;
+}
+
+#UiFilterMenu .UiMenu ul li#active a {
+	color:#FFF;
+	background: url(../images/menu/hoverMenuNavigationDestaque.png) repeat-x left top;
+}
+
+
+/*----------------------------------------------------------------- UiSearch --*/
+#UiSearch{
+	background:none;
+	margin-top: -10px;
+}  
+#UiSearch .UiSearchWrap{
+	background:url('../images/campoBusca.png') no-repeat left center;
+	width: 190px;
+} 
+
+#UiSearch .UiSearchText{
+	background: none;
+	border: none;
+	padding: 5px;
+	padding-left: 8px;
+} 
+
+#UiSearch .UiSearchButton{
+	opacity: 0;
+	-moz-opacity: 0;
+	width: 20px;
+	height: 30px;
+	cursor: pointer;
+} 
+
+
+/*---------------------------------------------------------------- UiLogout --*/
+.UiButtonLogout{
+	padding-left: 20px;
+	margin-top: -2px;
+}
+
+
+/*---------------------------------------------------------------- UiBanner --*/
+#UiBanner{
+	background:#e3e4e5;
+	height: 335px;
+	margin-top: 20px;
+}
+#UiBanner .UiWrap{
+	text-align: center;
+	padding: 10px;
+}
+
+
+/*------------------------------------------------------ UiUser / UiCompany --*/
+.UiUserInfo{
+	padding-left: 3px;
+	height: 45px;
+}
+
+.UiUser{
+	float: left;
+	padding-left: 5px;
+	padding-top: 10px;
+}
+.UiUserImage{
+	float: left;
+	padding-top: 5px;
+	padding-left: 10px;
+}
+
+
+/*------------------------------------------------------------- UiSlideShow --*/
+.UiSlideShow{
+	height: 385px;
+	padding: 15px;
+}
+
+.UiDetail{
+	border: 1px solid #FF0000;
+	height: 50px;
+	width: 100px;
+	z-index: 100;
+	float: left;
+}
+
+.UiDetailItem {
+	border-top: 1px solid #FFFFFF;
+	height: 400px;
+}
+.UiDetailItem .UiInfo{
+	height: 104px;
+	width: 350px;
+	margin-top: 270px;
+	background: url("../images/bg/bgHomeInfoResource.png") no-repeat center right;
+	overflow: hidden;
+	padding-left: 27px;
+	padding-right: 10px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	float: left;
+}
+
+.iconHomeStar, .iconHomeDownload, .iconHomeComment, .iconHomeView{
+	text-align: right;
+	height: 22px;
+	width: 22px;
+	font-style: italic;
+	font-size: 12px;
+	color: #CCC;
+	float: left;
+}
+
+.iconText{
+	font-style: italic;
+	font-size: 12px;
+	color: #CCC;
+	float: left;
+	padding-left: 3px;
+	padding-right: 15px;
+	padding-top: 4px;
+}
+
+.iconHomeStar{
+	background: url("../images/icons/home/iconHomeStar.gif") no-repeat left center;
+}
+
+.iconHomeDownload{
+	background: url("../images/icons/home/iconHomeDownload.gif") no-repeat left center;
+}
+
+.iconHomeComment{
+	background: url("../images/icons/home/iconHomeComment.gif") no-repeat left center;
+}
+
+.iconHomeView{
+	background: url("../images/icons/home/iconHomeView.gif") no-repeat left center;
+}
+
+.UiDetailItem a {text-decoration:none; color:#FFFFFF; fon}
+.UiDetailItem a:hover {
+	text-decoration:none; 
+	color:#ca355f;
+}
+
+.UiHomeInfo{
+	color:#FFFFFF;
+	text-align: left;
+}
+.UiHomeInfo .UiTitle{
+	font-size: 17px;
+	font-weight: bold;
+	padding-top: 10px;
+}
+.UiHomeInfo .UiSubTitle{
+	font-size: 14px;
+	padding-top: 5px;
+	padding-bottom: 8px;
+}
+.UiHomeInfo .UiCode{
+	font-size: 11px;
+	color: #CCC;
+}
+.UiHomeDetail .UiText{
+	text-align: right;
+	font-size: 9px;
+}
+
+.UiHomeDetail .UiFormat{
+	text-align: right;
+	font-size: 11px;
+	font-weight:bold;
+	background:transparent url("../images/bg/bgFormat.png") no-repeat 8px 1px;
+	width: 38px;
+	height: 17px;
+	float: right;
+	padding-right: 15px;
+	padding-bottom: 30px;
+	padding-top: 1px;
+}
+
+/*--------------------------------------------------------- UiInstitutional --*/
+#PageInstitutional .UiTitle{
+	color: #c12752;
+	font-size: 18px;
+	width: 900px;
+	margin: auto;
+	padding-top: 50px;
+	padding-bottom: 20px;
+}
+#PageInstitutional .UiText{
+	color: #6a737b;
+	font-size: 12px;
+	width: 900px;
+	margin: auto;
+	padding-top: 20px;
+	padding-bottom: 40px;
+	line-height: 20px;
+}
+
+/*---------------------------------------------------------------- UiFooter --*/
+#UiFooter{
+	background:#bbbbbb url('../images/bg/bgBase.png') repeat-x;
+	height: 190px;
+}
+
+#UiFooter .UiShadow{
+	padding-top:20px;
+	width:100%;
+	height:35px;
+	text-align: center;
+	color: #7a7a7c;
+	font-size: 11px;
+}
+#UiFooter .UiFooterShadow{
+	background:transparent url("../images/bg/bgFooterShadow.png") no-repeat center top;
+}
+
+#menu li{
+	float: left;
+}
+

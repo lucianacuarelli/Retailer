@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+		<head>
+		<title>Parceiros LG</title>
+		
+		<!-- metatags -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		
+		<!-- styles -->
+		<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/qTip/jquery.qtip.min.css" type="text/css"/>
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/stylesRegister.css" type="text/css"/>
+		<!--[if IE 6]>
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+		<![endif]-->
+			
+		<!-- scripts -->
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery.maskedinput-1.3.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+		<script type="text/javascript">
+			Use(document).ready(function()
+			{
+				$("#user_email").blur(function() {
+					Use.ajax({
+					  type: 'post',
+					  cache:false,
+					  url: '<?= $this->baseUrl ?>/ajax/verificationemail?format=html',
+					  data: {user_email:$("#user_email").val()},
+					  dataType: 'html',
+					  success: function(data){
+					  	if(data){
+					  		$('#user_email_message').html(data);
+					  		$('#btSend').attr("disabled", "disable");
+					  	}else{
+					  		$('#user_email_message').html('');
+							$('#btSend').removeAttr("disabled");					  		
+					  	}
+					  },
+					  error: function(data){ alert(data); }
+					});
+				});
+				
+				$('.VScrollbar').tinyscrollbar();
+				$('.HScrollbar').tinyscrollbar({ axis: 'x'});
+				
+				Use('#retailerName').hide();
+					
+				Use('#parent_id').change(function(){
+					if(this.value == 'OUT')
+					{
+						Use('#retailerName').show();					
+					}else{
+						Use('#retailerName').hide();
+					}
+				});
+				
+				//Mascara nos campos do formulario
+				$("#zipcode").mask("99999-999");
+				$("#phone").mask("9999-9999");
+				$("#cpf").mask("999.999.999-99");
+
+				Use("#formRegister").validate({
+					rules: {
+						parent_id: "required",
+						name: "required",
+						lastname: "required",
+						cpf: {cpf: true},
+						user_email: {
+							required: true,
+							email: true
+						},
+						user_password: {
+							required: true,
+							minlength: 5
+						},
+						user_password_confirm: {
+							required: true,
+							minlength: 5,
+							equalTo: "#user_password"
+						}
+					},
+					messages: {
+						parent_id: "O campo Rede é obrigatório",
+						name: "O campo Nome é obrigatório",
+						lastname: "O campo Sobrenome é obrigatório",
+						cpf: {cpf: 'Informe um CPF válido'},
+						user_email: "Informe um endereço de e-mail válido", 
+						user_password: {
+							required: "O campo Senha é obrigatório",
+							minlength: "A senha não pode ter menos de 5 caracteres"
+						},
+						user_password_confirm: {
+							required: "O campo Confirmar Senha é obrigatório",
+							minlength: "A senha não pode ter menos de 5 caracteres",
+							equalTo: "As senhas não são iguais"
+						}
+					}
+				});
+							
+				Use("#formRegister").submit(function() {
+					var parent_id = Use("#parent_id").val();
+					var retailer_name = Use("#retailer_name").val();
+					
+  					if(parent_id == "OUT" && retailer_name == "")
+  					{
+  						Use("#retailer_name").after('<label for="name" generated="true" class="error">O campo Rede é obrigatório</label>');
+	  					return false;
+  					}
+				});
+			});
+		</script>
+</head>
+<body>
+	<div id="UiHeader">
+		<div class="UiWrap">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td style="width: 97px;">
+						<div class="UiLogo">
+							<img src="<?= $this->useDefault->images ?>/logoLG.gif" width="83" height="36" alt="Logo LG"/>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="UiPage">
+		<div class="useClear"></div>
+	</div>
+	
+	<div class="PageContent" style="width: 970px; margin: auto;">
+<?= $this->layout()->content ?>
+	</div>
+	<div id="UiFooter">
+		<div class="UiFooterShadow">
+			<div class="UiWrap">
+				<table cellspacing="15" cellpadding="0" border="0" style="margin:auto;">
+					<tbody>
+						<tr>
+							<td><img width="100" src="<?= $this->useDefault->images ?>/menudock/btInstitucionalOff.gif" alt=""></td>
+							<td><img width="100" src="<?= $this->useDefault->images ?>/menudock/btInformaticaOff.gif" alt=""></a></td>
+							<td><img width="100" src="<?= $this->useDefault->images ?>/menudock/btCelularesOff.gif" alt=""></a></td>
+							<td><img width="100" src="<?= $this->useDefault->images ?>/menudock/btAudioEVideoOff.gif" alt=""></a></td>
+							<td><img width="100" src="<?= $this->useDefault->images ?>/menudock/btCondicionadoresDeArOff.gif" alt=""></a></td>
+							<td><img width="100" src="<?= $this->useDefault->images ?>/menudock/btEletrodomesticosOff.gif" alt=""></a></td>
+							<td><img width="100" src="<?= $this->useDefault->images ?>/menudock/btTelevisoresOff.gif" alt=""></a></td>
+						</tr>
+				  	</tbody>
+				</table>
+			</div>
+			<div class="UiShadow">
+				<p>Parceiros LG - Todos os direitos estão reservados - Copyright 2012 - Desenvolvido por Tobe App</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>	

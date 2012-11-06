@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+		<head>
+		<title>Parceiros LG</title>
+		
+		<!-- metatags -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		
+		<!-- styles -->
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/stylesContentList.css" type="text/css"/>
+<!--[if IE 6]>
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/stylesContentList.css" type="text/css"/>
+<![endif]-->		
+		
+		<!-- scripts -->
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+		<script type="text/javascript">
+			function addDownload(_this, lgResourcesId)
+			{
+				Use.ajax({
+				  	type: 'POST',
+			  	   	url: '<?= $this->baseUrl ?>/ajax/adddownload?format=html',
+			  	  	data: {resource_id:lgResourcesId},
+			  	  	dataType: 'html',
+			   		success: function(data){
+						$(_this).removeAttr('onclick');
+						$(_this).attr('href', '<?= $this->baseUrl ?>/downloads');
+						$(_this).attr('target', '_parent');
+						$(_this).find('img').attr('src', '<?= $this->useDefault->images ?>/bt/btVerLista.png');
+					},
+					error: function(data){},
+					cache:false
+				});
+				return false;
+			}
+		</script>
+</head>
+<body>
+<?= $this->layout()->content ?>
+</body>
+</html>

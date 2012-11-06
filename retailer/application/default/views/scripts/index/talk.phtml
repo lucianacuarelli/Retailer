@@ -1,0 +1,39 @@
+<div class="UiMessage">
+	<div class="usePageTitle">
+		<h3>Fale com a LG</h3>
+		<div class="UiMessageButtons" style="float: right; margin-bottom: 20px;">
+				<div style="float: right; padding-top: 8px;">
+					<input id="newMessage" type="image" src="<?= $this->useDefault->images ?>/bt/btNovaMensagem.png" />
+				</div>
+				<!-- <div style="float: right;">
+					<form action="#" onsubmit="return false;">
+						<div class="UiSearchWrapMessage">
+							<input class="UiSearchTextMessage" type="text" name="searchMessage" id="searchMessage" />
+							<input class="UiSearchMessage" id="btSearchMessage" type="image" src="<?= $this->useDefault->images ?>/usePixel.gif" name="image" width="23" height="15"> 
+						</div>
+					</form>
+				</div> -->
+		</div>
+	</div>
+	<div class="usePageContent">
+		<form id="formMessage" action="#" onsubmit="return false;">
+			<label for="subject">Assunto:</label>
+			<input type="text" style="border: 1px solid #949597; width: 300px;" id="subject" name="subject" />
+			<label for="subject">Tipo:</label>
+			<select name="message_type" id="message_type">
+				<? foreach($this->listCategory as $value): ?>
+					<option value="<?= $value ?>"><?= $value ?></option>
+				<? endforeach; ?>
+			</select>
+			<textarea id="message" style="width: 960px;"></textarea>
+			<div style="padding: 10px 5px 10px 0px; text-align: right;">
+				<input id="cancelMessage" type="image" src="<?= $this->useDefault->images ?>/bt/btCancelar.png" value="Cancelar"/>
+				<input id="saveMessage" type="image" src="<?= $this->useDefault->images ?>/bt/btEnviar.png" />
+			</div>
+		</form>
+		<br />
+		<div id="showMessage" style="padding: 10px 0px 10px 0px;"></div>
+		<div class="useClear"></div>
+	</div>
+	<div class="useClear"></div>
+</div>

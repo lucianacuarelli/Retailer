@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+				  xmlns:s="library://ns.adobe.com/flex/spark"
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  xmlns:ui="devdoo.ui.*"
+				  width="430" height="310" close="closePopup(event)"
+				  creationComplete="create()">
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataProducts;
+			
+			import mx.controls.Alert;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  dataProducts
+			//----------------------------------
+			/**
+			 *  Gerencia de consultas na base de dados.  
+			 */  
+			private var _dataProducts:DataProducts;
+
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a popup for criada completamente.
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da popup,
+			 *  Cria instância do modelo de tabela,
+			 *  Recuper os variáveis de sessão 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 *  Configura permissão de acesso.
+			 * 
+			 *  @return void  
+			 */	
+			private function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startPopup(this);
+				
+				//Instancia a classe de gerenciamento das consultas na base de dados
+				this._dataProducts = new DataProducts();
+				
+				//Realiza consulta para buscar pelos itens do conteúdo
+				populate();
+				
+				//Adiciona os eventos 
+				addEvents();
+			}
+			
+			//----------------------------------
+			//  populate
+			//----------------------------------    	
+			/**
+			 * 	Realiza consulta para buscar pelos itens do conteúdo
+			 *  
+			 * @return void  
+			 */		
+			private function populate():void
+			{
+				this._dataProducts.openPopupProductsLink(populateResult)
+			}
+
+			//----------------------------------
+			//  populateResult
+			//----------------------------------    	
+			/**
+			 * 	Recebe o resultado da consulta e popula a lista de conteudo.
+			 *  
+			 * @return void  
+			 */		
+			private function populateResult(useResult:*):void
+			{
+				lsProductLink.dataProvider = useFX.populateCollection(useResult.useLgProducts);
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------    	
+			/**
+			 * 	Adiciona eventos nos elemementos necessários
+			 *  
+			 * @return void  
+			 */		
+			private function addEvents():void
+			{
+				//Adiciona evento de clique no botão, para salvar os dados
+				btSelect.addEventListener(MouseEvent.CLICK, savePopup);
+				
+				//Adiciona evento de clique no botão para fechar a popup
+				btCancel.addEventListener(MouseEvent.CLICK, closePopup);
+			}		
+			
+			//----------------------------------
+			//  savePopup
+			//----------------------------------
+			/**
+			 *  Executa acoes para salvar um elemento na base de dados
+			 *
+			 *  @return void
+			 */
+			private function savePopup(event:Event):void
+			{
+				if(lsProductLink.selectedIndex > -1)
+				{
+					var useResult:Object = new Object();
+					useResult.date_in 			= lsProductLink.selectedItem.date_in;
+					useResult.date_out 			= lsProductLink.selectedItem.date_out;
+					useResult.show_date_in 		= lsProductLink.selectedItem.show_date_in;
+					useResult.show_date_out 	= lsProductLink.selectedItem.show_date_out;
+					useResult.sourceId 			= lsProductLink.selectedItem.id;
+					useResult.title 			= lsProductLink.selectedItem.title;
+					useResult.linkHref			= useFX.baseUrl +"/contentshow/"+ lsProductLink.selectedItem.id +"/resources";
+					
+					useFX.closePopup(this, useResult);
+				}
+				else
+					Alert.show("Selecione um item");
+			}			
+			
+			//----------------------------------
+			//  saveResult
+			//----------------------------------
+			/**
+			 *  Evento disparado após interação com a base de dados,
+			 *  Configura o objeto para retornar para o módulo para compular o datagrid
+			 *
+			 *  @return void
+			 */ 			
+			private function saveResult(useResult:*):void
+			{
+			}			
+			
+			//----------------------------------
+			//  closePopup
+			//----------------------------------
+			/**
+			 *  Executa evento para fechar uma popup
+			 *
+			 *  @return void
+			 */ 		
+			private function closePopup(event:Event):void
+			{
+				useFX.closePopup(this, null);
+			}		
+			
+		]]>
+	</fx:Script>
+	<s:controlBarContent>
+		<s:Spacer width="100%"/>
+		<s:Button id="btSelect" label="Selecionar" styleName="btSave" tabIndex="100"/>
+		<s:Button id="btCancel" label="Cancelar" styleName="btCancel" tabIndex="101"/>
+	</s:controlBarContent>
+	<s:List id="lsProductLink" width="100%" height="100%" labelField="title"/>
+</s:TitleWindow>

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<?php 
+			//Configura componente swf
+			$this->useSwf('useFxSwf')
+				 ->src($this->useDefault->useFXapplication . '/WebIndexRegister')
+				 ->width('100%')
+				 ->height('100%');
+		?>
+		<title>UseDevDoo Admin</title>
+		
+		<!-- metatags -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Language" content="en"/>
+		
+		<!-- styles -->
+		<style type="text/css" media="screen">
+		<!--
+		 html,body{border:0;height:100%;margin:0; overflow:hidden;padding:0;width:100%;}
+		 #use_edit_content{ background:#333333;	top:62px; width:100%; height:100%;	z-index: 100; position:absolute; }	
+		 #fx{ height:100%; }
+		-->
+		</style>
+		
+		<!-- scripts -->
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/UseSwf.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery-1.3.2.min.js"></script>
+	</head>
+	<body>
+		<div id="fx">	
+<!-- Imprime o swf -->
+<?= $this->useSwf('useFxSwf') ?>
+		</div>
+	</body>
+</html>

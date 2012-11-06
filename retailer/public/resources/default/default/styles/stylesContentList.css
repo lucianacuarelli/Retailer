@@ -1,0 +1,1269 @@
+/* CSS Document */
+
+/*body {background:#f2f2f2; margin:0; padding:0; top:0; left:0; font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}*/
+body {
+	background:#FFFFFF; 
+	margin:0; padding:0; top:0; left:0; font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+h1,h2,h3,h4,h5,h5 {font-weight:normal; color:#CCCCCC;}
+a {text-decoration:none; color:#CCCCCC;}
+a:hover {text-decoration:none; color:#FFFFFF;}
+*{ margin: 0; padding: 0; z-index: 1; }
+img {border:0;}
+
+ol, ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+li{
+	/*border:1px #00FFFF solid;*/
+	/*height: 45px;*/
+}
+
+.useClear{
+	clear: both;
+}
+.usePage{
+}
+
+.useColor{
+	background-color: #e2e2e2;
+}
+
+.usePageTitle{
+	padding-bottom: 20px;
+	padding-left: 50px;
+	width: 920px;
+	margin-left: auto;
+	margin-right: auto;
+	background: url('../images/divider/linhaGrandeDivisao.png') no-repeat center 50px;
+}
+
+
+/*--------------------------------------------------------- accordion --*/
+		h2{ cursor: pointer; color: #6e6f71; font-weight: bold; font-size: 15px;}
+		.accordion{ display: none; width: 920px; margin-top: 0px; padding-left: 50px; padding-bottom: 0px;}
+		.active { width:944px; height:26px; padding-left: 30px; background-image: url('../images/accordion/accodionA.png'); }
+		.active span { float: right; padding-right: 10px; }
+		.deactive { width:944px; height:26px; padding-left: 30px; background-image: url('../images/accordion/accodionB.png'); }
+		.deactive span { float: right; padding-right: 20px; }
+		
+		.UiTotalItems{
+			font-size: 10px;
+			color: #cc3366;
+			font-weight: normal;
+			padding-top: 7px;
+		}
+		
+		
+/*--------------------------------------------------------- usePageIdentify --*/
+.usePageIdentify{
+	padding-top: 70px;
+	padding-left:170px;
+	width: 970px;
+	margin-left: auto;
+	margin-right: auto;
+	/*background: #ffffff;*/
+}
+.useHeaderUser{
+	padding-left: 3px;
+	height: 45px;
+}
+
+.useHeaderUser li{
+	float: none;
+	height: 12px;
+	color: #4d4d4f;
+	font-size: 11px;
+	border: none;
+}
+.UiUser{
+	float: left;
+	padding-left: 10px;
+	padding-top: 10px;
+}
+.UiCompany, .UiUserImage{
+	float: left;
+	padding-left: 0px;
+	padding-right: 10px;
+}
+.UiUserImage{
+	padding-top: 5px;
+	padding-left: 10px;
+}
+
+.usePageTitle h3{
+	font-size: 22px;
+	font-weight: bold;
+	color: #CC3366;
+	padding-top: 20px;
+}
+
+.UiDownload {
+	background: url('../images/divider/linhaDivisaoSubTitle.png') no-repeat center 60px;
+	padding-bottom: 20px;
+}
+.UiDownload h2{
+	font-weight: bold;
+	color: #CC3366;
+	padding-top: 20px;
+	padding-left: 50px;
+	padding-bottom: 20px;
+	padding-right: 10px;
+	width: 450px;
+	margin-right: auto;
+	text-align: left;
+	font-size: 23px;
+	color: #CC3366;
+	cursor: default;
+}
+.UiCode{
+	font-size: 10px;
+	font-weight: normal;
+}
+
+.useHeader{
+	height: 57px;
+	width: 100%;
+	position: fixed;
+  	top:0;
+  	z-index:9998;
+  	background:#f1f1f1 url('../images/bg/bgMenuTopo.png') no-repeat right top;
+}
+.useHeaderLogo{
+	width: 95px;
+	padding-left: 0px;
+	padding-top: 5px;
+}
+.useHeaderContent{
+	height: 57px;
+	width: 990px;
+  	background:#f1f1f1 url('../images/bg/bgMenuTopo.png') no-repeat right top;
+	clear: both;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.useHeaderContent li, .useCoverFlowMenu li{
+	float: left;
+}
+
+.useHeaderMenuDivider{
+	background: url('../images/divider/linhaMenuTopo.png') no-repeat right top;
+}	
+
+.useBannerWrap{
+	background:#e3e4e5;
+	height: 335px;
+	margin-top: 20px;
+}
+.useBanner{
+	margin-top: 20px;
+	background: url('../images/bg/bgBanner.png') no-repeat center center;
+	text-align: center;
+	padding: 10px;
+}
+
+.useCoverFlow{
+	height: 385px;
+	/*background:#f2f2f2 url('../images/bg/bgBannerCircle.png') no-repeat center center;*/
+	padding: 15px;
+}
+
+.useCoverFlowMenu{
+	width:990px;
+	height:33px;
+	margin-bottom:15px;
+	margin-left: auto;
+	margin-right: auto;
+ 	background:url('../images/bg/bgMenuMagenta.png') repeat;
+ 	margin-bottom: 20px;
+}
+
+.useCoverFlowMenu li{
+	width: 25%;
+}
+
+.useCoverFlowMenuHover a {text-decoration:none; color:#FFFFFF; fon}
+.useCoverFlowMenuHover a:hover {
+	text-decoration:none; 
+	color:#ca355f;
+}
+
+.useCoverFlowMenuLink {
+ 	padding-top: 7px;
+ 	margin-right: 3px;
+ 	height: 23px;
+ 	text-align: center;
+}
+.useCoverFlowMenuLinkLast {
+ 	margin-right: 0px;
+}
+
+.useCoverFlowMenuHover a:hover .useCoverFlowMenuLink{
+ 	background:url('../images/bg/bgMenuMagentaOver.png') repeat;
+ 	color: #FFFFFF;
+}
+
+.useCoverFlowMenuDivider{
+	background: url('../images/divider/linhaMenuMagenta.png') no-repeat right top;
+}
+
+
+
+
+
+
+.UiMenuImage .useCoverFlowMenu{
+	width:970px;
+	height:45px;
+	margin-left: auto;
+	margin-right: auto;
+ 	background:url('../images/bg/bgBigMenuMagenta.png') repeat;
+	margin-bottom:0px;
+}
+
+.UiMenuImage .useCoverFlowMenu li{
+}
+.UiMenuImage .UiBtImages{
+	width: 202px;
+}
+.UiMenuImage .UiBtImagesOver{
+	width: 200px;
+}
+
+.UiMenuImage .UiBtEspecificacoes{
+	width: 277px;
+}
+.UiMenuImage .UiBtEspecificacoesOver{
+	width: 275px;
+}
+
+.UiMenuImage .UiBtManual{
+	width: 263px;
+}
+.UiMenuImage .UiBtManualOver{
+	width: 261px;
+}
+
+.UiMenuImage .UiBtLogoGide{
+	width: 228px;
+}
+.UiMenuImage .UiBtLogoGideOver{
+	width: 228px;
+}
+
+.UiMenuImage .useCoverFlowMenuLink {
+ 	padding-top: 0px;
+ 	margin-right: 0px;
+ 	height: 45px;
+ 	text-align: center;
+}
+
+.UiMenuImage .useCoverFlowMenuHover a:hover .useCoverFlowMenuLink{
+ 	background:url('../images/bg/bgBigMenuMagentaOver.png') repeat;
+}
+
+.useCoverFlowMenuDivider{
+	background: url('../images/divider/bgBigMenuMagentaDivider.png') no-repeat right top;
+}
+
+
+
+
+
+
+
+.useFooter{
+	background:#bbbbbb url('../images/bg/bgBase.png') repeat-x;
+	height: 190px;
+}
+
+.useHeaderMenuLink {
+ 	padding: 14px 30px 0px 25px;
+ 	margin-right: 4px;
+ 	height: 31px;
+}
+
+.useHeaderMenu a {text-decoration:none; color:#FFFFFF; fon}
+.useHeaderMenu a:hover {
+	text-decoration:none; 
+	color:#ca355f;
+}
+.useHeaderMenu a:hover .useHeaderMenuLink{
+ 	background:url('../images/bg/bgMenuTopoOver.png') repeat;
+}
+	
+
+.useMenuIconMyAccount{
+	background:url('../images/icons/icMinhaConta.png') no-repeat;
+	padding-left: 28px;
+	height: 18px;
+} 
+
+.useMenuIconMyDownloads{
+	background:url('../images/icons/icMeusDownloads.png') no-repeat;
+	padding-left: 28px;
+	height: 18px;
+}
+ 
+.useMenuIconTalkLG{
+	background:url('../images/icons/icFaleComLG.png') no-repeat;
+	padding-left: 28px;
+	height: 22px;
+}
+ 
+.UiMenuImage{
+	width: 970px;
+	margin-left:auto;
+	margin-right:auto;
+} 
+.UiTalk{
+	width: 1002px;
+	margin-left:auto;
+	margin-right:auto;
+} 
+
+/*----------------------------------------------------------------- UiSearch --*/
+.UiSearchWrap{
+	background:url('../images/campoBusca.png') no-repeat left center;
+	margin-top: 7px;
+	width: 190px;
+} 
+.UiSearchText{
+	background: none;
+	border: none;
+	padding: 5px;
+	padding-left: 8px;
+} 
+
+.UiSearchButton{
+	opacity: 0;
+	width: 20px;
+	height: 30px;
+	cursor: pointer;
+} 
+
+.UiSearch{
+	padding-left: 10px;
+	background:none;
+} 
+
+/*----------------------------------------------------------------- UiSearchMessage --*/
+.UiSearchWrapMessage{
+	background:url('../images/bg/bgSearchMessage.png') no-repeat left center;
+	margin-top: 7px;
+} 
+.UiSearchTextMessage{
+	background: none;
+	border: none;
+	padding: 5px;
+	padding-left: 8px;
+} 
+
+
+/*----------------------------------------------------------------- usePageContent --*/
+.useProductMenu, .usePageContent,
+.useResourcesMenu, .useResourcesAccordion, 
+.imageflow, .UiProductToggleView{
+	width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.usePageDetail{
+	width: 970px;
+	height:610px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.usePageDetail .usePageContent{
+	width: 970px;
+	height:610px;
+	clear: both;
+	background:#FFFFFF;
+}
+
+.usePageContent{
+	/*border:1px #FF0000 solid;*/
+	clear: both;
+	background:url('../images/bg/bgFade.png') no-repeat center center;
+}
+
+
+.useProductMenu{
+	height: 45px;
+	/*border:1px #00FF00 solid;*/
+	background:url('../images/bg/bgBigMenuMagenta.png') repeat-x left top;
+}
+
+/*----------------------------------------------------- UiProductToggleView --*/
+
+.UiToggleList{
+	background:url('../images/icons/btToggleLista.png') repeat-x left top;
+	width: 66px;
+	height: 35px;
+	float: right;
+	cursor: pointer;
+	clear: both;
+	display: none;
+}
+
+.UiButtonToogleList{
+	float: left;
+}
+.UiButtonToogleMiniatura{
+	float: right;
+}
+
+/*---------------------------------------------------------- #UiContentShow --*/
+
+#UiContentShow, #UiContentList {
+	width: 100%;
+	float: none;
+	clear: both;
+	/*border:1px #00FF00 solid;*/
+	padding-top: 0px;
+	padding-bottom: 35px;
+}
+
+
+/*-------------------------------------------------------------- #UiContent --*/
+
+#UiContent, #UiContentList {
+	width: 100%;
+	float: none;
+	clear: both;
+	/*border:1px #00FF00 solid;*/
+	padding-top: 20px;
+	padding-bottom: 35px;
+}
+
+#UiContent .useLeftColumn, #UiContentList .useLeftColumn{
+	float: left;
+	width: 170px;
+	padding-bottom: 45px;
+	padding-left: 10px;
+}
+#UiContentList .useLeftColumn{
+	height: 500px;
+	width: 0px;
+	padding:0px;
+	
+}
+
+#UiContent .useRightColumn, #UiContentList .useRightColumn{
+	float: right;
+	width: 799px;
+}
+
+#UiContentList .useRightColumn{
+	width: 989px;
+}
+
+
+.useMenuPageList .UiTitle a{color: #4d4d4f;}
+.useMenuPageList .UiTitle a:hover{color: #000000;}
+
+
+
+
+/*-------------------------------------------------------------- #UiContentDetail --*/
+#UiContentDetail{
+	width: 100%;
+	float: none;
+	clear: both;
+	/*border:1px #00FF00 solid;*/
+}
+
+#UiContentDetail .useLeftColumn{
+	float: left;
+	padding: 30px 15px 30px 15px;
+	/*border:1px #FFFF00 solid*/
+	/*background-color: #FFFF00;*/
+}
+
+#UiContentDetail .useRightColumn{
+	float: right;
+	padding: 0px 20px 0px 20px;
+	width: 387px;
+	/*border:1px #00FFFF solid*/
+	/*background-color: #00FF00;*/
+}
+
+#UiContentDetail .useProduct{
+	height: 550px;
+	/*border:1px #00FFFF solid;*/
+	/*background-color: #00FFFF;*/
+}
+#UiContentDetail .useProductInteraction{
+	width: 385px;
+	height: 550px;
+	/*border:1px #00FFFF solid;*/
+	background-color: #00FFFF;
+}
+
+#UiContentDetail .UiButtonClose{
+	height: 20px;
+}
+
+#UiContentDetail .UiComments{
+	height: 420px;
+	padding-bottom: 20px;
+}
+#UiContentDetail .UiNavBar{
+	height: 40px;
+	padding-bottom: 5px;
+}
+#UiContentDetail .UiCommentsInfo{
+	height: 20px;
+	padding-top: 5px;
+	padding-left: 60px;
+}
+#UiContentDetail .UiCommentsInfo span{
+	height: 20px;
+	padding-top: 5px;
+	font-weight: bold;
+	font-size: 9px;
+	color: #6D6E71;
+	padding-right: 18px;
+}
+
+#UiContentDetail .UiProductMenu{
+	padding-top: 20px;
+	padding-bottom: 0px;
+}
+#UiContentDetail .useMenuPage{
+	padding-left: 10px;
+	padding-top: 10px;
+	margin-left: 2px;
+	clear: both;
+	width: 370px;
+}
+
+#UiContentDetail .UiDisplay{
+	padding-left:7px;
+	padding-top:7px;
+	width: 505px;
+	height: 355px;
+	background:url('../images/bg/bgDisplayBig.png') repeat-x left top;
+}
+
+#UiContentDetail .UiComment{
+	width: 100%;
+	float: none;
+}
+#UiContentDetail .useComment{
+	width: 350px;
+	padding-bottom: 5px;
+	color: #6d6e70;
+	font-size: 11px;
+	line-height: 15px;
+}
+#UiContentDetail .UiComment li{
+	padding: 10px;
+}
+
+.useComment .UiTitle{
+	color: #C5355D;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.UiComment .useColor{
+	background-color: #e6e7e9;
+}
+.UiComment .UiWrap{
+	color: #6d6e70;
+	font-size: 10px;
+}
+.UiComment .UiDetail{
+	float: right;
+}
+
+.UiCommentButtons{
+}
+.UiCommentButtons li{
+	float: left;
+	height: 22px;
+	padding: 0px;
+}
+
+.UiButtonShow{
+	padding-right: 10px;
+}
+
+.UiButtonComment{
+	background:transparent url("../images/bt/btComentar.png") no-repeat 0px 0px;;
+}
+.UiButtonDownload{
+	background:transparent url("../images/btComment.png") no-repeat -94px 0px;
+}
+.UiButtonEmail{
+	background:transparent url("../images/bt/btEmail.png") no-repeat 0px 0px;
+}
+
+/*----------------------------------------------------------------- UiProductDetail --*/
+
+#UiContentDetail .useProduct{
+	width: 510px;
+	color: #6D6E71;
+	
+}
+#UiContentDetail .useProduct .UiDetailWrap{
+	padding-bottom: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+#UiContentDetail .useProduct .UiDetail{
+	padding-bottom: 5px;
+}
+#UiContentDetail .useProduct .UiDetail .UiRating{
+	float: right
+}
+#UiContentDetail .useProduct .UiDetail .UiTitle span{
+	font-size: 15px;
+	font-weight: bold;
+}
+#UiContentDetail .useProduct .UiDetail .UiTitle .UiDate{
+	font-size: 15px;
+	float: right
+}
+
+
+#UiContentDetail .useProduct .UiDetail .UiTitle .UiDetail{
+	font-size: 11px;
+	padding-top: 3px;
+}
+
+.UiDescriptionWrap {
+	background: #ebebeb;
+	padding: 5px;
+}
+
+.UiDescriptionWrap span{
+	line-height: 15px;
+}
+
+.UiRating{
+	font-size: 11px;
+}
+.UiRating .UiStars{
+	padding-top: 3px;
+}
+
+
+/*----------------------------------------------------------------- UiProductDetail --*/
+.UiProductDetail{
+	width: 100%;
+	padding-top: 0px;
+	padding-bottom: 30px;
+}
+
+.UiProductDetail .UiProductList{
+	width: 80px;
+	padding: 0px 0px 25px 0px;
+}
+
+.UiProductDetail .UiProductDetailImage{
+	width: 335px;
+	height: 375px;
+	/*overflow: hidden;*/
+}
+
+.UiProductDetailImage img{
+	border: none;
+	margin: auto;
+	
+}
+.UiProductDetailImage .UiImage{
+	width: 335px;
+	height: 375px;
+	text-align:center;
+}
+	
+
+.UiProductDetail .UiProductDetailInfo{
+	width: 310px;
+	padding-right: 30px;
+}
+
+.UiProductDetailInfo, .UiProductDetailImage, .UiProductList{
+	float: left;
+}
+
+.UiStarText, .UiStarRating{
+	float: left;
+	padding-right: 5px;
+}
+
+.UiRatingAdd{
+	padding-top: 10px;
+	font-weight: bold;
+}
+
+/*----------------------------------------------------- UiProductDetailInfo --*/
+.UiProductDetailInfo .UiProductDate{
+	font-size: 9px;
+	color: #6D6E71;
+	padding-bottom: 50px;
+}
+.UiProductDetailInfo .UiProductTitle{
+	font-size: 33px;
+	color: #6D6E71;
+	padding-bottom: 20px;
+}
+.UiProductDetailInfo .UiProductText{
+	font-size: 11px;
+	color: #6D6E71;
+	padding-bottom: 30px;
+	line-height: 17px;
+}
+
+
+.UiProductInfo {
+	padding-bottom: 60px;
+}
+.UiProductMenu{
+	padding-bottom: 20px;
+}
+.UiProductInfo .UiTitle{
+	font-weight: bold;
+	color: #6D6E71;
+	font-size: 10px;
+	padding-bottom: 20px;
+}
+.UiProductMenu .UiTitle{
+	font-weight: bold;
+	color: #C12752;
+	font-size: 10px;
+	padding-bottom: 20px;
+}
+
+
+/*-----------------------------------------------------------------XXresources--*/
+.useResourcesMenu{
+	height: 45px;
+	background:url('../images/bg/bgBigMenuMagenta.png') repeat-x left top;
+}
+.useResourcesAccordion{
+	border:1px #00FFFF solid;
+	height: 600px;
+	padding-top: 30px;
+	/*background:url('../images/bg/bgBannerCircle.png') no-repeat center center;*/
+}
+
+
+/*----------------------------------------------------------- UiProductList --*/
+
+.UiProductList{
+	margin-left: 15px;
+	cursor: pointer;
+	width: 140px;
+}
+.UiProductList .useTitle{
+	color: #6D6E71;
+	font-size: 10px;
+	font-weight: bold; 
+}
+.UiProductList .useTitleDate{
+	color: #6D6E71;
+	font-size: 8px;
+}
+.UiProductList .useImage{
+	width: 120px;
+	height: 110px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 5px;
+}
+
+.UiProductList li{
+	width: 120px;
+	height: 170px;
+	/*border:1px #00FF00 solid;*/
+}
+
+
+/*-------------------------------------------------------------UiProductMiniList--*/
+
+.UiProductMiniList{
+	margin-left: 15px;
+	cursor: pointer;
+	width: 75px;
+}
+.UiProductMiniList .useImage{
+	width: 60px;
+	height: 50px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 5px;
+	background: #FFFFFF;
+}
+
+.UiProductMiniList li{
+	width: 65px;
+	height: 65px;
+}
+
+
+
+/*-----------------------------------------------------------------scrollbar--*/
+.UiProductMiniList .VScrollbar .viewport { width: 60px; height: 390px; overflow: hidden; position: relative; }
+.UiProductList .VScrollbar .viewport { width: 125px; height: 630px; overflow: hidden; position: relative; }
+.UiProductDetail .UiProductList .VScrollbar .viewport { width: 60px; height: 390px; overflow: hidden; position: relative; }
+.UiComment .VScrollbar .viewport { width: 370px; height: 340px; overflow: hidden; position: relative; }
+.UiDescription .VScrollbar .viewport {  width: 425px; height: 100px; overflow: hidden; position: relative; }
+
+.VScrollbar {width: 100%;}
+.VScrollbar .overview { list-style: none; position: absolute; left: 0; top: 0; padding: 0; margin: 0; }
+.VScrollbar .scrollbar{ background: transparent url(../images/bg-scrollbar-track-y.png) no-repeat 0 0; position: relative; background-position: 0 0; float: right; width: 15px; }
+.VScrollbar .track { background: transparent url(../images/bg-scrollbar-trackend-y.png) no-repeat 0 100%; height: 100%; width:13px; position: relative; padding: 0 1px; }
+.VScrollbar .thumb { background: transparent url(../images/bg-scrollbar-thumb-y.png) no-repeat 50% 100%; height: 20px; width: 25px; cursor: pointer; overflow: hidden; position: absolute; top: 0; left: -5px; }
+.VScrollbar .thumb .end { background: transparent url(../images/bg-scrollbar-thumb-y.png) no-repeat 50% 0; overflow: hidden; height: 5px; width: 25px; }
+.VScrollbar .disable { display: none; }
+
+
+.UiAccodionWrap{
+	height: 120px;
+}
+
+.UiItem{
+	float:left;
+	width: 260px;
+	height: 155px;
+	background: url("../images/bg/bgItemResource.png") no-repeat top left transparent;
+	padding-left: 6px;
+	padding-top: 6px;
+	padding-right: 20px;
+}
+
+.UiItem table{
+}
+
+.UiTableLeftColumn{
+	/*border:1px solid #FF00FF;*/
+}
+
+.UiTableLeftColumn .UiImage{
+	width: 100px;
+	height: 95px;
+	overflow: hidden;
+	margin-top: 5px;
+}
+
+.UiResourceTitle{
+	height: 20px;
+	padding-top: 3px;
+	padding-bottom: 5px;
+}
+
+
+a.iframeContentShow{
+	height: 20px;
+	color: #3e3e3e;
+	font-size: 11px;
+	padding-top: 3px;
+	padding-bottom: 5px;
+}
+a.iframeContentShow:hover{
+	color: #be2752;
+}
+
+
+
+.UiHomeDetail {
+	padding-right: 15px;
+}
+.UiHomeDetail .UiText{
+	text-align: right;
+	font-size: 9px;
+	color: #FFFFFF;
+	
+}
+
+.UiHomeDetail .UiFormat{
+	color: #FFFFFF;
+	text-align: right;
+	font-size: 11px;
+	font-weight:bold;
+	background:transparent url("../images/bg/bgFormat.png") no-repeat 8px 1px;
+	width: 38px;
+	height: 17px;
+	float: right;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 1px;
+}
+.UiHomeDetail .UiFormatAccordion{
+	color: #FFFFFF;
+	text-align: right;
+	font-size: 11px;
+	font-weight:bold;
+	background:transparent url("../images/bg/bgFormatDark.png") no-repeat 8px 1px;
+	width: 38px;
+	height: 17px;
+	float: right;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 1px;
+}
+
+.iconHomeStar, .iconHomeDownload, .iconHomeComment, .iconHomeView{
+	text-align: right;
+	height: 22px;
+	width: 22px;
+	font-style: italic;
+	font-size: 12px;
+	color: #CCC;
+	float: left;
+}
+.iconText{
+	font-style: italic;
+	font-size: 12px;
+	color: #CCC;
+	float: left;
+	padding-left: 3px;
+	padding-right: 15px;
+	padding-top: 4px;
+}
+.iconHomeStar{
+	background: url("../images/icons/home/iconHomeStar.png") no-repeat left center;
+}
+.iconHomeDownload{
+	background: url("../images/icons/home/iconHomeDownload.png") no-repeat left center;
+}
+.iconHomeComment{
+	background: url("../images/icons/home/iconHomeComment.png") no-repeat left center;
+}
+.iconHomeView{
+	background: url("../images/icons/home/iconHomeView.png") no-repeat left center;
+}
+
+.UiTableRightColumn .UiButton{
+	padding-left: 30px;
+	padding-top: 10px;
+}
+
+border:1px solid #FF0000;
+
+.HScrollbar {
+    margin: 20px 0 10px;
+    width: 251px;
+}
+.HScrollbar .viewport {
+    overflow: hidden;
+    position: relative;
+}
+.HScrollbar .overview {
+    left: 0;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    /*width: 2500px;*/
+}
+.HScrollbar .overview img {
+    float: left;
+}
+
+.HScrollbar .scrollbar {
+    background: url("../images/bg-scrollbar-track-x.png") no-repeat scroll 0 0 transparent;
+    clear: both;
+    height: 15px;
+    margin: 0 0 5px;
+    position: relative;
+}
+.HScrollbar .track {
+    background: url("../images/bg-scrollbar-trackend-x.png") no-repeat scroll 100% 0 transparent;
+    height: 15px;
+    position: relative;
+    width: 100%;
+}
+.HScrollbar .thumb {
+    background: url("../images/bg-scrollbar-thumb-x.png") no-repeat scroll 100% 50% transparent;
+    cursor: pointer;
+    height: 25px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: -5px;
+}
+.HScrollbar .thumb .end {
+    background: url("../images/bg-scrollbar-thumb-x.png") no-repeat scroll 0 50% transparent;
+    height: 25px;
+    overflow: hidden;
+    width: 5px;
+}
+.HScrollbar .disable {
+    display: none;
+}
+
+/* ----------------------------------------------------------------- MenuPage */
+.useMenuPage{
+	font-size: 11px;
+	padding-top: 4px;
+	padding-left: 10px;
+	margin-top: 8px;
+	margin-left: 2px;
+	clear: both;
+	width: 550px;
+}
+.useMenuPage li{
+	float: left;
+	height: 19px;
+	padding-bottom: 5px;
+}
+
+.useMenuPageList{
+	font-size: 11px;
+	padding-top: 4px;
+	clear: both;
+	width: 989px;
+}
+.useMenuPageList li{
+	float: left;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.useMenuPageList .UiTitle{
+	width:250px;
+	float: left;
+	padding-left: 20px;
+	color: #4D4D4F;
+	font-size: 13px;
+	font-weight: bold;
+	margin-right: 5px;
+	padding-bottom: 4px;
+}
+
+
+.undefined{
+	z-index: 99999;
+}
+.UiLoading{
+	background:transparent url("../images/useLoading.gif") no-repeat center center;
+}
+
+
+/* ------------------------------------------------------ UiRegisterCorporate */
+.UiRegisterCorporate{
+    	/*border:1px solid #FF0000;*/
+    	width: 800px;
+    	margin-left: auto;
+    	margin-right: auto;
+}
+.UiRegisterCollaborator{
+    padding-top: 30px;
+}
+.UiRegisterCorporate .UiItem{
+	width: 100%;
+	height: 70px;
+	background: none;
+}
+.UiRegisterCorporate .UiImage{
+	width: 160px;
+	padding-left:20px;
+	float: left;
+}
+.UiRegisterCorporate .UiText{
+	padding-top: 40px;
+}
+
+.UiRegisterCollaborator{
+	margin-top:70px;
+    background:#dcdcdc;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.UiRegisterCollaborator .UiSpace{
+	height: 30px;
+}
+.UiRegisterCollaborator .UiContent{
+	width: 800px;
+	height:235px;
+    margin-left: auto;
+    margin-right: auto;
+    background:transparent url("../images/linhaVertical.png") no-repeat center center;
+}
+.UiRegisterCollaborator .UiLeftColumn{
+	width: 390px;
+	height:235px;
+}
+.UiRegisterCollaborator .UiRightColumn{
+	width: 330px;
+	height:235px;
+	float: right;
+	
+}
+.UiRegisterCollaborator .UiUserInfo{
+	width: 390px;
+	height:235px;
+}
+.UiRegisterCollaborator .UiPassWord {
+	width: 240px;
+	height: 22px;
+	padding-left: 5px;
+	font-size: 11px;
+	color: #7a7a7c;
+}
+.UiRegisterCollaborator .UiCursorPointer {
+	cursor: pointer;
+}
+.UiRegisterCollaborator .UiGroup{
+	height: 40px; 
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: bold;
+}
+.UiRegisterCollaborator .UiGroup .UiIcon{
+	height: 40px; 
+	width: 40px;
+	float: left;
+}
+.UiRegisterCollaborator .UiGroup .UiEdit{
+	padding-top: 1px;
+}
+.UiRegisterCollaborator .UiForm {
+	height: 100px;
+	margin-left: 85px;
+	color: #6D6E71;
+	font-size: 11px;
+	line-height: 14px;
+}
+.UiRegisterCollaborator .UiGroup .UiEdit .UiText{
+	color: #6D6E71;
+	font-size: 13px;
+}
+.UiRegisterCollaborator .UiGroup .UiEdit .UiTextLight{
+	font-weight: normal;
+	color: #6D6E71;
+	font-size: 10px;
+}
+.UiRegisterCollaborator .UiMenu{
+	color: #be2752;
+	font-size: 10px;
+	font-weight: bold;
+	float: right;
+	padding-right: 50px; 
+}
+#errorPassword{
+	color: #be2752;
+	font-size: 10px;
+}
+
+.UiRegisterCollaborator  .UiRightColumn .UiTitle{
+	width: 150px;
+	height:25px;
+	text-align: right;
+	font-weight: bold;
+	color: #6D6E71;
+	font-size: 11px;
+}
+.UiRegisterCollaborator  .UiRightColumn .UiText{
+	height:25px;
+	color: #6D6E71;
+}
+
+.UiFormNickName {
+	margin-left: 85px;
+	color: #6D6E71;
+	font-size: 11px;
+	line-height: 14px;
+}
+
+.UiDetail {
+	/*border: 1px solid #FF0000;*/
+	height: 50px;
+	width: 300px;
+	z-index: 100;
+	position: relative;
+}
+
+
+
+.UiButtonBack {
+	color: #BE2752;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+
+.UiAccordion h2{
+	/*margin-bottom: 20px;*/
+	margin-top: 10px;
+	margin-left: 7px;
+}
+.UiAccordionItem .UiText{
+	color: #373636;
+}
+.UiAccordionDisabled{
+	opacity: 0.35;
+}
+
+
+.UiMessageButtons{
+	/*border: 1px solid #FF0000;*/
+	width: 330px;
+}
+#showMessage{
+	margin-bottom: 50px;
+	margin-top: 20px;
+}
+#message{
+	padding: 10px;
+	border: 1px solid #949597;
+}
+div#showMessage table tbody tr.useColor td div,
+div#showMessage table tbody tr td div{
+	margin-bottom: 50px;
+	margin-top: 20px;
+	padding-left: 10px;
+}
+
+div#showMessage table tbody tr.useColor td,
+div#showMessage table tbody tr td{
+	padding-left: 10px;
+	padding-top: 10px;
+	color: #464646;
+}
+
+
+html body div.usePage div.UiRegisterCollaborator div.UiContent div.UiRightColumn table tbody tr td ul li{
+	font-size: 12px;
+	color: #6d6e71;
+	line-height: 15px;
+}
+
+
+.UiDisable{
+	color: #cacaca;
+	cursor: default;
+}
+
+.UIDownloadMessage .UiText{
+	color: #58595b;
+	font-size: 14px;
+}
+.UIDownloadMessage .UiTextBig{
+	font-size: 17px;
+}
+.UIDownloadMessage .UiTextBold, .UIDownloadMessage .UiTextBoldColor{
+	font-size: 13px;
+	font-weight: bold;
+}
+.UIDownloadMessage .UiTextBoldColor{
+	font-size: 14px;
+	color: #c12752;
+}
+
+
+.UIDownloadMessage a{color: #c12752;}
+.UIDownloadMessage a:hover{color: #0055ff;}
+
+

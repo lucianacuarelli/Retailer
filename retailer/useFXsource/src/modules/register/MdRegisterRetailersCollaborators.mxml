@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ui="devdoo.register.layout.ui.*"
+		  width="100%" height="100%" 
+		  creationComplete="create()">
+
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabAddress;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabCorporate;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabDetail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabEmail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabGroups;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPersonal;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPhone;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabSocialMedia;
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Retailers e seus Colaboradores');
+				
+				registerCorporate.start(UiRegister.COMMERCIAL)
+					.defaultProfile('5')
+					.profileManagerIds([1,3])
+					.disableInitialPreference()
+					.addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+					.addTab('Grupos', GrRegisterTabGroups, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.disableInitialPreference()
+					.pageSize(25)
+					.create()
+					.populate();
+				
+				registerCollaborator.start(UiRegister.PERSONAL)
+					.defaultProfile('6')
+					.profileManagerIds([1,3])
+					.disableInitialPreference()
+					.addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+					.addTab('Grupos', GrRegisterTabGroups, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.disableInitialPreference()
+					.pageSize(25)
+					.create()
+					.populateParent("70");
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();	
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */
+			private function addEvents():void{
+				registerCorporate.addEventListener(UiRegister.SELECTION_CHANGE, showParent);
+				registerCorporate.addEventListener(UiRegister.REFRESH, reload);
+				registerCollaborator.addEventListener(UiRegister.SELECTION_CHANGE, showDetail);
+				registerCollaborator.addEventListener(UiRegister.REFRESH, reload);
+			}
+			
+			//----------------------------------
+			//  reload
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function reload(reload:Event):void
+			{
+				registerInfo.reset();
+			}
+			
+			//----------------------------------
+			//  showParent
+			//----------------------------------
+			/**
+			 * Consulta a base de dados registros relacionados com a tabela pai.  
+			 * 
+			 *  @return void
+			 */
+			protected function showParent(event:Event):void
+			{
+				registerCollaborator.populateParent(registerCorporate.selectedItem.USE_REGISTER_id);
+				registerInfo.showDetail(registerCorporate.selectedItem);
+			}
+			
+			
+			//----------------------------------
+			//  showDetail
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function showDetail(event:Event):void
+			{
+				registerInfo.showDetail(registerCollaborator.selectedItem);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:SkinnableContainer left="0" right="320" top="20" bottom="20"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+		<s:layout>
+			<s:VerticalLayout gap="25"/>
+		</s:layout>
+		
+		<ui:UiRegister id="registerCorporate" title="Lista de Empresas" subTitle="Gerencia a lista de todas as empresas registradas no sistema"/>
+		<ui:UiRegister id="registerCollaborator" title="Lista de Colaboradores" subTitle="Gerencia a lista de todas os colaboradores relacionados as empresas"/>
+	</s:SkinnableContainer>
+	
+	<ui:UiRegisterInfo id="registerInfo" right="10" top="10" bottom="10"/>
+	
+</s:Module>

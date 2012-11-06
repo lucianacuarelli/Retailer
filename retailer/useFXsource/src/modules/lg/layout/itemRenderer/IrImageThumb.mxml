@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:d="http://ns.adobe.com/fxg/2008/dt"
+				width="168" height="168" autoDrawBackground="false" dataChange="dataChange(event)">
+
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			import devdoo.ui.UiUploader;
+			
+			import modules.lg.model.UseLgResources;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+
+			
+			//------------------------------------------------------------------
+			//
+			//  Icons
+			//
+			//------------------------------------------------------------------         
+			[Embed(source="/assets/icons100/iconesEspTecnicas100x80.png")]
+			[Bindable] public var iconEspTecnicas:Class;
+			
+			[Embed(source="/assets/icons100/iconesFeatures100x80.png")]
+			[Bindable] public var iconFeatures:Class;
+			
+			[Embed(source="/assets/icons100/iconesFlash100x80.png")]
+			[Bindable] public var iconFlash:Class;
+			
+			[Embed(source="/assets/icons100/iconesHTML100x80.png")]
+			[Bindable] public var iconHtml:Class;
+			
+			[Embed(source="/assets/icons100/iconesLogos100x80.png")]
+			[Bindable] public var iconLogos:Class;
+			
+			[Embed(source="/assets/icons100/iconesManualInst100x80.png")]
+			[Bindable] public var iconManualInst:Class;
+			
+			[Embed(source="/assets/icons100/iconesOutros100x80.png")]
+			[Bindable] public var iconOutros:Class;
+			
+			[Embed(source="/assets/icons100/iconesPDF100x80.png")]
+			[Bindable] public var iconPdf:Class;
+			
+			[Embed(source="/assets/icons100/iconesPSD100x80.png")]
+			[Bindable] public var iconPsd:Class;
+			
+			[Embed(source="/assets/icons100/iconesVideos100x80.png")]
+			[Bindable] public var iconVideos:Class;		
+			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Evento executado sempre que o data é alterado.
+			 * 
+			 *  @return void  
+			 */	
+			private function dataChange(event:FlexEvent):void
+			{
+				//Verifica se tem dados
+				if(!data) return;
+				
+				//Configura informação sobre imagem em alta
+				checkImageHigh();
+				
+				//Verifica se o total de retailers é maior
+				if(int(data.USE_LG_RESOURCES_total_retailer) > 0){
+					rtTotalRetailer.addEventListener(MouseEvent.CLICK, editGroupsResources);
+					rtTotalRetailer.useHandCursor = true;
+					rtTotalRetailer.buttonMode = true;
+				}else{
+					rtTotalRetailer.removeEventListener(MouseEvent.CLICK, editGroupsResources);
+					rtTotalRetailer.useHandCursor = false;
+					rtTotalRetailer.buttonMode = false;
+				}
+					
+				//Configura o total de retailers associados ao recurso
+				rtTotalRetailer.text = "("+ data.USE_LG_RESOURCES_total_retailer +")";
+				
+				//Verifica a situação do recurso
+				switch(data.USE_LG_RESOURCES_resource_status)
+				{
+					case "AGA":
+					{
+						materialTypeColor.color = 0xC60000;
+						rtFormat.toolTip = "Aguardando aprovação";
+						ptStatusColor.color = 0x8E8B8B;
+						grStatus.toolTip = "Status não publicado";
+						break;
+					}
+						
+					case "NAP":
+					{
+						materialTypeColor.color = 0xC60000;
+						rtFormat.toolTip = "Não aprovado";
+						ptStatusColor.color = 0x8E8B8B;
+						grStatus.toolTip = "Status não publicado";
+						break;
+					}
+
+					case "APR":
+					{
+						materialTypeColor.color = 0xFF8A00;
+						rtFormat.toolTip = "Aprovado";
+						ptStatusColor.color = 0x8E8B8B;
+						grStatus.toolTip = "Status não publicado";
+						break;
+					}
+
+					case "APP":
+					{
+						materialTypeColor.color = 0x00A700;
+						rtFormat.toolTip = "Aprovado e publicado";
+						ptStatusColor.color = 0xBFFF00;
+						grStatus.toolTip = "Status publicado";
+						break;
+					}
+
+					case "AND":
+					{
+						materialTypeColor.color = 0x8E8B8B;
+						rtFormat.toolTip = "Aprovado e despublicado";
+						ptStatusColor.color = 0x8E8B8B;
+						grStatus.toolTip = "Status despublicado";
+						break;
+					}
+				}
+				
+				//Seleciona o tipo de arquivo que deve ser mostrado como imagem
+				switch(data.USE_LG_RESOURCES_resource_type)
+				{
+					case "IMG":
+					{
+						displayImage.source = UseFX.start().baseUrl + data.USE_LG_RESOURCES_folderpath + '/thumb/' + data.USE_LG_RESOURCES_filename;
+						
+						grImageType.visible = true;
+						break;
+					}
+					case "VDO":
+					{
+						//Verifica se o formato é do tipo imagem reconhecida pelo sistema
+						if(data.USE_LG_RESOURCES_image_video)
+							displayImage.source = UseFX.start().baseUrl + data.USE_LG_RESOURCES_folderpath + '/' + data.USE_LG_RESOURCES_image_video;
+						else
+							displayImage.source = iconVideos;
+						break;
+					}
+					case "LGO":
+					{
+						//Verifica se o formato é do tipo imagem reconhecida pelo sistema
+						if(data.USE_LG_RESOURCES_format == 'jpg' || data.USE_LG_RESOURCES_format == 'png' || data.USE_LG_RESOURCES_format == 'gif' || data.USE_LG_RESOURCES_format == 'bmp')
+							displayImage.source = UseFX.start().baseUrl + data.USE_LG_RESOURCES_folderpath + '/thumb/' + data.USE_LG_RESOURCES_filename;
+						else
+							displayImage.source = iconLogos;
+						
+						break;
+					}
+					case "FTE":
+					{
+						displayImage.source = iconFeatures;
+						break;
+					}
+					case "HTM":
+					{
+						displayImage.source = iconHtml;
+						break;
+					}
+					case "FLA":
+					{
+						displayImage.source = iconFlash;
+						break;
+					}
+					case "PSD":
+					{
+						displayImage.source = iconPsd;
+						break;
+					}
+					case "PDF":
+					{
+						displayImage.source = iconPdf;
+						break;
+					}
+					case "OUT":
+					{
+						displayImage.source = iconOutros;
+						break;
+					}
+					case "EST":
+					{
+						displayImage.source = iconEspTecnicas;
+						break;
+					}
+					case "MNL":
+					{
+						displayImage.source = iconManualInst;
+						break;
+					}
+				}
+			}
+			
+			//----------------------------------
+			//  fileSize
+			//----------------------------------
+			/**
+			 * Converte o tamanho do arquivo
+			 * http://stackoverflow.com/questions/5805826/actionscript-code-to-convert-bytes-to-kb-mb-gb-etc
+			 * 
+			 *  @return void  
+			 */	
+			private function fileSize(bytes:Number):String
+			{
+				var levels:Array = ['bytes', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb', 'zb', 'yb'];
+				var index:uint = Math.floor(Math.log(bytes)/Math.log(1024));
+				return (bytes/Math.pow(1024, index)).toFixed(2) + levels[index];
+			}			
+			
+			//----------------------------------
+			//  uploadPopup
+			//----------------------------------
+			/**
+			 *  Abre popup para publicar imagem no servidor
+			 * 
+			 *  @param event Evento de mouse
+			 *  @return void 
+			 */				
+			private function uploadPopup(event:MouseEvent):void
+			{
+				var folderPath:String = data.USE_LG_RESOURCES_folderpath +'/alta';
+				var sourceTitle:String = data.USE_LG_RESOURCES_filename;
+				var pos:int = sourceTitle.indexOf(".");
+					sourceTitle = sourceTitle.substr(pos+1);
+					
+				var filename:String = data.USE_LG_RESOURCES_filename;
+					filename = filename.substr(0, -4);
+			
+				var fileFilter:Array = new Array();
+					fileFilter['textFilter'] = "Images (*.jpg, *.jpeg, *.png, *.gif)";
+					fileFilter['typesFilter'] = "*.jpg; *.jpeg; *.png; *.gif;";				
+				
+				 //Configura e abre popup para adicionar sub-menu 
+				   var useUploader:UiUploader = UseFX.start().openPopup(UiUploader, "Upload de imagem", uploadPopupResult);
+				       useUploader.folderPath(folderPath)
+					         	  .fileNameType(UiUploader.FILE_NAME_TYPE_CONFIGURED)
+					              .fileFilter(fileFilter['textFilter'], fileFilter['typesFilter'])
+								  .allowCreateThumbNail(false)
+					              .allowMultipleFiles(false)
+					              .resource(filename, sourceTitle);
+				
+			}
+			
+			//----------------------------------
+			//  uploadPopupResult
+			//----------------------------------
+			private var _fileSize:Number;
+			   /**
+			    *  Processa dados resultados da operação de upload de imagens
+			    *  Salva na base de dados as informações referente a cada imagem publicada.
+			    * 
+			    *  @param useResult Dados resultantes da interação com a base de dados
+			    *  @return void 
+			    */
+			private function uploadPopupResult(useResult:*):void
+			{
+				Alert.yesLabel = "Sim";
+				Alert.noLabel = "Não";
+				Alert.cancelLabel = "Cancelar";
+				
+				//Verifica se a imagem foi publicada
+				if(useResult.length){
+					var useLgResources:UseLgResources = new UseLgResources();
+						useLgResources.has_image_high = true;
+						useLgResources.filesize = useResult[0]['size'];
+						useLgResources.update('id='+data.USE_LG_RESOURCES_id, updateUploadResult);
+						this._fileSize = Number(useResult[0]['size']);
+				}
+				else{
+					Alert.show("Falha no upload de Imagem", "Mesagem de alerta");
+				}
+			}
+			//----------------------------------
+			//  updateUploadResult
+			//----------------------------------
+			   /**
+			    *  Resultado da atualização da base de dados
+			 	* 
+			    *  @param useResult Dados resultantes da interação com a base de dados
+			    *  @return void 
+			    */
+			private function updateUploadResult(useResult:*):void
+			{
+				//Verifica se a imagem foi publicada
+				if(useResult.lastUpdateStatus == "success"){
+					grImageType.visible = true;
+					rtImageType.text = 'A';
+					rtImageType.setStyle("color", "#d0ff00");
+					//Configura o tamanho do arquivo
+					rtFileSize.text = fileSize(this._fileSize);
+				}else{
+					grImageType.visible = false;
+					rtImageType.text = 'N';
+					rtImageType.setStyle("color", "#FFFFFF");
+				}					
+			}
+			
+			//----------------------------------
+			//  checkImageHigh
+			//----------------------------------
+		   /**
+		    *  Verifica se imagem de arquivo de alta
+		 	* 
+		    *  @return void 
+		    */
+			private function checkImageHigh():void
+			{
+				//Configura o tamanho do arquivo
+				rtFileSize.text = fileSize(Number(data.USE_LG_RESOURCES_filesize));
+				
+				//Verifica se a imagem foi publicada
+				if(Boolean(int(data.USE_LG_RESOURCES_has_image_high))){
+					grImageType.visible = true;
+					rtImageType.text = 'A';
+					rtImageType.setStyle("color", "#d0ff00");
+				}
+				else{
+					grImageType.visible = false;
+					rtImageType.text = 'N';
+					rtImageType.setStyle("color", "#FFFFFF");
+				}					
+			}
+
+			//----------------------------------
+			//  editGroupsResources
+			//----------------------------------
+		   /**
+		    *  Abre tela para edição de grupo de visualização de recursos.
+		 	* 
+		    *  @return void 
+		    */
+			private function editGroupsResources(event:MouseEvent):void
+			{
+				parentDocument.parentDocument.editGroupsResources(event);
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:NumberFormatter id="numberFormatter"
+						   fractionalDigits="2" 
+						   decimalSeparator="."
+						   groupingSeparator="."/>
+	</fx:Declarations>
+	
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="hovered"/>
+		<s:State name="selected"/>
+	</s:states>
+	<s:Group x="0" y="0">
+		<s:Rect x="0" y="0" width="168" height="168" radiusX="5">
+			<s:fill>
+				<s:SolidColor color="#333333"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="9" y="9" width="150" height="120"
+				x.normal="9" y.normal="8.999985">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter includeIn="normal" alpha="0.5" angle="45.0" blurX="4.0"
+									blurY="4.0" color="#000000" distance="4.0" hideObject="false"
+									inner="false" knockout="false" quality="2" strength="1"/>
+				<s:DropShadowFilter includeIn="hovered" alpha="0.5" angle="45.0" blurX="4.0"
+									blurY="4.0" color="#000000" distance="4.0" hideObject="false"
+									inner="false" knockout="false" quality="2" strength="1"/>
+				<s:DropShadowFilter includeIn="selected" alpha="0.5" angle="45.0" blurX="4.0"
+									blurY="4.0" color="#000000" distance="4.0" hideObject="false"
+									inner="false" knockout="false" quality="2" strength="1"/>
+			</s:filters>
+		</s:Rect>
+					
+
+		<s:Group id="grStatus" x="9" y="137" width="10" height="10">
+		<s:Ellipse width="10" height="10">
+			<s:fill>
+				<s:SolidColor color="#000000"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse width="6" height="6" verticalCenter="0" horizontalCenter="0">
+			<s:fill>
+				<s:SolidColor id="ptStatusColor" color="#8E8B8B"/>
+			</s:fill>
+		</s:Ellipse>
+		</s:Group>
+		
+		<s:RichText id="rtTitle" x="26" y="137" width="106" color="#CCCCCC" fontFamily="Arial"
+					fontSize="12" maxDisplayedLines="1" showTruncationTip="true"
+					text="{data.USE_LG_RESOURCES_title}"
+					x.normal="26" y.normal="137">
+			<s:filters>
+				<s:DropShadowFilter alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="#000000"
+									distance="4.0" hideObject="false" inner="false" knockout="false"
+									quality="2" strength="1"/>
+			</s:filters>
+		</s:RichText>
+		
+		<s:RichText id="rtTotalRetailer" y="151" width="40" color="#CCCCCC" fontFamily="Arial"
+					fontSize="10" textAlign="left" toolTip="Grupos"
+					x.hovered="26"
+					left.normal="26"
+					x.selected="26">
+			<s:filters>
+				<s:DropShadowFilter alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="#000000"
+									distance="4.0" hideObject="false" inner="false" knockout="false"
+									quality="2" strength="1"/>
+			</s:filters>
+		</s:RichText>
+			
+		<s:RichText id="rtFileSize" x="88" y="151" width="70" color="#CCCCCC" fontFamily="Arial"
+					fontSize="10" textAlign="right" toolTip="Tamanho do arquivo">
+			<s:filters>
+				<s:DropShadowFilter alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="#000000"
+									distance="4.0" hideObject="false" inner="false" knockout="false"
+									quality="2" strength="1"/>
+			</s:filters>
+		</s:RichText>
+		
+		<s:Image id="displayImage" x="14" y="14" width="140" height="110" scaleMode="letterbox"
+					   smooth="true" useHandCursor="true" buttonMode="true"/>
+		
+		<s:RichText x="127" y="134" width="32" alpha="1" color="#FFFFFF" color.selected="#d0ff00" fontFamily="Arial"
+					fontSize="10" fontWeight="bold" tabStops="S0 S50 S100" text="#{itemIndex+1}"
+					textAlign="end"/>
+		
+		<s:Group x="15" y="0">
+			<s:Rect x="0" y="0" width="32" height="15" bottomLeftRadiusX="5"
+					bottomRightRadiusX="5">
+				<s:fill>
+					<s:SolidColor id="materialTypeColor" color="#bf074f"/>
+				</s:fill>
+			</s:Rect>
+			<s:RichText id="rtFormat" x="0" y="2" width="100%" color="#FFFFFF"
+						fontFamily="Arial" fontSize="10" fontWeight="bold"
+						text="{data.USE_LG_RESOURCES_format}" textAlign="center"/>
+		</s:Group>
+		
+		<s:Group id="grImageType" right="15" y="0" visible="false" toolTip="Importar imagem de alta"
+				 click="uploadPopup(event)" 
+				 buttonMode="true"
+				 useHandCursor="true">
+			<s:Rect x="0" y="0" width="20" height="15" bottomLeftRadiusX="5"
+					bottomRightRadiusX="5">
+				<s:fill>
+					<s:SolidColor color="#5f5e5e"/>
+				</s:fill>
+			</s:Rect>
+			<s:RichText id="rtImageType" x="0" y="2" width="20" color="#FFFFFF" fontFamily="Arial"
+						fontSize="10" fontWeight="bold" text="N"
+						textAlign="center"/>
+		</s:Group>
+		
+		<s:Group x="9" y="149" width="14" height="14">
+			<s:Path x="0.032" y="1.607"
+					data="M 10.032 9.383 C 10.032 9.742 9.739 10.033 9.38 10.033 L 5.373 10.033 L 5.351 10.07 L 5.328 10.033 L 1.563 10.033 C 1.204 10.033 0.912 9.742 0.912 9.383 L 0.912 1.566 C 0.912 1.205 1.204 0.914 1.563 0.914 L 8.632 0.914 C 8.952 0.613 9.288 0.32 9.637 0.027 C 9.554 0.012 9.468 0 9.38 0 L 1.563 0 C 0.7 0 0 0.701 0 1.566 L 0 9.383 C 0 10.246 0.7 10.945 1.563 10.945 L 9.38 10.945 C 10.243 10.945 10.944 10.246 10.944 9.383 L 10.944 1.68 C 10.636 2.051 10.331 2.436 10.032 2.83 L 10.032 9.383 Z"
+					winding="nonZero">
+				<s:fill>
+					<s:SolidColor color="#8E8B8B"/>
+				</s:fill>
+			</s:Path>
+			<s:Path x="1.856" y="0.72"
+					data="M 9.771 0 C 9.265 0.336 8.776 0.707 8.309 1.09 C 8.023 1.322 7.747 1.559 7.479 1.801 C 5.136 3.906 3.517 6.156 3.517 6.156 L 0.782 4.201 L 0 4.982 C 0 4.982 2.345 8.109 3.517 10.059 C 4.57 8.219 6.333 5.359 8.208 2.973 C 8.481 2.623 8.757 2.285 9.034 1.961 C 9.675 1.211 10.319 0.535 10.944 0 L 9.771 0 Z"
+					winding="nonZero">
+				<s:fill>
+					<s:SolidColor  
+								  color="#8E8B8B"  
+								  color.hovered="#FFCB00"
+								  color.selected="#8CD9FF"/>
+				</s:fill>
+			</s:Path>
+		</s:Group>
+		
+	</s:Group>
+</s:ItemRenderer>

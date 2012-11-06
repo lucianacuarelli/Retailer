@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>UseMapTest</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->baseUrl ?>/usejs/usejs-4.0.0.js"></script>
+		<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript">
+			var script = '<script type="text/javascript" src="http://google-maps-' + 'utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble';
+			if(document.location.search.indexOf('compiled') !== -1) {
+				script += '-compiled';
+			}
+			script += '.js"><' + '/script>';
+			document.write(script);
+		</script>
+		<script type="text/javascript">
+			//------------------------------------------------------------------
+			//
+			//	Events
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  markerClick
+			//----------------------------------
+			/**
+			 * Evento disparado quando um marcador for clicado.
+			 */
+			markerClick = function(event) {
+				parent.fx().itemClicked(event.foo);
+			};
+			//------------------------------------------------------------------
+			//
+			//	Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  address
+			//----------------------------------
+			/**
+			 * Componente de Mapa.
+			 */
+			var uiMaps = UseLoad('UiMaps');
+			//----------------------------------
+			//  geocode
+			//----------------------------------
+			/**
+			 * Informações do marcador clicado.
+			 */
+			var _geocode = null;
+
+			//------------------------------------------------------------------
+			//
+			//	JQuery
+			//
+			//------------------------------------------------------------------
+			$(document).ready(function() {
+				//Insere marcadores nas posições informadas
+				uiMaps.show("map").connect();
+			});
+			//------------------------------------------------------------------
+			//
+			//	Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  connect
+			//----------------------------------
+			/**
+			 * Inicializa uma solicitação de geocodificação.
+			 */
+			this.connect = function() {
+				document.addEventListener("mapComplete", mapComplete, false);
+				document.addEventListener("markerClick", markerClick, false);
+				uiMaps.connect();
+
+				return null;
+			};
+			//----------------------------------
+			//  address
+			//----------------------------------
+			/**
+			 * Configura um ou mais endereços de marcadores que devem ser
+			 * utilizados na visualização do mapa.
+			 */
+			this.address = function(value) {
+				uiMaps.address(value);
+			};
+			//----------------------------------
+			//  data
+			//----------------------------------
+			/**
+			 * Configura um ou mais "endereços" de marcadores que devem ser
+			 * utilizados na visualização do mapa. O "endereço" pode ser informado
+			 * como o endereço físico(Rua, Avenida, Estado, Cidade, País, CEP) ou
+			 * endeço geográfico(Latitude, Longitude). É possível passar informações
+			 * adicionais associadas ao endereço informado.
+			 *
+			 * @param Recebe uma lista com os endereços e as informações
+			 * adicionais.
+			 */
+			this.data = function(value) {
+				uiMaps.data(value);
+			};
+			//----------------------------------
+			//  latLng
+			//----------------------------------
+			/**
+			 * Indica a latitude e longitude que devem ser utilizadas na consulta
+			 * de endereço.
+			 *
+			 * @param lat: Latitude.
+			 * @param lng: Longitude.
+			 */
+			this.latLng = function(value) {
+				uiMaps.latLng(value);
+			};
+			//----------------------------------
+			//  latLngList
+			//----------------------------------
+			/**
+			 * Indica uma lista de latitude e longitude que deve ser utilizada
+			 * na consulta de endereço.
+			 * @param value: Lista de latitude e longitude. Prefira o padrão {"lat":,
+			 * "lng":}
+			 */
+			this.latLngList = function(value) {
+				uiMaps.latLngList(value);
+			};
+			//----------------------------------
+			//  zipCode
+			//----------------------------------
+			/**
+			 * Indica o código postal que deve ser utilizado na consulta de endereço.
+			 */
+			this.zipCode = function(value) {
+				uiMaps.zipCode(value);
+			};
+			//----------------------------------
+			//  categories
+			//----------------------------------
+			/**
+			 * Lista de categorias de marcadores. A lista de categorias deve ser
+			 * fornecida pelo usuário.
+			 **/
+			this.categories = function(value) {
+				uiMaps.categories(value);
+			};
+			//----------------------------------
+			//  clearOverlays
+			//----------------------------------
+			/**
+			 * Limpa todas as sobreposições do mapa(marcadores, polígonos,
+			 * polilinhas, etc).
+			 **/
+			this.clearOverlays = function() {
+				uiMaps.clearOverlays();
+			};
+			//----------------------------------
+			//  clearPositions
+			//----------------------------------
+			/**
+			 * Limpa todas as informações contidas em positions.
+			 **/
+			this.clearPositions = function() {
+				uiMaps.clearPositions();
+			};
+			//----------------------------------
+			//  enableDoubleClickZoom
+			//----------------------------------
+			/**
+			 * Ativa o zoom e a centralização com clique duplo. Ativado por padrão.
+			 */
+			this.enableDoubleClickZoom = function(value) {
+				uiMaps.enableDoubleClickZoom(value);
+			};
+			//----------------------------------
+			//  enableDragabble
+			//----------------------------------
+			/**
+			 * Se "false", impede que o mapa seja arrastado. O recurso de arrastar está
+			 * ativado por padrão.
+			 */
+			this.enableDragabble = function(value) {
+				uiMaps.enableDragabble(value);
+			};
+			//----------------------------------
+			//  enableControlByKeyboard
+			//----------------------------------
+			/**
+			 * Se "false", impede o mapa de ser controlado pelo teclado. Os atalhos do
+			 * teclado estão ativados por padrão.
+			 */
+			this.enableControlByKeyboard = function(value) {
+				uiMaps.enableControlByKeyboard(value);
+			};
+			//----------------------------------
+			//  enableMapTypeControl
+			//----------------------------------
+			/**
+			 * O estado inicial ativado/desativado do controle do tipo de mapa.
+			 */
+			this.enableMapTypeControl = function(value) {
+				uiMaps.enableMapTypeControl(value);
+			};
+			//----------------------------------
+			//  enableNavigationControl
+			//----------------------------------
+			/**
+			 * O estado inicial ativado/desativado do controle do tipo de mapa.
+			 */
+			this.enableNavigationControl = function(value) {
+				uiMaps.enableNavigationControl(value);
+			};
+			//----------------------------------
+			//  enableScaleControl
+			//----------------------------------
+			/**
+			 * O estado inicial ativado/desativado do controle de escala.
+			 */
+			this.enableScaleControl = function(value) {
+				uiMaps.enableScaleControl(value);
+			};
+			//----------------------------------
+			//  enableScrollWheelZoom
+			//----------------------------------
+			/**
+			 * Se "false", desativa o zoom por meio da roda de rolagem no mapa.
+			 * A roda de rolagem está ativada por padrão..
+			 */
+			this.enableScrollWheelZoom = function(value) {
+				uiMaps.enableScrollWheelZoom(value);
+			};
+			//----------------------------------
+			//  enableStreetViewControl
+			//----------------------------------
+			/**
+			 * O estado ativado/desativado inicial do controle Pegman do Street View.
+			 */
+			this.enableStreetViewControl = function(value) {
+				uiMaps.enableStreetViewControl(value);
+			};
+			//----------------------------------
+			//  icon
+			//----------------------------------
+			/**
+			 * Indica o ícone padrão a ser usado nos marcadores. Obs, caso exista
+			 * alguma especificação de ícones no data ou no categories, eles que
+			 * serão usados. Para obter um posicionamento ideal, ajuste a posição
+			 * de centro x, y de seu novo marcador.
+			 */
+			this.icon = function(value) {
+				uiMaps.icon(value);
+			};
+			//----------------------------------
+			//  infoWindowOptions
+			//----------------------------------
+			/**
+			 * Configura a mensagem a ser exibida quando um marcador for selecionado.
+			 */
+			//this.infoWindowOptions = function(colors, ratios, alpha, matrix, cornerRadius, borderColor, borderWidth) {
+			this.infoWindowOptions = function(value) {
+				var colors = value[0];
+				var cornerRadius = value[1] || 5;
+				var borderColor = value[2] || '#CCC';
+				var borderWidth = value[3] || 1;
+				var hideCloseButton = value[4] || false;
+				var disableAutoPan = value[5] || true;
+				uiMaps.infoWindowOptions(colors, cornerRadius, borderColor, borderWidth, hideCloseButton, disableAutoPan);
+			}
+			//----------------------------------
+			//  message
+			//----------------------------------
+			/**
+			 * Configura a mensagem a ser exibida quando um marcador for selecionado.
+			 */
+			this.message = function(value) {
+				uiMaps.message(value[0]);
+			};
+			//----------------------------------
+			//  directions
+			//----------------------------------
+			/**
+			 * Um objeto Directions se comunica com os servidores do Google para
+			 * obter rotas entre dois ou mais pontos de referência. As respostas
+			 * para tais solicitações contêm uma polilinha codificada que
+			 * representa as rotas e as etapas formatadas em HTML a serem seguidas.
+			 */
+			this.direction = function(value) {
+				//from, to, callBack, panel, mode, draggable
+				var from = value[0];
+				var to = value[1];
+				var callBack = value[2] || null;
+				var panel = value[3] || null;
+				var mode = value[4] || null;
+				var draggable = value[5] || null;
+
+				uiMaps.direction(from, to, callBack, panel, mode, draggable);
+			};
+			//----------------------------------
+			//  drawCircle
+			//----------------------------------
+			/**
+			 * Desenha um, ou dois, círculo(s) no(s) endereço(s) informado(s).
+			 * @param value(latA, lngA, radiusA, fillColorA, strokeColorA, latB, lngB, radiusB,
+			 * fillColorB, strokeColorB)
+			 */
+			this.drawCircle = function(value) {
+				var latA = value[0];
+				var lngA = value[1];
+				var radiusA = value[2];
+				var fillColorA = value[3] || '#FF0000';
+				var strokeColorA = value[4] || '#000000';
+				var latB = value[5] || null;
+				var lngB = value[6] || null;
+				var radiusB = value[7] || null;
+				var fillColorB = value[8] || null;
+				var strokeColorB = value[9] || null;
+
+				uiMaps.drawCircle(latA, lngA, radiusA, fillColorA, strokeColorA, latB, lngB, radiusB, fillColorB, strokeColorB);
+			};
+			//---------------------------------
+			//  setCenter
+			//----------------------------------
+			/**
+			 * Define o centro do mapa.
+			 */
+			this.showStep = function(value) {
+				uiMaps.setCenter(value);
+			}
+			//---------------------------------
+			//  setZoom
+			//----------------------------------
+			/**
+			 * Define o valor de zoom do mapa.
+			 */
+			this.setZoom = function(value) {
+				uiMaps.setZoom(value);
+			}
+			//---------------------------------
+			//  showStep
+			//----------------------------------
+			/**
+			 * Coloca um balão na posição no mapa do Step clicado.
+			 */
+			this.showStep = function(value) {
+				uiMaps.showStep(value);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map" style="height:100%;width:100%"></div>
+	</body>
+</html>

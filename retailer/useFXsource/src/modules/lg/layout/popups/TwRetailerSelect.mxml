@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:ui="devdoo.ui.*"
+			   width="874" height="428"
+			   creationComplete="create()"
+			   close="cancel(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import adobe.utils.ArrayUtil;
+			
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataProducts;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.IList;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  this._dataProducts
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			public var _dataProducts:DataProducts;
+			
+			//----------------------------------
+			//  sourceId;
+			//----------------------------------
+			/**
+			 *  Identificador do produto selecionado.  
+			 */  
+			private var _sourceId:String;
+
+			//----------------------------------
+			//  resourcesSelected;
+			//----------------------------------
+			/**
+			 *  Recebe os recursos selecionados.  
+			 */  
+			private var _resourcesSelected:Object;
+			
+			
+			public var _acDataResult:ArrayCollection = new ArrayCollection();
+			
+			public var _acDataSource:ArrayCollection = new ArrayCollection([
+				{label: "Um", id:1},
+				{label: "Dois", id:2},
+				{label: "Três", id:3},
+				{label: "Quatro", id:4},
+				{label: "Cinco", id:5}
+			]);
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Cria todos os componentes de edição de registro,
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da módulo, 
+			 *  Cria instância do modelo de tabela,
+			 *  Verifica se está em modo de edicção, 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 *  Configura permissão de acesso.
+			 * 
+			 *  @return void  
+			 */
+			private function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da popup
+				useFX = UseFX.startPopup(this);
+				
+				//Cria gerenciador de dados de produto
+				this._dataProducts = new DataProducts();
+				
+				this._sourceId = useFX.session("sourceId");
+				
+				//Popula os componentes pré-definidos
+				this._dataProducts.populateProductsRetailers(this._sourceId, populateProductsRetailersResult);
+
+				//Adiciona os eventos pré-definidos
+				addEvents();				
+				
+				//Configura permissão de acesso
+				accessControl();
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				btCancel.addEventListener(MouseEvent.CLICK, cancel);
+				btSelect.addEventListener(MouseEvent.CLICK, selectItems);
+				btSearch.addEventListener(MouseEvent.CLICK, searchRetailer);
+				
+				//ddCategory.addEventListener(IndexChangeEvent.CHANGE, populateSubCategory);
+			}
+			
+			//----------------------------------
+			//  accessControl
+			//----------------------------------    	
+			/**
+			 * Gerência o controle de acesso e uso de usuários no módulo.
+			 *  
+			 * @return void  
+			 */	
+			private function accessControl():void{
+				useFX.accessControl(true)
+					.accessControlAdd( btSelect );
+			}			
+			
+			//----------------------------------
+			//  searchRetailer
+			//----------------------------------
+			private var _acSelectedItems:IList;
+			private var _stSelectedIndex:String;
+			/**
+			 *  Realiza busca pela loja de acordo com os dados passados.
+			 * 
+			 *  @return void  
+			 */	
+			private function searchRetailer(event:MouseEvent):void
+			{
+				//Recupera da lista de items selecionados todos os elementos para uso posterior
+				this._acSelectedItems = lsResult.dataProvider;
+				
+				//Recupera a lista de indices selecionados
+				this._stSelectedIndex = useFX.listSelect('RETAILER').toString();
+				
+				
+				var ids:Array = [];
+				var idsSelecteds:String;
+				
+				for each (var item:Object in lsResult.dataProvider) 
+				{
+					ids.push(item.register_id);
+				}
+				
+				idsSelecteds = ids.join(",");
+				
+				var value:String;
+				
+				//Verifica se veio do botão de buscar
+				if(event.currentTarget.id == "btSearch")
+				{
+					value = "%"+ tiSearch.text +"%";
+				}
+				else{
+					value = event.currentTarget.label  +"%";	
+				}
+				
+				this._dataProducts.searchRetailer(value, idsSelecteds, searchRetailerResult);
+			}		
+			
+			//----------------------------------
+			//  searchRetailerResult
+			//----------------------------------
+			/**
+			 *  Processa o resultado retornado da consulta na base de dados,
+			 *  populando a lista de empresas encontras e a lista de empresa selecionadas.
+			 * 
+			 *  @return void  
+			 */	
+			private function searchRetailerResult(useResult:*):void
+			{
+				//Cria a coleção de dados retornados
+				this._acDataSource = useFX.populateCollection(useResult.useRegisterCorporate);
+				
+				//Configura o componente de lista
+				lsSource.dataProvider = this._acDataSource;
+				
+				//Prepara lista única com elementos já selecionados e retornados da base de dados
+				//Junta o resultado da busca com os items já selecionados anteriormente
+				for each (var item:Object in this._acSelectedItems) 
+				{
+					this._acDataSource.addItem(item);
+				}
+				
+				//Cria alista de empresas recuperdas na base de dados e 
+				//separa os itens selecionados anteriormente. 
+				useFX.listSelect('RETAILER')
+					.buttons(btAdd, btRemove, btAddAll, btRemoveAll)
+					.populate(lsSource, lsResult, 'id', this._stSelectedIndex);			
+			}
+			
+			//----------------------------------
+			//  populateProductsRetailersResult
+			//----------------------------------
+			/**
+			 *  Popula os componentes pré-definidos.
+			 * 
+			 *  @return void  
+			 */	
+			private function populateProductsRetailersResult(useResult:*):void
+			{
+				this._acDataSource = useFX.populateCollection(useResult.useRegisterCorporate);
+				lsSource.dataProvider = this._acDataSource;
+				
+				useFX.listSelect('RETAILER')
+					 .buttons(btAdd, btRemove, btAddAll, btRemoveAll)
+					 .populate(lsSource, lsResult, 'fancy_name', '3,4');
+			}		
+			
+			//----------------------------------
+			//  selectItems
+			//----------------------------------    	
+			/**
+			 * Recupera a lista de nomes de retailers que foram selecionado
+			 *  
+			 * @return void  
+			 */	
+			protected function selectItems(event:MouseEvent):void
+			{
+				
+				//Retorna a lista de items selecionados
+				useFX.closePopup(this);
+			}
+			
+			//----------------------------------
+			//  cancel
+			//----------------------------------
+			/**
+			 *  Fecha a popup.
+			 *  @return void
+			 */ 		
+			private function cancel(event:Event):void{
+				useFX.closePopup(this);
+			}			
+			
+		]]>
+	</fx:Script>
+
+	<!--<s:ButtonBar id="bbSearch" x="10" y="10" width="74" height="299"
+				 color="#730000" fontSize="9"
+				 requireSelection="true">  
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<s:dataProvider>  
+			<s:ArrayCollection>  
+				<s:source>  
+					<fx:Object label= "A"/>  
+					<fx:Object label= "B"/>  
+					<fx:Object label= "C"/>  
+					<fx:Object label= "D"/>  
+					<fx:Object label= "E"/>  
+					<fx:Object label= "F"/>  
+					<fx:Object label= "G"/>  
+					<fx:Object label= "H"/>  
+					<fx:Object label= "I"/>  
+					<fx:Object label= "J"/>  
+					<fx:Object label= "K"/>  
+					<fx:Object label= "L"/>  
+					<fx:Object label= "M"/>  
+					<fx:Object label= "N"/>  
+					<fx:Object label= "O"/>  
+					<fx:Object label= "P"/>  
+					<fx:Object label= "Q"/>  
+					<fx:Object label= "R"/>  
+					<fx:Object label= "R"/>  
+					<fx:Object label= "T"/>  
+					<fx:Object label= "U"/>  
+					<fx:Object label= "V"/>  
+					<fx:Object label= "X"/>  
+					<fx:Object label= "Y"/>  
+					<fx:Object label= "W"/>  
+					<fx:Object label= "Z"/>  
+				</s:source>  
+			</s:ArrayCollection>  
+		</s:dataProvider>  
+		
+	</s:ButtonBar> -->
+	<s:TextInput id="tiSearch" x="92" y="10" width="302"/>
+	<s:Button id="btSearch" x="402" y="10" width="36" label="..."/>
+	
+	<s:List id="lsSource" x="92" y="40" width="346" height="315" labelField="fancy_name"/>
+	
+	<s:Button x="10" y="40" label="A" click="searchRetailer(event)"/>
+	<s:Button x="10" y="69" label="B" click="searchRetailer(event)"/>
+	<s:Button x="10" y="98" label="C" click="searchRetailer(event)"/>
+	
+	<s:List id="lsResult" x="516" y="40" width="346" height="315" labelField="fancy_name"/>
+	
+	<s:Button id="btAdd" x="446" y="131" width="62" label="&gt;"/>
+	<s:Button id="btRemove" x="446" y="183" width="62" label="&lt;"/>
+	<s:Button id="btAddAll" x="446" y="154" width="62" label="&gt;&gt;"/>
+	<s:Button id="btRemoveAll" x="446" y="212" width="62" label="&lt;&lt;"/>
+	
+	<s:controlBarContent>
+		<!--NOTFINAL-->
+		<mx:Spacer width="10%"/>
+		
+		<mx:Spacer width="100%"/>
+		<s:Button id="btSelect" label="Selecionar" styleName="btSave"/>
+		<s:Button label="Cancelar" id="btCancel" styleName="btCancel" />
+	</s:controlBarContent>
+	
+</s:TitleWindow>

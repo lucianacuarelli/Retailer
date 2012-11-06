@@ -1,0 +1,437 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace ui "devdoo.ui.*";
+@namespace titleBar "devdoo.ui.titleBar.*";
+
+@font-face {
+	src: url("assets/fonts/ubuntuFontFamily/Ubuntu-B.ttf");
+	fontFamily: UbuntuBold;
+	fontStyle: normal;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+@font-face {
+	src: url("assets/fonts/ubuntuFontFamily/Ubuntu-C.ttf");
+	fontFamily: UbuntuC;
+	fontStyle: normal;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+@font-face {
+	src: url("assets/fonts/ubuntuFontFamily/Ubuntu-L.ttf");
+	fontFamily: UbuntuL;
+	fontStyle: normal;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+@font-face {
+	src: url("assets/fonts/ubuntuFontFamily/Ubuntu-M.ttf");
+	fontFamily: UbuntuM;
+	fontStyle: normal;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+@font-face {
+	src: url("assets/fonts/ubuntuFontFamily/Ubuntu-R.ttf");
+	fontFamily: UbuntuR;
+	fontStyle: normal;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+
+
+
+
+
+
+
+.ubuntuBold
+{
+	fontFamily: UbuntuBold;
+}
+.ubuntuC
+{
+	fontFamily: UbuntuC;
+}
+.ubuntuL
+{
+	fontFamily: UbuntuL;
+}
+.ubuntuM
+{
+	fontFamily: UbuntuM;
+}
+.ubuntuR
+{
+	fontFamily: UbuntuR;
+}
+
+@font-face {
+	src: url("assets/fonts/MyriadPro-Bold.otf");
+	fontFamily: MyriadPro;
+	fontStyle: normal;
+	fontWeight: bold;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src: url("assets/fonts/MyriadPro-Semibold.otf");
+	fontFamily: MyriadProSemiBold;
+	fontStyle: normal;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src: url("assets/fonts/MyriadPro-Regular.otf");
+	fontFamily: MyriadProRegular;
+	fontStyle: normal;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src: url("assets/fonts/SigmarOne.ttf");
+	fontFamily: SigmarOne;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+@font-face {
+	src: url("assets/fonts/RopaSans-Regular.ttf");
+	fontFamily: RopaSans;
+	advancedAntiAliasing: true;
+	embedAsCFF: true;
+}
+
+
+
+mx|AccordionHeader{
+	fillColors: black, black;
+	fillAlphas: 1, 1;
+	textRollOverColor: white;
+	textSelectedColor: white;
+	themeColor: black;
+	headerHeight:50;
+}
+
+
+
+.MyHeaderStyle {
+	icon: Embed(source="assets/icons/iconUser.png");
+}
+
+
+.customAccordionHeadStyles {
+	skin: ClassReference("devdoo.sk.accordion.CustomAccordionHeaderSkin");
+}
+
+/*
+mx|Alert {
+	titleStyleName: "alertTitle";
+	messageStyleName: "alertMessage";
+	buttonStyleName: "alertButton";
+	dropShadowEnabled: true;
+	shadowDistance: 5;
+	shadowDirection: right;
+	cornerRadius: 0;
+	embedFonts: true;
+	fontFamily: Base02;
+	cornerRadius:5;
+}
+
+.alertTitle {
+	letterSpacing: 0;
+	fontSize: 14;
+	color: red;
+}
+
+.alertMessage {
+	letterSpacing: 0;
+	fontSize: 10;
+	fontWeight: normal;
+	color: black;
+}
+
+.alertButton {
+	letterSpacing: 0;
+	fontSize: 11;
+	cornerRadius: 10;
+	fontWeight: normal;
+	textRollOverColor: white;
+	color: red;
+	skin: ClassReference(null);
+}
+*/
+
+mx|MenuBar
+{
+	backgroundSkin: ClassReference('skins.menuBar.MenuBarSkin');
+
+	backgroundColor: #FF0000;
+
+	fontSize: 11;
+	color: "0XCECECE";
+	letterSpacing: 1;
+	fontFamily: "Tahoma";	
+	disabledColor: "0x535353";
+}
+
+mx|Menu
+{
+	borderSkin: ClassReference('skins.menuBar.MenuSkin');
+	checkIcon: ClassReference('skins.menuBar.MenuCheck');
+	arrowIcon: ClassReference('skins.menuBar.MenuArrow');
+	separatorSkin:ClassReference('skins.menuBar.MenuSeparatorSkin');
+}
+
+.module-title{
+	fontFamily: "MyriadPro"; 
+	fontWeight:bold;
+	color:#FFFFFF;
+}
+.ropaSansNomal{
+	fontFamily: "RopaSans"; 
+	fontWeight:normal;
+}
+
+.sigmarOne{
+	fontFamily: "SigmarOne"; 
+	fontSize:36;
+	color:#FF0000;
+}
+
+.title{
+	fontFamily: "MyriadProSemiBold"; 
+	fontSize:25;
+	color:#7F7F7F;
+}
+.miniTitle{
+	fontFamily: "MyriadProSemiBold"; 
+	fontSize:20;
+	color:#7F7F7F;
+}
+.subTitle{
+	fontFamily: "MyriadProRegular"; 
+	fontSize:12;
+	color:#7F7F7F;
+}
+
+s|global{
+	modal-transparency-blur: 0;
+	modal-transparency: 0.4;
+	modal-transparency-color: #262626;
+	modal-transparency-duration: 0;
+	
+/*	borderColor:"0xd5d5d5";*/
+/*	colorDown: #007EFF;
+	colorOver: #26C900;*/
+	color:#494A4A;
+	borderColor:#494A4A;
+	
+/*	fontFamily:"RopaSans";*/
+	
+	/*symbolColor:"0xFF5800";*/
+	/*symbolColor:"0x00A700";*/
+	colorGlobal:"0xBF074F";
+	symbolColor:"0xBF074F";
+	
+	
+	/* Menu */
+	rollOverColor: "0xFFF0F6";
+	selectionColor: "0xEEEEEE";
+	textRollOverColor: "0xCECECE";
+	textSelectedColor: "0xFFF0F6";
+	
+	/*colorTrack:"0xFF0000";*/
+	
+	
+	/*Default colors*/
+	colorIconUp:"0xD10000";
+	colorIconOver:"0xFFFFFF";
+	colorIconDown:"0x666666";
+	colorIconDisabled:"0xFFFFFF";
+	
+	colorUp:"0xFFFFFF";
+	colorOver:"0xFFFFFF";
+	colorDown:"0x666666";
+	colorDisabled:"0x666666";
+	
+	colorDetailUp:"0x999999";
+	colorDetailOver:"0x009CFF";
+	colorDetailDown:"0x666666";
+	colorDetailDisabled:"0x999999";
+	
+	backgroundColorIconUp:"0x000000";
+	backgroundColorIconOver:"0xD10000";
+	backgroundColorIconDown:"0x666666";
+	backgroundColorIconDisabled:"0xFFFFFF";
+	
+	backgroundColorButtonUp:"0x333333";
+	backgroundColorButtonOver:"0x252525";
+	backgroundColorButtonDown:"0x333333";
+	backgroundColorButtonDisabled:"0x333333";
+	
+}
+
+s|DataGrid{
+	
+	/*10% da cor principal*/
+	rollOverColor: "0xFF0000";
+	/*30% da cor principal*/
+	selectionColor: "0x55B3EB";
+	borderColor:#e6e6e6;
+	borderAlpha:0.5;
+	
+/*	caretColor:#e6e6e6;*/
+	
+	
+	
+/*	symbolColor:"0xFFFFFF";*/
+	color:"0x333333";
+	alternatingRowColors:"0xF5F5F5", "0xFFFFFF";
+/*	skinClass:ClassReference("devdoo.sk.dataGrid.SkDataGridSkin");*/
+/*	fontSize:11;*/
+}
+
+s|DefaultGridHeaderRenderer
+{
+	color:"0x848484";
+	fontSize:13;
+}
+
+.testPopup{
+	modal-transparency-blur: 0;
+	modal-transparency: 0.4;
+	modal-transparency-color: #FFFFFF;
+	modal-transparency-duration: 0;
+}
+
+s|WindowedApplication
+{
+	backgroundColor:#eeeeee;
+}
+
+s|Application
+{
+	backgroundColor:#eeeeee;
+	skinClass:ClassReference("devdoo.skins.SkApplication");
+}
+
+s|SkinnableContainer.webIndex
+{
+	skinClass: ClassReference("devdoo.skins.SkWebIndex");
+}
+
+
+/*s|Module
+{
+	backgroundColor:#272727;
+	backgroundAlpha:0;
+}*/
+
+/*NOTFINAL*/
+/*s|Scroller s|VScrollBar {
+skinClass: ClassReference("devdoo.sk.scrollbar.SkVerticalScrollbarSkin");
+}
+s|Scroller s|HScrollBar {
+skinClass: ClassReference("devdoo.sk.scrollbar.SkHorizontalScrollbarSkin");
+}
+s|DataGrid s|VScrollBar {
+skinClass: ClassReference("devdoo.sk.dataGrid.scrollbar.SkVerticalScrollbarSkin");
+}
+s|DataGrid s|HScrollBar {
+skinClass: ClassReference("devdoo.sk.dataGrid.scrollbar.SkHorizontalScrollbarSkin");
+}*/
+
+.btSave {
+	color:"0xFF0000";
+}
+s|Button
+{
+/*	color: #C9C9C9;*/
+	fontFamily: "MyriadProRegular"; 
+	fontSize:13;
+}
+s|List
+{
+	borderVisible: false;
+/*	contentBackgroundAlpha: 0;*/
+}
+
+s|DataGrid{
+	headerColors: #494A4A;    
+	rollOverColor: #2C8FDD;
+	textRollOverColor: #FF0000;
+	iconColor: #ff0000;
+	fontFamily: Arial;
+	fontSize:12;
+	dropShadowEnabled: false;
+	alternatingItemColors: #330099, #0000cc;
+	color: #494A4A;
+	borderColor: #DEDEDE;
+}
+
+
+/*UiPaginator*/
+
+s|Button.btLast
+{
+	skinClass: ClassReference("devdoo.sk.paginator.btLastSkin");
+}
+s|Button.btNext
+{
+	skinClass: ClassReference("devdoo.sk.paginator.btNextSkin");
+}
+s|Button.btPrevious
+{
+	skinClass: ClassReference("devdoo.sk.paginator.btPreviousSkin");
+}
+s|Button.btFirst
+{
+	skinClass: ClassReference("devdoo.sk.paginator.btFirstSkin");
+}
+s|Label.lbTotalPages
+{
+	fontSize: 12;
+	paddingLeft: 3;
+	paddingRight: 3;
+	textAlign: center;
+	verticalAlign: middle;
+}
+s|Label.paginator
+{
+	color: #666666;
+	fontSize: 11;
+	paddingTop: 2;
+}
+
+
+
+/*Buttons*/
+s|Button.btSave
+{
+	skinClass: ClassReference("devdoo.sk.button.btConfirmSkin");
+}
+s|Button.btCancel
+{
+	skinClass: ClassReference("devdoo.sk.button.btCancelSkin");
+}
+
+s|Button.btIconFile
+{
+	skinClass: ClassReference("devdoo.skins.button.ButtonIconFileSkin");
+}
+s|Button.btIconRemove
+{
+	skinClass: ClassReference("devdoo.skins.button.ButtonIconRemoveSkin");
+}
+s|Button.btIconUpload
+{
+	skinClass: ClassReference("devdoo.skins.button.ButtonIconUploadSkin");
+}
+s|Button.btIconCancel
+{
+	skinClass: ClassReference("devdoo.skins.button.ButtonIconCancelSkin");
+}

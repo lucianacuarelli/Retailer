@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ui="devdoo.register.layout.ui.*"
+		  width="100%" height="100%" 
+		  creationComplete="create()">
+	<s:layout>
+		<s:HorizontalLayout/>
+	</s:layout>
+	
+	<fx:Style source="styles.css"/>
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabAddress;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabCorporate;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabDetail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabEmail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabGroups;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPersonal;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPhone;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabSocialMedia;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Gerencidor de Perfil');
+				
+				//Cria o componente de gerenciamento de perfils
+				registerProfile.create();
+				
+				//Cria o componente de gerenciamento de registros
+				registerUsers.start(UiRegister.PERSONAL_AND_COMMERCIAL)
+					.profileManagerIds([1])
+					.addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+					.addTab('Grupos', GrRegisterTabGroups, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+					.pageSize(25)
+					.create()
+					.populate();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();				
+			}		
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */
+			private function addEvents():void
+			{
+				registerProfile.addEventListener(UiRegisterProfile.CHANGE, showRegisterParent);
+			}
+			
+			//----------------------------------
+			//  showProfile
+			//----------------------------------
+			/**
+			 * Consulta a base de dados e recupera a lista de registros relacionado ao perfil selecionado.  
+			 * 
+			 *  @return void
+			 */
+			protected function showRegisterParent(event:Event):void
+			{
+				//Verifica se tem item selecionado na lista
+				if(registerProfile.selectedItem){
+					registerUsers.defaultProfile(registerProfile.selectedItem.USE_REGISTER_PROFILE_id)
+						.create()
+						.populate();
+					//registerUsers.populateProfile(registerProfile.selectedItem.USE_REGISTER_PROFILE_id);
+				}
+				else
+					registerUsers.reset();	
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup width="100%" height="100%">
+		<s:SkinnableContainer left="0" right="10" top="10" bottom="10" width="100%" height="70%"
+							  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+			
+			<ui:UiRegisterProfile id="registerProfile" width="100%" height="100%"/>
+		</s:SkinnableContainer>
+		
+		<s:SkinnableContainer left="0" right="10" top="10" bottom="10" width="100%" height="100%"
+							  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+			
+			<ui:UiRegister id="registerUsers" subTitle="Gerencia todos os registros relacionais a perfils"/>
+		</s:SkinnableContainer>
+	</s:VGroup>
+</s:Module>

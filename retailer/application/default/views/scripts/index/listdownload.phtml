@@ -1,0 +1,59 @@
+<?php 
+
+	//Configura menu do rodape
+	$this->headTitle("LG::Retailer");
+	
+	$this->useSwf('useLgDownloads')
+		 ->src($this->useDefault->useFXapplication .'/downloadInstall')
+		 ->width('111')
+		 ->height('23')
+		 ->bgcolor('#dbdbdb')
+		 ->quality('high')
+		 ->allowscriptaccess('all')
+		 ->flashvars('appname', 'LG Downloads')
+		 ->flashvars('appurl', $this->useDefault->useFXapplication.'/LG_Downloads.air')
+		 ->flashvars('airversion', '1.5')
+		 ->flashvars('buttoncolor', '#dcdcdd')
+		 ->flashvars('messagecolor', '#dcdcdd')
+		 ->flashvars('imageurl', $this->useDefault->images.'/bt/lgDownloads.png')
+		 ->wmode("transparent");
+?>
+<div id="PageDownloads">
+	<div class="usePageTitle">
+		<h3>Arquivos para baixar<div style="float: right; font-size: 12px; font-weight:normal; margin-right: 40px;"><span class="UiDisable">Arquivos para baixar</span> | <a class="UiLinkBlue" href="<?= $this->baseUrl ?>/downloads/retailer">Downloads Loja</a> | <a class="UiLinkBlue" href="<?= $this->baseUrl ?>/downloads">Meus Downloads</a></div></h3>
+	</div>
+	<div class="UIDownloadMessage" style="padding: 10px;">
+		<table style="margin: auto; width:970px; padding: 0px; border: none;">
+		  <tr>
+		    <td style="width:80%; padding: 0px; border: none;" class="UiText">Bem vindo à área de Downloads do <span class="UiTextBold">Portal de Conteúdos LG</span>. Aqui, você pode efetuar os downloads <br />
+		      individualmente do conteúdo que selecionou diretamente pelo site, clicando no botão <span class="UiTextBold">Baixar Agora.</span> <br />
+		      Para <span class="UiTextBold">efetuar downloads simultâneos</span>, baixe a <span class="UiTextBold">aplicação LG Downloads</span> clicando no botão <span class="UiTextBold">LG Downloads</span>.</td>
+		  </tr>
+		</table>
+	</div>
+	<div class="UIDownload" style="padding: 10px;  margin-top:25px; background: #e3e4e5;">
+		<table style="width:970px; padding: 10px; border: none; margin: auto;">
+		  <tr>
+		    <td style="width:100%; text-align:right; padding-right: 20px;">
+		    	<span class="UiText UiTextBold">Você tem (<span id="UiTotalDownload" class="UiTextBoldColor"></span>) arquivos para download</span>
+		    </td>
+	    	<td style="width:150px; text-align:center;"><?= $this->useSwf('useLgDownloads') ?></td>
+	      </tr>
+		  <tr>
+			<td colspan="3" class="UiText" style="width:100%; text-align:right; padding-right: 0px; font-size: 11px; padding-top: 5px;">Caso tenha problemas com o download, por favor, use os links direto, para <a class="UiLinkBlue" href="<?= $this->useDefault->useFXapplication.'/LG_Downloads.exe'?>">Windows (EXE)</a> ou <a class="UiLinkBlue" href="<?= $this->useDefault->useFXapplication.'/LG_Downloads.air'?>">Windows, Apple e Linux (AIR)</a>.</td>
+		  </tr>
+		</table>
+	</div>	
+	<div id="UiListDownload" class="UiContent">
+	</div>
+	<!-- Verifica se deve mostrar paginador -->
+	<? if($this->totalItens > 5): ?>
+		<div style="padding-bottom: 20px;">
+			<?= $this->paginationControl($this->paginator, 'Sliding', 'pagination-listdownload.phtml'); ?>
+		</div>
+	<? endif; ?>
+	<div class="UiLastContent">
+		<?= $this->showLastContent ?>
+	</div>
+	<div class="useClear"></div>
+</div>

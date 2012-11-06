@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ui="devdoo.register.layout.ui.*"
+		  width="100%" height="100%" 
+		  creationComplete="create()" >
+	<s:layout>
+		<s:HorizontalLayout gap="10" paddingBottom="10" paddingTop="10"
+							paddingLeft="2" paddingRight="2"/>
+	</s:layout>
+
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			import devdoo.fx.events.UseEvent;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabAddress;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabCorporate;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabDetail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabEmail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabGroups;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPersonal;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPhone;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabSocialMedia;
+			import devdoo.register.model.UseRegister;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 * Instância o componente de registro e define as configurações default  
+			 * 
+			 *  @return void
+			 */
+			public function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Gerente de Produtos');
+				
+				//Configura o componete de gerenciamento de registro
+				registerProductManager.start(UiRegister.PERSONAL)
+				.defaultProfile('2')
+				.profileManagerIds([1,3])
+				//.profileManagerIds([1,3,4])
+				.disableInitialPreference()
+				.addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+				.addTab('Grupos', GrRegisterTabGroups, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+				.pageSize(25)
+				.showTags(uiRegisterListTags)
+				.create()
+				.populate();
+
+				//Adiciona os eventos pré-definidos
+				addEvents();	
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */
+			private function addEvents():void
+			{
+				registerProductManager.addEventListener(UiRegister.SELECTION_CHANGE, showDetail);
+				registerProductManager.addEventListener(UiRegister.REGISTER_ADDED, registerAdded);
+				registerProductManager.addEventListener(UiRegister.REFRESH, reload);
+			}
+			
+			//----------------------------------
+			//  reload
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function reload(reload:Event):void
+			{
+				registerInfo.reset();
+			}
+			
+			//----------------------------------
+			//  showDetail
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function showDetail(event:Event):void
+			{
+				registerInfo.showDetail(registerProductManager.selectedItem);
+			}
+			
+			//----------------------------------
+			//  registerAdded
+			//----------------------------------
+			/**
+			 *  Evento disparado quando um novo registro for adicionado.  
+			 * 
+			 *  @return void
+			 */
+			protected function registerAdded(event:UseEvent):void
+			{
+				var register:UseRegister = new UseRegister();
+				register.parent_id = 52;
+				register.update('id='+event.data.USE_REGISTER_id, registerAddedResult)
+			}
+			
+			//----------------------------------
+			//  registerAddedResult
+			//----------------------------------
+			/**
+			 *  NOTDOC.  
+			 * 
+			 *  @return void
+			 */
+			protected function registerAddedResult(useResult:*):void{}
+		]]>
+	</fx:Script>
+	<s:SkinnableContainer left="0" top="20" bottom="20" width="100%" height="100%"
+						  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+		<s:layout>
+			<s:VerticalLayout gap="25"/>
+		</s:layout>
+		<ui:UiRegister id="registerProductManager" title="Gerente de Produtos" subTitle="Gerencia todos os gerente de produtos registrados no sistema"/>
+	</s:SkinnableContainer>
+	
+	<ui:UiRegisterInfo id="registerInfo"/>
+	<s:Group width="150" height="100%">
+		<s:Rect width="100%" height="100%" topLeftRadiusX="5" bottomLeftRadiusX="5">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Rect>
+		<ui:UiRegisterListTags id="uiRegisterListTags" top="10" left="10" bottom="10"
+							   right="10"/>
+	</s:Group>
+</s:Module>

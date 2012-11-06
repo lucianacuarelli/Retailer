@@ -1,0 +1,58 @@
+<div class="UiLogo">
+	<div class="UiWrap">
+		<div class="UiContent">
+			<div class="UiTitle">
+				Entre com seus dados abaixo para acessar o painel
+			</div>
+			<div>
+				<form action="login" method="post">
+					<div class="UiElement">
+						<div class="UiSubTitle">
+							USUÁRIO:
+						</div>
+						<input class="UiLoginText" type="text" name="user_email" />
+					</div>
+					<div class="UiElement">
+						<div class="UiSubTitle">
+							SENHA:
+						</div>
+						<input class="UiPassWord" type="password" name="user_password" />
+					</div>
+					<div class="UiLink">
+						<a href="<?= $this->baseUrl ?>/forgotpassword">Esqueci minha senha</a>
+					</div>
+					<div class="UiButton">
+						<input type="image" name="Entrar" src="<?= $this->useDefault->images ?>/bt/btEntrar.gif" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<br />
+	<? if(!empty($this->errorMessage)): ?>
+		<div align="center">
+			<?= $this->errorMessage ?>
+		</div>
+		<br />
+	<? endif; ?>
+	<?php if (count($this->messages)) : ?>
+		<div align="center">
+			<ul id="messages">
+				<?php foreach ($this->messages as $message) : ?>
+		    		<li><?php echo $this->escape($message); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<br />
+	<?php endif; ?>
+	<div align="center">
+		<a href="<?= $this->baseUrl ?>/cadastro">Não sou cadastrado</a>
+	</div>
+</div>
+<div class="UiFooter">
+	<div class="UiShadow">
+		<p>
+			Parceiros LG - Todos os direitos estão reservados - Copyright 2012 - Desenvolvido por Tobe App
+		</p>
+	</div>
+</div>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:lg="modules.lg.*"
+		  xmlns:layout="modules.lg.layout.*"
+		  xmlns:ui="devdoo.ui.*"
+		  xmlns:userInterface="modules.lg.layout.userInterface.*"
+		  width="100%" height="100%" creationComplete="create()" xmlns:charts="devdoo.ui.charts.*" xmlns:chart="modules.lg.layout.userInterface.chart.*">
+	<fx:Script>
+		<![CDATA[
+			import adobe.utils.ArrayUtil;
+			
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataBusinessIntelligence;
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  dataBusinessIntelligence
+			//----------------------------------
+			/**
+			 *  Gerencia todas as interações com a base de dados  
+			 */  
+			private var _dataBusinessIntelligence:DataBusinessIntelligence;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('BI');
+				useFX.closeWelcome();
+				
+				this._dataBusinessIntelligence = new DataBusinessIntelligence();
+				this._dataBusinessIntelligence.populate('dashboard',populateResourceByCategoryResult);
+			}				
+			
+			//----------------------------------
+			//  populateResourceByCategoryResult
+			//----------------------------------
+			/**
+			 *  Popula o componente de recuros por categoria.
+			 * 
+			 *  @return void  
+			 */	
+			private function populateResourceByCategoryResult(useResult:*):void
+			{
+				//Popula o componente de gráfico
+				uiBarChartResourceByCategory.dataProdiver = useFX.populateCollection(useResult.categoryReport);
+				uiBarChartResourceByCategory.create();
+			}
+			
+		]]>
+	</fx:Script>
+	<chart:UiBarChartResourceByCategory id="uiBarChartResourceByCategory" width="100%"/>
+</s:Module>

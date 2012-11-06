@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+		<head>
+		<title>Parceiros LG</title>
+		
+		<!-- metatags -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		
+		<!-- styles -->
+		<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/qTip/jquery.qtip.min.css" type="text/css"/>
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+		<!--[if IE 6]>
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+		<![endif]-->
+			
+		<!-- scripts -->
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/UseSwf.js"></script>
+<?php 
+	$this->useSwf('useLgDownload')
+		 ->src($this->useDefault->useFXapplication .'/Download')
+		 ->width('100%')
+		 ->height('500px')
+		 ->wmode("transparent");
+?>
+</head>
+<body>
+<body>
+	<div id="UiHeader">
+		<div class="UiWrap">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td style="width: 97px;">
+						<div class="UiLogo">
+							<img src="<?= $this->useDefault->images ?>/logoLG.gif" width="83" height="36" alt="Logo LG"/>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="UiPage">
+		<table border="0" cellspacing="0" cellpadding="0" style="margin-left: 95px;">
+			<tr>
+				<!-- identificao do usuario -->
+				<? if(!empty($this->userInfo->image_file_corporate)): ?>
+					<td class="UiCompany">
+						<img src="<?= $this->useDefault->baseUrl . $this->userInfo->image_path_corporate .'/'. $this->userInfo->image_file_corporate ?>" height="60" alt="Logo empresa"/>
+					</td>
+				<? endif; ?>
+				<? if(!empty($this->userInfo->image_file_personal)): ?>
+					<td class="UiUserImage">
+						<img src="<?= $this->useDefault->baseUrl . $this->userInfo->image_path_personal .'/'. $this->userInfo->image_file_personal ?>" width="50" height="50" alt=""/>
+					</td>
+				<? else: ?>
+					<td class="UiUserImage">
+						<img src="<?= $this->useDefault->baseUrl ?>/public/resources/default/images/thumbUser.png" width="50" height="50" alt=""/>
+					</td>
+				<? endif; ?>
+				<td class="UiUser">
+					<? if(!empty($this->userInfo->image_logo)): ?>
+						<img src="<?= $this->userInfo->image_profile ?>" height="60" align="left" style="margin-right: 10px;" alt="" />
+					<? endif; ?>
+					<div class="UiUserInfo">
+						<ul>
+							<li><span style="font-weight: bold;"><?= $this->userInfo->name .' '. $this->userInfo->lastname ?></span></li>
+							<li><?= $this->userInfo->fancy_name ?></li>
+							<li><?= $this->userInfo->city .' / '. $this->userInfo->state ?></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div class="useClear"></div>
+	</div>
+	
+<div class="PageContent" style="width: 990px; margin: auto;">
+	<div class="usePageTitle">
+		<h3>Baixar Agora</h3>
+	</div>
+	<div class="UIDownloadMessage" style="padding: 10px; margin-top:20px; background: #e3e4e5;">
+		<table style="width:970px; padding: 10px; border: none; margin: auto;">
+		  <tr>
+		    <td style="text-align:right; padding-right: 20px;"><img alt="" src="<?= $this->useDefault->images ?>/icons/iconAlertMenor.png" /></td>
+		    <td style="width:75%; text-align:left; padding-right: 20px;"><span class="UiText UiTextBold">Atenção! Não feche está página antes que todos os downloads estiverem concluídos, <br />caso o contrário, você perderá os downloads em andamento.</td>
+		  </tr>
+		</table>
+	</div>		
+	<div class="usePageContent">
+		<div id="UiContentList" style="">
+			<!-- conteudo principal -->
+			<?= $this->useSwf('useLgDownload') ?>	
+			<div class="useClear"></div>
+		</div>
+		<div class="useClear"></div>
+	</div>
+	<div class="useClear"></div>
+</div>
+</body>
+</html>	

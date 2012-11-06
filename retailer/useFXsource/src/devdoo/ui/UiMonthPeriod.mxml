@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="devdoo.ui.*">
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDate;
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//------------------------------------
+			// useDate
+			//------------------------------------
+			private var useDate:UseDate;
+			
+			//------------------------------------
+			// dateStart
+			//------------------------------------
+			/**
+			 * NOTDOC
+			 */ 
+			public function get dateStart():String
+			{
+				useDate = UseFX.start().date(new Date(nsYearStart.value, nsMonthStart.value,1));
+				return useDate.format('Y-m-d');
+			}
+			
+			/**
+			 * NOTDOC
+			 */ 
+			public function set dateStart(value:String):void
+			{
+				var date:Date;
+				var arDate:Array = value.split('/');
+				if(arDate.length > 1){
+					date = new Date(arDate[2],arDate[1],arDate[0]);
+				}else{
+					var useDate:UseDate = UseFX.start().date(int(value));
+					date = useDate.date;
+				}
+				
+				nsMonthStart.value = date.month;
+				nsYearStart.value = date.fullYear;
+			}
+			
+			//------------------------------------
+			// dateFinish
+			//------------------------------------
+			/**
+			 * NOTDOC
+			 */ 
+			public function get dateFinish():String
+			{
+				useDate = UseFX.start().date(new Date(nsYearFinish.value, nsMonthFinish.value,1));
+				return useDate.format('Y-m-d');
+			}
+			
+			/**
+			 * NOTDOC
+			 */ 
+			public function set dateFinish(value:String):void
+			{
+				var date:Date;
+				var arDate:Array = value.split('/');
+				if(arDate.length > 1){
+					date = new Date(arDate[2],arDate[1],arDate[0]);
+				}else{
+					var useDate:UseDate = UseFX.start().date(int(value));
+					date = useDate.date;
+				}
+				
+				nsMonthFinish.value = date.month;
+				nsYearFinish.value = date.fullYear;
+			}
+		]]>
+	</fx:Script>
+	<s:Label text="Início: "/>
+	<ui:UiNumericStepper id="nsMonthStart" minimum="1" maximum="12"/>
+	<ui:UiNumericStepper id="nsYearStart" minimum="1960" maximum="2050"/>
+	<s:Label text="Término: "/>
+	<ui:UiNumericStepper id="nsMonthFinish" minimum="1" maximum="12"/>
+	<ui:UiNumericStepper id="nsYearFinish" minimum="1960" maximum="2050"/>
+</s:HGroup>

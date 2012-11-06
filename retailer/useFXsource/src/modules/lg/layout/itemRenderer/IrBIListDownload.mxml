@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="100%" autoDrawBackground="true" dataChange="dataChange()">
+	
+	<s:layout>
+		<s:HorizontalLayout paddingBottom="5" paddingLeft="10" paddingRight="10" paddingTop="5"
+							verticalAlign="middle"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			
+			import mx.events.FlexEvent;
+			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Popula os dados do item render.
+			 * 
+			 *  @return void
+			 */ 
+			private function dataChange():void
+			{
+				//Verifica se recebeu data
+				if(data)
+				{
+					//lbTopUser.text = 'ID:  ' +data.register_id;
+					lbURL.text = data.url_active;
+					lbTotal.text = 'Total Downloads: ' +data.total;
+				}
+			}
+			
+			protected function lbId_doubleClickHandler(event:MouseEvent):void
+			{
+				UseFX.start().openUrl(lbURL.text, "_blank");
+			}
+			
+		]]>
+	</fx:Script>
+	<s:HGroup width="100%" doubleClick="lbId_doubleClickHandler(event)" doubleClickEnabled="true">
+		<s:Label width="100%" id="lbURL"/>
+		<s:Label id="lbTotal" width="200"/>
+	</s:HGroup>
+</s:ItemRenderer>

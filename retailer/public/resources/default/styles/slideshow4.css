@@ -1,0 +1,153 @@
+/*body,h1,h2,h3,p,quote,small,form,input,ul,li,ol,label{
+	margin:0px;
+	padding:0px;
+}
+
+body{
+	color:#444444;
+	font-size:13px;
+	background: #f2f2f2;
+	font-family:Arial, Helvetica, sans-serif;
+}*/
+
+/* Gallery styles */
+
+#gallery{
+	/* CSS3 Box Shadow */
+	-moz-box-shadow:0 0 3px #AAAAAA;
+	-webkit-box-shadow:0 0 3px #AAAAAA;
+	box-shadow:0 0 3px #AAAAAA;
+	
+	/* CSS3 Rounded Corners */
+	
+	-moz-border-radius-bottomleft:4px;
+	-webkit-border-bottom-left-radius:4px;
+	border-bottom-left-radius:4px;
+	
+	-moz-border-radius-bottomright:4px;
+	-webkit-border-bottom-right-radius:4px;
+	border-bottom-right-radius:4px;
+	
+	border:1px solid white;
+	
+	background:url(../images/panel.jpg) repeat-x bottom center #ffffff;
+	
+	/* The width of the gallery */
+	width:980px;
+	overflow:hidden;
+}
+
+#slides{
+	/* This is the slide area */
+	height:400px;
+	
+	/* jQuery changes the width later on to the sum of the widths of all the slides. */
+	width:980px;
+	overflow:hidden;
+}
+
+.slide{
+	float:left;
+	width:980px;
+}
+
+#menu{
+	/* This is the container for the thumbnails */
+	height:45px;
+}
+
+#UiGalery ul{
+	margin:0px;
+	padding:0px;
+}
+
+#UiGalery li{
+	/* Every thumbnail is a li element */
+	width:60px;
+	display:inline-block;
+	list-style:none;
+	height:45px;
+	overflow:hidden;
+}
+
+#UiGalery  li.inact:hover{
+	/* The inactive state, highlighted on mouse over */
+	background:url(../images/pic_bg.png) repeat;
+}
+
+#UiGalery li.act,#UiGalery li.act:hover{
+	/* The active state of the thumb */
+	background:url(../images/active_bg.png) no-repeat;
+}
+
+#UiGalery li.act a{
+	cursor:default;
+}
+
+#UiGalery .fbar{
+	/* The left-most vertical bar, next to the first thumbnail */
+	width:2px;
+	/*background:url(../images/divider.png) no-repeat right;*/
+}
+
+#UiGalery li a{
+	display:block;
+	/*background:url(../images/divider.png) no-repeat right;*/
+	height:35px;
+	padding-top:10px;
+}
+
+#UiGalery a img{
+	border:none;
+	height: 32px;
+}
+
+
+/* The styles below are only necessary for the demo page */
+
+#UiGalery h1{
+	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
+	font-size:36px;
+	font-weight:normal;
+	margin-bottom:15px;
+}
+
+#UiGalery h2{
+	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	position:absolute;
+	right:0;
+	text-transform:uppercase;
+	top:15px;
+}
+
+#main{
+	/* The main container */
+	margin:15px auto;
+	text-align:center;
+	width:980px;
+	position:relative;
+}
+
+#UiGalery a, #UiGalery a:visited {
+	color:#0196e3;
+	text-decoration:none;
+	outline:none;
+}
+
+#UiGalery a:hover{
+	text-decoration:underline;
+}
+
+#UiGalery p{
+	padding:10px;
+	text-align:center;
+}
+
+.UiVideo{
+	padding-left: 212px;
+	padding-top: 32px;
+	width: 706px;
+	height: 367px;
+}

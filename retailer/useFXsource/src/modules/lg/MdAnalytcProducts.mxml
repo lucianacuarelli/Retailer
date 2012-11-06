@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:lg="modules.lg.*"
+		  xmlns:layout="modules.lg.layout.*"
+		  xmlns:ui="devdoo.ui.*"
+		  width="100%" height="100%" creationComplete="create()">
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Productos - Analytc / BI');
+				useFX.closeWelcome();
+				
+				csDownload.filters = [];
+				csVisualizacao.filters = [];
+				csAcesso.filters = [];
+				
+				UiColumnChart.seriesFilters = [];
+				
+			}		
+			
+			
+			import mx.charts.chartClasses.IAxis;
+			
+			private function linearAxis_labelFunc(item:Object, prevValue:Object, axis:IAxis):String {
+				return numberFormatter.format(item);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		@namespace lg "modules.lg.*";
+		@namespace layout "modules.lg.layout.*";
+		@namespace ui "devdoo.ui.*";
+		
+		
+		mx|ColumnChart {
+			fontFamily:Arial;
+			fontSize:11;
+			color:#aeaeae;
+		}
+		
+		.myStyle {
+			gridDirection:"both"; 
+			/* horizontalShowOrigin:true; 
+			horizontalTickAligned:true; 
+			horizontalChangeCount:1; */  
+			/* horizontalFill:#666666; */ 
+			horizontalAlternateFill:#282828; 
+			
+			verticalShowOrigin:false; 
+			verticalTickAligned:true;  
+			verticalChangeCount:1; 
+		}  
+		
+		
+	</fx:Style>
+	
+	<fx:Declarations>
+		<mx:NumberFormatter id="numberFormatter" precision="3" />
+		<mx:ArrayCollection id="arrColl">
+			<mx:source>
+				<fx:Array>
+					<fx:Object name="Produto A" itemDownload="150" itemVisualização="280" itemAcesso="299" />
+					<fx:Object name="Produto B" itemDownload="290" itemVisualização="418" itemAcesso="253" />
+					<fx:Object name="Produto C" itemDownload="305" itemVisualização="316" itemAcesso="246" />
+					<fx:Object name="Produto D" itemDownload="298" itemVisualização="433" itemAcesso="276" />
+					<fx:Object name="Produto E" itemDownload="295" itemVisualização="343" itemAcesso="218" />
+				</fx:Array>
+			</mx:source>
+		</mx:ArrayCollection>		
+		
+		<!-- Define custom colors for use as column fills. -->
+		<mx:SolidColor id="colorA" color="#e2fa00" alpha="0.95"/>
+		<mx:SolidColor id="colorB" color="#65fb00" alpha="0.95"/>
+		<mx:SolidColor id="colorC" color="#00dca5" alpha="0.95"/>
+		
+		<!-- Define custom Strokes for the columns. -->
+		<mx:SolidColorStroke id="lineColorA" color="#e2fa00" weight="1" alpha="0"/>
+		<mx:SolidColorStroke id="lineColorB" color="#65fb00" weight="1" alpha="0"/>		
+		<mx:SolidColorStroke id="lineColorC" color="#00dca5" weight="1" alpha="0"/>	
+		
+		<!--Linhas separadores de grupos de dados-->	
+		<mx:SolidColorStroke color="0x616161" weight="2" id="axis" alpha="0.8"/>
+		<mx:SolidColorStroke color="0x616161" weight="1" id="ticks" alpha="0.8"/>
+		<mx:SolidColorStroke color="0x616161" weight="1" id="mticks" alpha="0.8"/>
+		
+		<!-- Background element array. -->
+		<fx:Array id="bgChart">
+			<mx:GridLines styleName="myStyle">
+				<mx:horizontalStroke>
+					<mx:SolidColorStroke weight="1" color="0x666666" alpha="0.4"/>
+				</mx:horizontalStroke>
+				<mx:verticalStroke>
+					<mx:SolidColorStroke weight="1" color="0x666666" alpha="0.3"/>
+				</mx:verticalStroke>
+			</mx:GridLines>
+		</fx:Array>		
+		
+		
+	</fx:Declarations>
+	
+	<!--Background do componente-->
+	<s:Group x="68" y="85">
+		<s:Rect x="0" y="0" width="880" height="354" radiusX="5">
+			<s:fill>
+				<s:LinearGradient rotation="90">
+					<s:GradientEntry alpha="1.0" color="#323232" ratio="0"/>
+					<s:GradientEntry alpha="1.0" color="#010101" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="0" y="0" width="880" height="30" radiusX="5">
+			<s:fill>
+				<s:SolidColor color="#222222"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>	
+	
+	
+	<!--Componente de gráfico de coluna-->
+	<mx:ColumnChart id="UiColumnChart" x="95" y="140" width="821" height="264"
+					dataProvider="{arrColl}" showDataTips="true"
+					backgroundElements="{bgChart}">
+		
+		<!--Data provider da linha horizontal-->
+		<mx:horizontalAxis>
+			<mx:CategoryAxis id="hAxis"
+							 categoryField="name" />
+			
+		</mx:horizontalAxis>
+		
+		<!--Item renderer da linha horizontal-->
+		<mx:horizontalAxisRenderers>
+			<mx:AxisRenderer axis="{hAxis}"
+							 canDropLabels="false" visible="true"
+							 axisStroke="{axis}"
+							 placement="bottom"
+							 minorTickPlacement="inside" 
+							 minorTickLength="2" 
+							 tickLength="5"
+							 tickPlacement="inside">
+				<mx:tickStroke>{ticks}</mx:tickStroke>
+				<mx:minorTickStroke>{mticks}</mx:minorTickStroke>
+			</mx:AxisRenderer>
+		</mx:horizontalAxisRenderers>
+		
+		<!--Data provide da coluna vertical-->
+		<mx:verticalAxis>
+			<mx:LinearAxis id="vAxis" baseAtZero="true"
+						   minimum="100"
+						   maximum="510"
+						   labelFunction="linearAxis_labelFunc"/>
+		</mx:verticalAxis>
+		
+		<!--Item renderer da coluna vertical-->
+		<mx:verticalAxisRenderers>
+			<mx:AxisRenderer axis="{vAxis}"
+							 canDropLabels="false" 
+							 visible="true"
+							 axisStroke="{axis}"
+							 placement="bottom"
+							 minorTickPlacement="inside" 
+							 minorTickLength="2" 
+							 tickLength="5">
+				<mx:tickStroke>{ticks}</mx:tickStroke>
+				<mx:minorTickStroke>{mticks}</mx:minorTickStroke>
+				
+			</mx:AxisRenderer>
+		</mx:verticalAxisRenderers>
+		
+		<!--Itens dentro de um grupo-->
+		<mx:series>
+			<mx:ColumnSeries id="csDownload" yField="itemDownload"
+							 displayName="Download por dia" 
+							 fill="{colorA}"
+							 stroke="{lineColorA}"/>
+			
+			<mx:ColumnSeries id="csVisualizacao" yField="itemVisualização"
+							 displayName="Visualização por dia" 
+							 fill="{colorB}"
+							 stroke="{lineColorB}"/>
+			
+			<mx:ColumnSeries id="csAcesso" yField="itemAcesso"
+							 displayName="Acesso por dia"
+							 fill="{colorC}"
+							 stroke="{lineColorC}"/>
+		</mx:series>
+	</mx:ColumnChart>
+	
+	
+	<!--Componente de legenda-->
+	<s:Panel x="952" y="85" width="371" height="354" skinClass="skins.panel.SkPanelBlackSkin"
+			 title="Serviço de mala">
+		<mx:Legend x="37" y="21" dataProvider="{UiColumnChart}"/>
+	</s:Panel>
+</s:Module>

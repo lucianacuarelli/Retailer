@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+				  xmlns:s="library://ns.adobe.com/flex/spark"
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  xmlns:ui="devdoo.ui.*"
+				  width="445" height="392" close="cancel(event)" creationComplete="create()"
+				  styleName="btSave">
+	<s:layout>
+		<s:VerticalLayout gap="20" paddingBottom="15" paddingLeft="10" paddingRight="10"
+						  paddingTop="15"/>
+	</s:layout>
+	
+	
+	<fx:Declarations>
+		<!-- Validadores -->
+		<mx:StringValidator id="CONTENT_vlDateIn" source="{dfDateIn}" property="text" 
+							minLength="10" maxLength="10"
+							requiredFieldError="Necessário escolher a data início da publicação do produto."
+							tooShortError="A data deve ter no minimo 10 caractere, exemplo: 26/07/1971." 
+							tooLongError="A data deve ter no maximo 10 caractere, exemplo: 26/07/1971."/>
+		
+		<mx:StringValidator id="CONTENT_vlDateOut" source="{dfDateOut}" property="text" 
+							minLength="10" maxLength="10"
+							requiredFieldError="Necessário escolher até quando o produto deve ficar publicado."
+							tooShortError="A data deve ter no minimo 10 caractere, exemplo: 26/07/1971." 
+							tooLongError="A data deve ter no maximo 10 caractere, exemplo: 26/07/1971."/>
+		
+		<mx:StringValidator id="CONTENT_vlStatusNewDateOut" source="{dfStatusNewDateOut}" property="text" 
+							minLength="10" maxLength="10"
+							requiredFieldError="Necessário escolher até quando o produto deve ser mostrado como novo."
+							tooShortError="A data deve ter no minimo 10 caractere, exemplo: 26/07/1971." 
+							tooLongError="A data deve ter no maximo 10 caractere, exemplo: 26/07/1971."/>
+	</fx:Declarations>		
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDate;
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataProducts;
+			import modules.lg.model.UseLgResources;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.CalendarLayoutChangeEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  dataProducts
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			public var _dataProducts:DataProducts;
+			
+			//----------------------------------
+			//  dataProvider
+			//----------------------------------
+			private var _acResources:ArrayCollection;
+
+			/**
+			 *  Lista de recursos selecionados utilizados para popular o list.  
+			 */
+			public function set dataProvider(resources:*):void
+			{
+				_acResources = new ArrayCollection();
+				
+				//Popula a lista de recursos selecionados
+				for each (var item:Object in resources) 
+				{
+					_acResources.addItem(item);
+				}
+				
+				lsResources.dataProvider = _acResources;
+			}
+
+			
+			//----------------------------------
+			//  acResourcesStatus
+			//----------------------------------
+			/**
+			 *  Indica todas as opções de status que podem ser atribuidas a um produto ou recurso  
+			 */  
+			[Bindable] public var acResourcesStatus:ArrayCollection = new ArrayCollection([
+				{data:"AGA", label:"Aguardando aprovação"},
+				{data:"NAP", label:"Não aprovado"},
+				{data:"APR", label:"Aprovado"},
+				{data:"APP", label:"Aprovado e publicado"},
+				{data:"AND", label:"Aprovado e despublicado"}
+			]);
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Cria todos os componentes de edição de registro,
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da módulo, 
+			 *  Cria instância do modelo de tabela,
+			 *  Verifica se está em modo de edicção, 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 *  Configura permissão de acesso.
+			 * 
+			 *  @return void  
+			 */
+			private function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da popup
+				useFX = UseFX.startPopup(this);
+				
+				//Cria gerenciador de dados de produto
+				this._dataProducts = new DataProducts();
+				
+				//Popula a lista de tipos de status e datas default
+				populate();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();				
+				
+				//Adiciona gerenciamento de log
+				changeLog();
+				
+				//Configura validadores de componentes
+				validade();
+				
+				//Configura permissão de acesso
+				accessControl();
+			}
+			
+			//----------------------------------
+			//  populate
+			//----------------------------------
+			/**
+			 *  Popula a lista de opções de status e datas default
+			 * 
+			 *  @return void
+			 */			
+			private function populate():void
+			{
+				ddResourcesStatus.dataProvider = acResourcesStatus;
+				ddResourcesStatus.selectedIndex = 0;
+				
+				//Instância de componente gerenciador de datas
+				var useDate:UseDate = useFX.date();
+				//Popula a data inicial da publicação com a data atual
+				dfDateIn.selectedDate = useDate.date;
+				//Incrementa dois dias para gerar a data final de publicação
+				useDate.date.fullYear += 2;
+				dfDateOut.selectedDate = useDate.date;
+				//Incrementa dois dias para gerar a data de novo até
+				useDate =  useFX.date();
+				useDate.date.date += 30;
+				dfStatusNewDateOut.selectedDate = useDate.date;
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				btCancel.addEventListener(MouseEvent.CLICK, cancel);
+				btSave.addEventListener(MouseEvent.CLICK, save);
+			}
+			
+			//----------------------------------
+			//  changeLog
+			//----------------------------------
+			/**
+			 *  Adiciona gerenciamento de log para componentes
+			 * 
+			 *  @return void
+			 */	
+			private function changeLog():void
+			{
+				useFX.startLog(true, saveCheck)
+					.changeLog(ddResourcesStatus, IndexChangeEvent.CHANGE, "Status do conteúdo")
+					.changeLog(taObservation, Event.CHANGE, "Observação de Status")
+					.changeLog(dfDateIn, CalendarLayoutChangeEvent.CHANGE, "Data de Publicação")
+					.changeLog(dfDateOut, CalendarLayoutChangeEvent.CHANGE, "Data de Despublicação")
+					.changeLog(dfStatusNewDateOut, CalendarLayoutChangeEvent.CHANGE, "Data Novo Até");
+			}			
+			
+			//----------------------------------
+			//  validade
+			//----------------------------------    	
+			/**
+			 * Configura lista de validadores.
+			 *  
+			 * @return void  
+			 */	
+			private function validade():void
+			{
+				//Adiciona lista de validadores do formulário cliente
+				useFX.validate('CONTENT')
+					.addItem('Publicar em:', CONTENT_vlDateIn)
+					.addItem('Publicar até:', CONTENT_vlDateOut)
+					.addItem('Novo até:', CONTENT_vlStatusNewDateOut);
+			}
+			
+			//----------------------------------
+			//  accessControl
+			//----------------------------------    	
+			/**
+			 * Gerência o controle de acesso e uso de usuários no módulo.
+			 *  
+			 * @return void  
+			 */	
+			private function accessControl():void{
+				useFX.accessControl(true)
+					.accessControlAdd( btSave )
+					.accessControlEdit(ddResourcesStatus, 5);
+				
+				//Configura botão salvar
+				saveCheck(null);
+			}
+			
+			//----------------------------------
+			//  saveCheck
+			//----------------------------------    	
+			/**
+			 * 	Verifica se houve alguma alteração na edição, para ativar botão salvar
+			 * 
+			 *  @return void  
+			 */	
+			private function saveCheck(event:Event):void
+			{
+				useFX.accessControl(useFX.isChangedLog)
+					.accessControlAdd( btSave );
+			}
+			
+			//----------------------------------
+			//  save
+			//----------------------------------    	
+			/**
+			 * 	Prepara dados para gravar na base de dados.
+			 * 
+			 *  Atualiza modelo de tabela de cada componente necessário para 
+			 *  interação com a base de dados.
+			 * 
+			 *  @return void  
+			 */	
+			private function save(event:Event):void
+			{
+				//Cria lista de coleção de modelos de tabela
+				var acResources:ArrayCollection = new ArrayCollection();
+				
+				for each (var item:Object in this._acResources) 
+				{
+					//Cria modelo de tabela que deve ser utilizado
+					var useLgResources:UseLgResources 			= new UseLgResources();
+						useLgResources.id 						= item.USE_LG_RESOURCES_id;
+						useLgResources.resource_status 			= useFX.select(ddResourcesStatus, "data");
+						useLgResources.observation_status		= taObservation.text;
+						
+						//Verifica se o status é aprovador e publicado
+						if(useLgResources.resource_status == "APP")
+							useLgResources.is_active 			= 1;
+						else
+							useLgResources.is_active 			= 0;
+						
+						var useDate:UseDate = useFX.date();
+						
+						//Início de Publicação
+						useDate = useFX.date(dfDateIn.selectedDate);
+						useLgResources.date_in = useDate.format('U');
+						//Término de Publicação
+						useDate = useFX.date(dfDateOut.selectedDate);
+						useLgResources.date_out = useDate.format('U');
+						//Período de Novidade
+						useDate = useFX.date(dfStatusNewDateOut.selectedDate);
+						useLgResources.status_new_date_out = useDate.format('U');
+						
+					//registra modelo de tabela na lista que deve ser enviada ao servidor 	
+					acResources.addItem(useLgResources);	
+				}
+				
+				//Cria um adaptador e adiciona os objetos DAO nele e
+				//conecta ao servidor para interagir com a base de dados.				
+				useFX.adapter('UPDATE_RESOUCES_MULTIPLES')
+					.adapterMaster(acResources)
+					.connect(saveResult);
+			}
+			
+			//----------------------------------
+			//  saveResult
+			//----------------------------------
+			/**
+			 *  Evento disparado após interação com a base de dados.
+			 * 
+			 *  Processa o resultado obtido, atualizando o modelo de tabela principal,
+			 *  Retorna dados para atualizar datagrid e fecha a popup.  
+			 *
+			 *  @return void
+			 */ 			
+			private function saveResult(useResult:Object):void
+			{
+				//Retorna dados para atualizar datagrid e fecha a popup
+				useFX.closePopup(this, useResult);
+			}	
+			
+			//----------------------------------
+			//  cancel
+			//----------------------------------
+			/**
+			 *  Fecha a popup.
+			 *  @return void
+			 */ 		
+			private function cancel(event:Event):void{
+				useFX.closePopup(this);
+			}			
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup width="100%" gap="15">
+		<s:VGroup width="100%" gap="2">
+			<s:Label text="Recursos selecionados"/>
+			<s:List id="lsResources" width="100%" height="110" labelField="USE_LG_RESOURCES_title"/>
+		</s:VGroup>
+		
+		<s:HGroup width="100%" gap="10">
+			<s:VGroup gap="2">
+				<s:Label text="Disponível em:"/>
+				<mx:DateField id="dfDateIn" 
+							  width="100"
+							  formatString="DD/MM/YYYY" 
+							  dayNames="['D','S','T','Q','Q','S','S']" 
+							  monthNames="['Janeiro','Fevereiro','Março','Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']"/>
+			</s:VGroup>
+			<mx:VRule height="40"/>
+			<s:VGroup gap="2">
+				<s:Label text="Disponível até:"/>
+				<mx:DateField id="dfDateOut"
+							  width="100"
+							  formatString="DD/MM/YYYY" 
+							  dayNames="['D','S','T','Q','Q','S','S']" 
+							  monthNames="['Janeiro','Fevereiro','Março','Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']"/>
+			</s:VGroup>
+			<mx:VRule height="40"/>
+			
+			<s:VGroup gap="2">
+				<s:Label text="Novo até:"/>
+				<mx:DateField id="dfStatusNewDateOut"
+							  width="100"
+							  formatString="DD/MM/YYYY" 
+							  dayNames="['D','S','T','Q','Q','S','S']" 
+							  monthNames="['Janeiro','Fevereiro','Março','Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']"/>
+			</s:VGroup>
+			
+		</s:HGroup>
+	</s:VGroup>
+	<mx:HRule width="100%"/>
+	<s:HGroup x="10" y="282" width="100%" height="100%" gap="10">
+		<s:VGroup x="8" y="37" gap="2">
+			<s:Label text="Status do recurso"/>
+			<s:DropDownList id="ddResourcesStatus" width="165"/>
+		</s:VGroup>
+		<s:VGroup x="8" y="37" width="100%" height="100%" gap="2">
+			<s:Label text="Observação"/>
+			<s:TextArea id="taObservation" width="100%" height="100%"/>
+		</s:VGroup>
+	</s:HGroup>
+	<s:controlBarContent>
+		<mx:Spacer width="100%"/>
+		<s:Button id="btSave" label="Salvar e Fechar" styleName="btSave"/>
+		<s:Button id="btCancel" styleName="btCancel"  label="Cancelar" buttonMode="true" useHandCursor="true"/>
+	</s:controlBarContent>
+</s:TitleWindow>

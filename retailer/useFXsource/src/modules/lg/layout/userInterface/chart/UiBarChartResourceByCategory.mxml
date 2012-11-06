@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+	<s:layout>
+		<s:HorizontalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10"
+							verticalAlign="middle"/>
+	</s:layout>
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		@namespace lg "modules.lg.*";
+		@namespace layout "modules.lg.layout.*";
+		@namespace ui "devdoo.ui.*";
+		
+		mx|BarChart {
+			fontFamily:Arial;
+			fontSize:11;
+			color:#aeaeae;
+		}
+		
+		mx|Legend
+		{
+			fontFamily:Arial;
+			fontSize:11;
+			color:#aeaeae;
+		}
+		
+		s|Panel
+		{
+			fontFamily:Arial;
+			fontSize:11;
+			color:#aeaeae;
+			skinClass: ClassReference("skins.SkPanelBlackSkin");
+		}
+		.myStyle {
+			gridDirection:"both"; 
+			/* horizontalShowOrigin:true; 
+			horizontalTickAligned:true; 
+			horizontalChangeCount:1; */  
+			/* horizontalFill:#666666; */ 
+			horizontalAlternateFill:#282828; 
+			
+			verticalShowOrigin:false; 
+			verticalTickAligned:true;  
+			verticalChangeCount:1; 
+		}  
+		
+		
+	</fx:Style>
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDebug;
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  dataProdiver
+			//----------------------------------
+			private var _dataProdiver:ArrayCollection;
+			
+			/**
+			 *  Coleção de dados para popular o grafico de recurso por categoria.
+			 * 
+			 *  @return void  
+			 */
+			public function set dataProdiver(value:ArrayCollection):void
+			{
+				_dataProdiver = value;
+			}
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				csTotalProduct.filters = [];
+				csTotalResource.filters = [];
+				csTotalDownload.filters = [];
+				
+				uiBarChart.seriesFilters = [];
+				uiBarChart.dataProvider = this._dataProdiver;
+			}		
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<mx:NumberFormatter id="numberFormatter" precision="3" />
+		<mx:ArrayCollection id="arrColl">
+			<mx:source>
+				<fx:Array>
+					<fx:Object title="Ar Condicionado" total="150"/>
+					<fx:Object title="Eletrodomestico" total="290"/>
+					<fx:Object title="Informática" total="305"/>
+					<fx:Object title="Celular" total="298"/>
+					<fx:Object title="Audio e Vídeo" total="295"/>
+					<fx:Object title="Televisor" total="870"/>
+				</fx:Array>
+			</mx:source>
+		</mx:ArrayCollection>		
+		
+		<!-- Define custom colors for use as column fills. -->
+		<mx:SolidColor id="colorA" color="#e2fa00" alpha="0.95"/>
+		<mx:SolidColor id="colorB" color="#65fb00" alpha="0.95"/>
+		<mx:SolidColor id="colorC" color="#00dca5" alpha="0.95"/>
+		
+		<!-- Define custom Strokes for the columns. -->
+		<mx:SolidColorStroke id="lineColorA" color="#e2fa00" weight="1" alpha="0"/>
+		<mx:SolidColorStroke id="lineColorB" color="#65fb00" weight="1" alpha="0"/>		
+		<mx:SolidColorStroke id="lineColorC" color="#00dca5" weight="1" alpha="0"/>	
+		
+		<!--Linhas separadores de grupos de dados-->	
+		<mx:SolidColorStroke color="0x616161" weight="2" id="axis" alpha="0.8"/>
+		<mx:SolidColorStroke color="0x616161" weight="1" id="ticks" alpha="0.8"/>
+		<mx:SolidColorStroke color="0x616161" weight="1" id="mticks" alpha="0.8"/>
+		
+		<!-- Background element array. -->
+		<fx:Array id="bgChart">
+			<mx:GridLines styleName="myStyle">
+				<mx:horizontalStroke>
+					<mx:SolidColorStroke weight="1" color="0x666666" alpha="0.4"/>
+				</mx:horizontalStroke>
+				<mx:verticalStroke>
+					<mx:SolidColorStroke weight="1" color="0x666666" alpha="0.3"/>
+				</mx:verticalStroke>
+			</mx:GridLines>
+		</fx:Array>		
+	</fx:Declarations>
+	
+	<!--Componente de gráfico-->
+	<s:Panel width="100%" height="100%" skinClass="skins.panel.SkPanelBlackSkin" title="Categorias">
+		<s:layout>
+			<s:HorizontalLayout/>
+		</s:layout>
+		<mx:BarChart id="uiBarChart" x="1" y="-138" width="100%" height="100%"
+					 backgroundElements="{bgChart}" paddingBottom="10"
+					 paddingLeft="10" paddingRight="10" paddingTop="10" showDataTips="true">
+			
+			<!--Data provider da coluna horizontal-->
+			<mx:horizontalAxis>
+				<mx:LinearAxis id="hAxis" baseAtZero="true"/>
+			</mx:horizontalAxis>
+			
+			<!--Item renderer da coluna horizontal-->
+			<mx:horizontalAxisRenderers>
+				<mx:AxisRenderer axis="{hAxis}"
+								 canDropLabels="false" 
+								 visible="true"
+								 axisStroke="{axis}"
+								 placement="bottom"
+								 minorTickPlacement="inside" 
+								 minorTickLength="2" 
+								 tickLength="5">
+					<mx:tickStroke>{ticks}</mx:tickStroke>
+					<mx:minorTickStroke>{mticks}</mx:minorTickStroke>
+				</mx:AxisRenderer>
+			</mx:horizontalAxisRenderers>
+			
+			<!--Data provider da linha vertical-->
+			<mx:verticalAxis>
+				<mx:CategoryAxis id="vAxis"
+								 categoryField="title" />
+				
+			</mx:verticalAxis>
+			
+			<!--Item renderer da linha vertical-->
+			<mx:verticalAxisRenderers>
+				<mx:AxisRenderer axis="{vAxis}"
+								 canDropLabels="false" visible="true"
+								 axisStroke="{axis}"
+								 placement="bottom"
+								 minorTickPlacement="inside" 
+								 minorTickLength="2" 
+								 tickLength="5"
+								 tickPlacement="inside">
+					<mx:tickStroke>{ticks}</mx:tickStroke>
+					<mx:minorTickStroke>{mticks}</mx:minorTickStroke>
+				</mx:AxisRenderer>
+			</mx:verticalAxisRenderers>
+			
+			<!--Itens dentro de um grupo-->
+			<mx:series>
+				<mx:BarSeries 
+					id="csTotalProduct" 
+					xField="total_product"
+					yField="title"
+					displayName="Produtos cadastros" 
+					fill="{colorA}"
+					stroke="{lineColorA}"/>
+
+				<mx:BarSeries 
+					id="csTotalResource" 
+					xField="total_resource"
+					yField="title"
+					displayName="Recursos cadastros" 
+					fill="{colorB}"
+					stroke="{lineColorB}"/>
+
+				<mx:BarSeries 
+					id="csTotalDownload" 
+					xField="total_download"
+					yField="title"
+					displayName="Downloads realizados" 
+					fill="{colorC}"
+					stroke="{lineColorC}"/>
+				
+			</mx:series>
+		</mx:BarChart>
+	</s:Panel>
+	
+	<!--Componente de legenda-->
+	<s:Panel height="100%" title="Legenda" skinClass="skins.panel.SkPanelBlackSkin">
+		<mx:Legend x="37" y="21" dataProvider="{uiBarChart}"/>
+	</s:Panel>
+</s:Group>

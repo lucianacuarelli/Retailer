@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="true" parentProject="17fea375-8a79-4c25-98c3-dfa00f756dce" projectUUID="17fea375-8a79-4c25-98c3-dfa00f756dce" pureCatalystProject="false" sdkVersion="4.6.0" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de" version="15">
+  <projects>
+    <project filename="UseOS_Register.fxpl" position="5" projectUUID="bbd4502f-09ab-4809-a34c-ddbd8197563b" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+    <project filename="UseOS_Messages.fxpl" position="7" projectUUID="4b8109a2-f6eb-412e-8b8a-c4df589dd7e2" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+  </projects>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+    <linked location="C:/AppServ/library/UseFX/UseFlex.swc" path="/linked-swc/UseFlex.swc" position="1" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+    <linked location="C:/AppServ/library/UseFX/UseDB.swc" path="/linked-swc/UseDB.swc1/UseDB.swc" position="2" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+    <linked location="C:/AppServ/library/UseFX/UseDB.swc" path="/linked-swc/UseDB.swc1/UseDB.swc" position="3" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+    <linked location="C:/AppServ/library/UseOS/UseOS_Components.swc" path="/linked-swc/UseOS_Components.swc" position="4" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+    <linked location="C:/AppServ/library/UseFX/UseDevDoo.swc" path="/linked-swc/UseDevDoo.swc" position="6" uuid="13ee1a3f-5ec7-45cb-b93b-76b47a43d6de"/>
+  </swc>
+  <misc/>
+  <theme/>
+  <mxmlFormattingPrefs groupAttributesByState="true" maxLineWidth="100" mxmlAlignAttributes="true" mxmlAttributeOrder="id,userLabel,includeIn,excludeFrom,visible,x,y,z,left,right,top,bottom,width,height,minWidth,minHeight,maxWidth,maxHeight,label" mxmlKeepAttributeValuesOrganized="true"/>
+</fxpProperties>

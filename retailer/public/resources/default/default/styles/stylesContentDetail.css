@@ -1,0 +1,349 @@
+/* CSS Document */
+
+/*body {background:#f2f2f2; margin:0; padding:0; top:0; left:0; font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}*/
+body {
+	background:#FFFFFF; 
+	margin:0; padding:0; top:0; left:0; font-family:Verdana, Arial, Helvetica, sans-serif; font-size: 12px; overflow: hidden;}
+h1,h2,h3,h4,h5,h5 {font-weight:normal; color:#CCCCCC;}
+a {text-decoration:none; color:#CCCCCC;}
+a:hover {text-decoration:none; color:#FFFFFF;}
+*{ margin: 0; padding: 0; z-index: 1; }
+img {border:0;}
+
+ol, ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.useClear{
+	clear: both;
+}
+.usePage{
+	background:#FFFFFF;
+}
+
+.usePageTitle{
+	padding-bottom: 10px;
+	padding-left: 10px;
+	width: 920px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.usePageTitle h3{
+	font-size: 18px;
+	font-weight: bold;
+	color: #CC3366;
+	padding-top: 10px;
+}
+
+.usePageDetail{
+	width: 970px;
+	height:610px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+}
+
+.usePageDetail .usePageContent{
+	width: 970px;
+	height:530px;
+	clear: both;
+	background:#FFFFFF url('../images/divider/contentDetailDivider.png') no-repeat 540px center;
+	overflow: hidden;
+}
+
+
+/*-------------------------------------------------------------- #UiContentDetail --*/
+#UiContentDetail{
+	width: 100%;
+	float: none;
+	clear: both;
+}
+
+#UiContentDetail .useLeftColumn{
+	float: left;
+	padding: 0px 15px 30px 15px;
+}
+
+#UiContentDetail .useRightColumn{
+	float: right;
+	padding: 0px 20px 0px 20px;
+	width: 387px;
+}
+
+#UiContentDetail .useProduct{
+	height: 550px;
+}
+#UiContentDetail .useProductInteraction{
+	width: 385px;
+	height: 550px;
+	background-color: #00FFFF;
+}
+
+#UiContentDetail .UiButtonClose{
+	height: 20px;
+}
+
+#UiContentDetail .UiComments{
+	height: 490px;
+	padding-bottom: 10px;
+}
+
+#UiContentDetail .UiNavBar{
+	height: 20px;
+}
+#UiContentDetail .UiCommentsInfo{
+	height: 20px;
+	padding-top: 5px;
+	padding-left: 5px;
+}
+#UiContentDetail .UiCommentsInfo span{
+	height: 20px;
+	padding-top: 5px;
+	font-weight: bold;
+	font-size: 9px;
+	color: #6D6E71;
+	padding-right: 18px;
+}
+
+#UiContentDetail .UiProductMenu{
+	padding-top: 20px;
+	padding-bottom: 0px;
+}
+#UiContentDetail .useMenuPage{
+	padding-left: 10px;
+	padding-top: 10px;
+	margin-left: 2px;
+	clear: both;
+	width: 370px;
+}
+
+#UiContentDetail .UiDisplay{
+	padding-left:7px;
+	padding-top:7px;
+	width: 505px;
+	height: 355px;
+	background:url('../images/bg/bgDisplayBig.png') repeat-x left top;
+}
+
+#UiContentDetail .UiComment{
+	width: 100%;
+	float: none;
+}
+#UiContentDetail .useComment{
+	width: 350px;
+	padding-bottom: 5px;
+	color: #6d6e70;
+	font-size: 11px;
+	line-height: 15px;
+}
+#UiContentDetail .UiComment li{
+	padding: 10px;
+}
+
+.useComment .UiTitle{
+	color: #C5355D;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.UiComment .useColor{
+	background-color: #e6e7e9;
+}
+.UiComment .UiWrap{
+	color: #6d6e70;
+	font-size: 10px;
+}
+.UiComment .UiDetail{
+	float: right;
+}
+
+.UiCommentButtons{
+}
+.UiCommentButtons li{
+	float: left;
+	height: 22px;
+	padding: 0px;
+}
+
+.UiButtonShow{
+	padding-right: 10px;
+}
+
+.UiButtonComment{
+	background:transparent url("../images/bt/btComentar.png") no-repeat 0px 0px;;
+}
+.UiButtonDownload{
+	background:transparent url("../images/btComment.png") no-repeat -94px 0px;
+}
+.UiButtonEmail{
+	background:transparent url("../images/bt/btEmail.png") no-repeat 0px 0px;
+}
+
+/*----------------------------------------------------------------- UiProductDetail --*/
+
+#UiContentDetail .useProduct{
+	width: 510px;
+	color: #6D6E71;
+}
+
+#UiContentDetail .useProduct .UiDetailWrap{
+	padding-bottom: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+#UiContentDetail .useProduct .UiDetail{
+	padding-bottom: 5px;
+}
+#UiContentDetail .useProduct .UiDetail .UiRating{
+	float: right
+}
+#UiContentDetail .useProduct .UiDetail .UiTitle span{
+	font-size: 15px;
+	font-weight: bold;
+}
+#UiContentDetail .useProduct .UiDetail .UiTitle .UiDate{
+	font-size: 15px;
+	float: right
+}
+
+#UiContentDetail .useProduct .UiDetail .UiTitle .UiDetail{
+	font-size: 11px;
+	padding-top: 3px;
+}
+
+.UiDescriptionWrap {
+	background: #ebebeb;
+	padding: 5px;
+}
+
+.UiDescriptionWrap span{
+	line-height: 15px;
+}
+
+.UiRating{
+	font-size: 11px;
+}
+.UiRating .UiStars{
+	padding-top: 3px;
+}
+
+
+/*----------------------------------------------------------------- UiProductDetail --*/
+.UiProductDetail{
+	width: 100%;
+	padding-top: 0px;
+	padding-bottom: 30px;
+}
+
+.UiProductDetail .UiProductList{
+	width: 80px;
+	padding: 0px 0px 25px 0px;
+}
+
+.UiProductDetail .UiProductDetailImage{
+	width: 335px;
+	height: 375px;
+}
+
+.UiProductDetailImage img{
+	border: none;
+	margin: auto;
+	
+}
+.UiProductDetailImage .UiImage{
+	width: 335px;
+	height: 375px;
+	text-align:center;
+}
+
+.UiProductDetail .UiProductDetailInfo{
+	width: 310px;
+	padding-right: 30px;
+}
+
+.UiProductDetailInfo, .UiProductDetailImage, .UiProductList{
+	float: left;
+}
+
+.UiStarText, .UiStarRating{
+	float: left;
+	padding-right: 5px;
+}
+
+.UiRatingAdd{
+	padding-top: 10px;
+	font-weight: bold;
+}
+
+/*----------------------------------------------------- UiProductDetailInfo --*/
+.UiProductDetailInfo .UiProductDate{
+	font-size: 9px;
+	color: #6D6E71;
+	padding-bottom: 50px;
+}
+.UiProductDetailInfo .UiProductTitle{
+	font-size: 33px;
+	color: #6D6E71;
+	padding-bottom: 20px;
+}
+.UiProductDetailInfo .UiProductText{
+	font-size: 11px;
+	color: #6D6E71;
+	padding-bottom: 30px;
+	line-height: 17px;
+}
+
+.UiProductInfo {
+	padding-bottom: 60px;
+}
+.UiProductMenu{
+	padding-bottom: 20px;
+}
+.UiProductInfo .UiTitle{
+	font-weight: bold;
+	color: #6D6E71;
+	font-size: 10px;
+	padding-bottom: 20px;
+}
+.UiProductMenu .UiTitle{
+	font-weight: bold;
+	color: #C12752;
+	font-size: 10px;
+	padding-bottom: 20px;
+}
+
+/*-------------------------------------------------------------UiProductMiniList--*/
+
+.UiProductMiniList{
+	margin-left: 15px;
+	cursor: pointer;
+	width: 75px;
+}
+.UiProductMiniList .useImage{
+	width: 60px;
+	height: 50px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 5px;
+}
+
+.UiProductMiniList li{
+	width: 65px;
+	height: 65px;
+}
+
+/*-----------------------------------------------------------------scrollbar--*/
+.UiComment .VScrollbar .viewport { width: 370px; height: 400px; overflow: hidden; position: relative; }
+.UiDescription .VScrollbar .viewport {  width: 425px; height: 50px; overflow: hidden; position: relative; }
+
+.VScrollbar {width: 100%;}
+.VScrollbar .overview { list-style: none; position: absolute; left: 0; top: 0; padding: 0; margin: 0; }
+.VScrollbar .scrollbar{ background: transparent url(../images/bg-scrollbar-track-y.png) no-repeat 0 0; position: relative; background-position: 0 0; float: right; width: 15px; }
+.VScrollbar .track { background: transparent url(../images/bg-scrollbar-trackend-y.png) no-repeat 0 100%; height: 100%; width:13px; position: relative; padding: 0 1px; }
+.VScrollbar .thumb { background: transparent url(../images/bg-scrollbar-thumb-y.png) no-repeat 50% 100%; height: 20px; width: 25px; cursor: pointer; overflow: hidden; position: absolute; top: 0; left: -5px; }
+.VScrollbar .thumb .end { background: transparent url(../images/bg-scrollbar-thumb-y.png) no-repeat 50% 0; overflow: hidden; height: 5px; width: 25px; }
+.VScrollbar .disable { display: none; }

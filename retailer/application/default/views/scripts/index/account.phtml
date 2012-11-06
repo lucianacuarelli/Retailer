@@ -1,0 +1,199 @@
+<!-- minha conta -->
+<div class="usePage">
+	<div class="usePageTitle">
+		<h3>Cadastro</h3>
+	</div>
+	<!-- cadastro da empresa -->
+	<div class="UiRegisterCorporate">
+		<div class="UiItem">
+			<div class="UiImage">
+				<img alt="" src="<?= $this->useDefault->images ?>/icons/iconRede.gif"/>
+			</div>
+			<div class="UiText"><?= $this->corporate->network ?></div>
+		</div>
+		<div class="UiItem">
+			<div class="UiImage">
+				<img alt="" src="<?= $this->useDefault->images ?>/icons/iconLoja.gif"/>
+			</div>
+			<div class="UiText"><?= $this->corporate->fancy_name ?></div>
+		</div>
+		<div class="UiItem">
+			<div class="UiImage">
+				<img alt="" src="<?= $this->useDefault->images ?>/icons/iconEndereco.gif"/>
+			</div>
+			<div class="UiText"><? if(!empty($this->corporateAddress)) echo $this->corporateAddress->address .', '. $this->corporateAddress->number .' - '. $this->corporateAddress->city .' - '. $this->corporateAddress->state ?></div>
+		</div>
+		<div class="UiItem">
+			<div class="UiImage">
+				<img alt="" src="<?= $this->useDefault->images ?>/icons/iconPhone.gif"/>
+			</div>
+			<div class="UiText"><? if(!empty($this->corporatePhone->ddd) && !empty($this->corporatePhone->phone)) echo '('. $this->corporatePhone->ddd .') '. $this->corporatePhone->phone; ?></div>
+		</div>
+		<div class="UiItem">
+			<div class="UiImage">
+				<img alt="" src="<?= $this->useDefault->images ?>/icons/iconEmail.gif"/>
+			</div>
+			<div class="UiText"><? if(!empty($this->corporateEmail->email)) echo $this->corporateEmail->email; ?></div>
+		</div>
+	</div>
+	<div class="useClear"></div>
+	<!-- cadastro do colaborador -->				
+	<div class="UiRegisterCollaborator">
+		<div class="UiContent">
+			<!-- detalhes do colaborador -->				
+			<table width="100%" border="0" cellspacing="10">
+			  	<tr>
+				  	<td valign="top" style="width: 50%">
+				  		<table width="100%" border="0">
+						  	<tr>
+							  	<td valign="top" style="width: 50px;">
+									<img alt="" src="<?= $this->useDefault->images ?>/thumbUsuario.gif"/>
+								</td>
+								<td valign="top">
+									<div class="UiText" id="username">
+										<?= $this->userInfo->name .' '. $this->userInfo->lastname ?>
+									</div>
+									<div class="UiTextLight" id="useremail">
+										<?= $this->userInfo->user_email ?>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" colspan="2">
+									<form id="formPassword" action="#" onsubmit="return false;">
+										<table width="100%" border="0">
+						  					<tr>
+						  						<td>
+													<span>Nova senha:</span>
+						  						</td>
+						  						<td>
+													<input type="password" id="user_password" name="user_password" class="UiPassWord" style="text-transform: lowercase"/>
+						  						</td>
+						  					</tr>
+						  					<tr>
+						  						<td>
+													<span>Confirma senha:</span>
+						  						</td>
+						  						<td>
+													<input type="password" id="user_password_confirm" name="user_password_confirm" class="UiPassWord" style="text-transform: lowercase"/>
+						  						</td>
+						  					</tr>
+						  					<tr>
+						  						<td colspan="2">
+													<span id="errorPassword"></span>
+						  						</td>
+						  					</tr>
+						  					<tr>
+						  						<td colspan="2">
+													<div class="UiMenu">
+														<span id="savePassword" class="UiCursorPointer">Salvar</span>
+														<span> | </span>
+														<span id="cancelPassword" class="UiCursorPointer">Cancelar</span>
+													</div>
+						  						</td>
+						  					</tr>
+						  				</table>
+									</form>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top" colspan="2">
+									<div class="UiMenu">
+										<span id="changePassword" class="UiCursorPointer" onclick="changePassword();">Alterar senha</span>
+										<br />
+										<br />
+										<a href="<?= $this->baseUrl ?>/editarcadastro">Alterar dados pessoais</a>
+									</div>
+								</td>
+							</tr>
+						</table>
+				  	</td>
+				  	<td valign="top">
+						<table width="100%" border="0">
+						  <tr>
+						    <td style="width:120px; height: 35px;" valign="top">
+						    	<div class="UiTitle">
+									Nickname:
+								</div>
+						    </td>
+						    <td valign="top">
+						    	<div class="UiText">
+						    		<div id="userNickname">
+										<?= $this->userInfo->nickname ?>
+						    		</div>
+									<form id="formNickname" action="#" onsubmit="return false;">
+										<div>
+										<input type="text" id="nickname" name="nickname" value="<?= $this->userInfo->nickname ?>" class="UiPassWord" />
+										<span id="errorNickname"></span>
+										<div class="UiMenu">
+											<span id="saveNickname" class="UiCursorPointer">Salvar</span>
+											<span> | </span>
+											<span id="cancelNickname" class="UiCursorPointer">Cancelar</span>
+										</div>
+										</div>
+									</form>
+								</div>
+							</td>
+						  </tr>
+						  <tr>
+						    <td colspan="2">
+						    	<div class="UiMenu">
+									<span id="changeNickname" class="UiCursorPointer">Alterar nickname</span>
+								</div>
+							</td>
+						  </tr>
+						  <tr>
+						    <td valign="top">
+						    	<div class="UiTitle">
+									Linha de Produto:
+								</div>
+							</td>
+						    <td valign="top">
+						    	<ul>
+								<? foreach($this->groups as $itemGroup): ?>
+									<li><?= $itemGroup->title ?></li>
+								<? endforeach; ?>
+								</ul>
+							</td>
+						  </tr>
+						  <tr>
+						    <td>
+						    	<div class="UiTitle">
+									Região:
+								</div>
+						    </td>
+						    <td>
+						    	<div class="UiText">
+									<? if(!empty($this->address->region)): ?>
+										<?= $this->address->region ?>
+									<? endif; ?>
+								</div>
+						    </td>
+						  </tr>
+						  <? if(!empty($this->phone)): ?>
+						  <tr>
+						    <td>
+						    	<div class="UiTitle">
+									Telefone:
+								</div>
+							</td>
+						    <td>
+						    	<div class="UiText">
+									<ul>
+										<? foreach($this->phone as $itemPhone): ?>
+											<li><?= $itemPhone->ddd .' '. $itemPhone->phone ?></li>
+										<? endforeach; ?>
+									</ul>
+								</div>
+						    </td>
+						  </tr>
+						  <?php endif; ?>
+						</table>
+				  	</td>
+				</tr>
+			</table>
+			<div class="useClear"></div>
+		</div>
+	</div>
+	<div class="UiSpace"></div>
+</div>

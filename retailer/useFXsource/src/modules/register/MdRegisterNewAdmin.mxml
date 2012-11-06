@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:layout="com.devdoo.developer.layout.*"
+		  xmlns:userInterface="modules.lg.layout.userInterface.*"
+		  xmlns:ui="devdoo.ui.*"
+		  xmlns:register="modules.register.*"
+		  width="100%" height="100%" creationComplete="create()" xmlns:validators="devdoo.register.fx.validators.*">
+	
+	<fx:Declarations>
+		<!-- Validadores -->
+		<mx:NumberValidator id="REGISTER_vlBirthDay"
+							lowerThanMinError="Necessário escolhero dia do nascimento." minValue="0"
+							property="selectedIndex" source="{ddBirthDay}"/>
+		
+		<mx:NumberValidator id="REGISTER_vlBirthMonth"
+							lowerThanMinError="Necessário escolher o mês do nascimento."
+							minValue="0" property="selectedIndex" source="{ddBirthMonth}"/>
+		
+		<mx:NumberValidator id="REGISTER_vlBirthYear"
+							lowerThanMinError="Necessário escolher o ano do nascimento."
+							minValue="0" property="selectedIndex" source="{ddBirthYear}"/>
+		<mx:NumberValidator id="REGISTER_vlSex" lowerThanMinError="Necessário escolher o sexo."
+							minValue="0" property="selectedIndex" source="{ddSex}"/>
+		<mx:StringValidator id="REGISTER_vlUserPassword" maxLength="32" minLength="6" property="text"
+							requiredFieldError="Necessário digitar uma senha."
+							source="{tiUserPassword}"
+							tooLongError="A senha deve ter no maximo 32 caracteres."
+							tooShortError="A senha deve ter no mínimo 6 caracteres."/>
+		<mx:StringValidator id="REGISTER_vlUserPasswordConfirmation" maxLength="32" minLength="6"
+							property="text" requiredFieldError="Necessário confirmar a senha."
+							source="{tiUserPasswordRepeat}"
+							tooLongError="A senha deve ter no maximo 32 caracteres."
+							tooShortError="A senha deve ter no mínimo 6 caracteres."/>
+		<mx:EmailValidator id="REGISTER_vlUserEmail"
+						   invalidCharError="Seu endereço de e-mail contêm characteres inválidos."
+						   invalidDomainError="O dominio do endereço de e-mail está formatado incorretamente."
+						   invalidIPDomainError="O IP do domínio do endereço de e-mail está formatado incorretamente."
+						   missingAtSignError="Um sinal de arroba (@) está faltando em seu endereço de e-mail."
+						   missingPeriodInDomainError="O domínio em seu endereço de e-mail está faltando um ponto."
+						   missingUsernameError="O nome de usuário em seu endereço de e-mail está faltando."
+						   property="text" requiredFieldError="Necessário digitar um e-mail válido."
+						   source="{tiUserEmail}"
+						   tooManyAtSignsError="O seu endereço de e-mail contém muitos caracteres de arroba (@)."/>
+		<mx:EmailValidator id="REGISTER_vlUserEmailConfirmation"
+						   invalidCharError="Seu endereço de e-mail contêm characteres inválidos."
+						   invalidDomainError="O dominio do endereço de e-mail está formatado incorretamente."
+						   invalidIPDomainError="O IP do domínio do endereço de e-mail está formatado incorretamente."
+						   missingAtSignError="Um sinal de arroba (@) está faltando em seu endereço de e-mail."
+						   missingPeriodInDomainError="O domínio em seu endereço de e-mail está faltando um ponto."
+						   missingUsernameError="O nome de usuário em seu endereço de e-mail está faltando."
+						   property="text" requiredFieldError="Necessário confirmar o e-mail."
+						   source="{tiUserEmailRepeat}"
+						   tooManyAtSignsError="O seu endereço de e-mail contém muitos caracteres de arroba (@)."/>
+		<mx:StringValidator id="REGISTER_vlname" maxLength="80" minLength="2" property="text"
+							requiredFieldError="Necessário digitar um nome." source="{tiName}"
+							tooLongError="O nome deve ter no maximo 80 caracteres."
+							tooShortError="O nome deve ter no mínimo 2 caractere."/>
+		<validators:EqualValidator id="REGISTER_vlUserEmailEqual" property="text"
+								   requiredFieldError="Necessário confirmar o e-mail."
+								   source="{tiUserEmail}" textbox="{tiUserEmailRepeat}"/>
+		<validators:EqualValidator id="REGISTER_vlUserPasswordEqual" property="text"
+								   requiredFieldError="Necessário confirmar a senha."
+								   source="{tiUserPassword}" textbox="{tiUserPasswordRepeat}"/>
+	</fx:Declarations>		
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDAO;
+			import devdoo.fx.UseData;
+			import devdoo.fx.UseFX;
+			import devdoo.fx.UseMail;
+			import devdoo.register.model.UseRegister;
+			import devdoo.register.model.UseRegisterPersonal;
+			import devdoo.register.model.UseRegisterProfile;
+			
+			import mx.events.CalendarLayoutChangeEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//------------------------------------------------------------------
+			//
+			//  Table Models / Collections
+			//
+			//------------------------------------------------------------------			
+			//Tabelas
+			public var useRegister:UseRegister;			
+			public var useRegisterPersonal:UseRegisterPersonal;		
+			public var useRegisterProfile:UseRegisterProfile;	
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 * Instância o componente de registro e define as configurações default  
+			 * 
+			 *  @return void
+			 */
+			public function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Novo registro');
+				
+				//Cria modelos de tabela
+				useRegister = new UseRegister();			
+				useRegisterPersonal = new UseRegisterPersonal();
+				useRegisterProfile  = new UseRegisterProfile();
+				
+				//Popula os componentes pré-definidos
+				populate();
+				configProfiles();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();	
+				
+				//Adiciona gerenciamento de log
+				changeLog();
+				
+				//Configura validadores de componentes
+				validate();
+				
+				//Configura botão salvar
+				saveCheck(null);
+				
+				useFX.closeWelcome();
+			}
+			
+			//----------------------------------
+			//  configProfiles
+			//----------------------------------
+			/**
+			 *  Realiza consulta na base de dados para recuperar a lista de todos os 
+			 *  perfils de controle de acesso disponível no sistema 
+			 * 
+			 *  @return void 
+			 */
+			public function configProfiles():void
+			{	
+				//Cria adaptador DAO e configura as propriedades sql
+				var daoRegisterProfile:UseDAO = UseDAO.create(useRegisterProfile);
+				daoRegisterProfile.fields(['id', 'title', 'level_access']);
+				
+				//Cria um adaptador e adiciona os objetos DAO nele e
+				//conecta ao servidor para interagir com a base de dados.
+				useFX.adapter('POPULATE_ACL')
+					.adapterSelect(daoRegisterProfile)
+					.connect(configProfilesResult);
+			}
+			
+			//----------------------------------
+			//  configProfilesResult
+			//----------------------------------
+			/**
+			 *  Processa resultados obtidos da constlta na base de dados,
+			 *  registra a sessão a lista de perfil de acesso recuperados.
+			 * 
+			 *  @param useResult Dados retornados da consulta realizada na base de dados
+			 *  @return void 
+			 */
+			private function configProfilesResult(useResult:*):void
+			{	
+				ddType.dataProvider = useFX.populateCollection(useResult.useRegisterProfile);
+				ddType.selectedIndex = 0;
+			}
+			
+			//----------------------------------
+			//  populate
+			//----------------------------------
+			/**
+			 *  Popula os componentes pré-definidos.
+			 * 
+			 *  @return void  
+			 */	
+			private function populate():void
+			{
+				ddBirthDay.dataProvider = UseData.days('Dia');
+				ddBirthMonth.dataProvider = UseData.months('Mês');
+				ddBirthYear.dataProvider = UseData.yearsPast('Ano');
+				ddSex.dataProvider = UseData.sex();
+			}
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos pré-definidos aos componentes.
+			 * 
+			 *  @return void    
+			 */    
+			private function addEvents():void{
+				btSave.addEventListener(MouseEvent.CLICK, save);
+				btCancel.addEventListener(MouseEvent.CLICK, cancel);
+			}			
+			
+			//----------------------------------
+			//  changeLog
+			//----------------------------------
+			/**
+			 *  Adiciona gerenciamento de log para componentes
+			 * 
+			 *  @return void
+			 */	
+			private function changeLog():void
+			{
+				useFX.startLog(true, saveCheck)
+					.changeLog(ddSex, IndexChangeEvent.CHANGE, 'Sexo')
+					.changeLog(ddBirthDay, IndexChangeEvent.CHANGE, "Dia de nascimento")
+					.changeLog(ddBirthMonth, IndexChangeEvent.CHANGE, "Mês de nascimento")
+					.changeLog(ddBirthYear, IndexChangeEvent.CHANGE, "Ano de nascimento")
+					.changeLog(tiName, Event.CHANGE, "Nome")
+					.changeLog(tiLastname, Event.CHANGE, "Sobrenome")
+					.changeLog(tiUserEmail, Event.CHANGE, "E-mail")
+					.changeLog(tiUserPassword, CalendarLayoutChangeEvent.CHANGE, "Senha");
+			}
+			
+			//----------------------------------
+			//  validate
+			//----------------------------------    	
+			/**
+			 * Configura lista de validadores.
+			 *  
+			 * @return void  
+			 */	
+			private function validate():void
+			{
+				//Adiciona lista de validadores do formulário cliente
+				useFX.validate('REGISTER')
+					.addItem('Nome:', REGISTER_vlname)
+					.addItem('E-mail:', REGISTER_vlUserEmail)
+					.addItem('Confirmar Email:',REGISTER_vlUserEmailConfirmation)
+					.addItem('Emails diferentes', REGISTER_vlUserEmailEqual)
+					.addItem('Senha:', REGISTER_vlUserPassword)
+					.addItem('Confirmar Senha:',REGISTER_vlUserPasswordConfirmation)
+					.addItem('Senhas diferentes', REGISTER_vlUserPasswordEqual)
+					.addItem('Sexo:', REGISTER_vlSex)
+					.addItem('Dia de nascimento:', REGISTER_vlBirthDay)
+					.addItem('Mês de nascimento:', REGISTER_vlBirthMonth)
+					.addItem('Ano de nascimento:', REGISTER_vlBirthYear);
+			}
+			
+			//----------------------------------
+			//  saveCheck
+			//----------------------------------    	
+			/**
+			 * 	Verifica se houve alguma alteração na edição, para ativar botão salvar
+			 * 
+			 *  @return void  
+			 */	
+			private function saveCheck(event:Event):void
+			{
+				if(useFX.isChangedLog){
+					btSave.enabled = true;
+					btSave.buttonMode = true;
+					btSave.useHandCursor = true;
+				}else{
+					btSave.enabled = false;
+					btSave.buttonMode = false;
+					btSave.useHandCursor = false;
+				}
+			}
+			
+			//----------------------------------
+			//  save
+			//----------------------------------
+			/**
+			 *  Realiza interação com a base de dados e salva dados do registro
+			 * 
+			 *  @return void    
+			 */    
+			protected function save(event:MouseEvent):void
+			{
+				//Popula as informações referentes ao registro
+				useRegister.user_email			= tiUserEmail.text;
+				useRegister.user_password		= tiUserPassword.text;
+				useRegister.register_type		= 'P';
+				useRegister.is_active			= 1;
+				useRegister.has_admin			= 1;
+				//Populas os dados pessoais referentes ao registro
+				useRegisterPersonal.name		= tiName.text; 
+				useRegisterPersonal.lastname	= tiLastname.text; 
+				useRegisterPersonal.sex			= useFX.select(ddSex); 
+				useRegisterPersonal.birth_day	= useFX.select(ddBirthDay); 
+				useRegisterPersonal.birth_month	= useFX.select(ddBirthMonth); 
+				useRegisterPersonal.birth_year	= useFX.select(ddBirthYear); 
+				//NOTFINAL - Por enquanto TUDO admin
+				useRegister.register_profile_id = ddType.selectedItem.id;
+				
+				//Cria um adaptador e adiciona os objetos DAO nele e
+				//conecta ao servidor para interagir com a base de dados.
+				useFX.adapter('SAVE_UPDATE')
+					.adapterMaster(useRegister)
+					.adapterChild(useRegisterPersonal, "register_id");
+				
+				//Verifica se o formulário está validado
+				if(useFX.validate('REGISTER').isValid()){
+					//Cria conexão com servidor para consulta
+					useFX.checkItemExist('SAVE_UPDATE', useRegister)
+						.where("USE_REGISTER.user_email=?", useRegister.user_email)
+						.connect("Você não pode utilizar o e-mail '"+ useRegister.user_email +"', já existe um registro na base de dados utilizando o mesmo e-mail.", saveResult); 
+				}else{
+					useFX.validate('REGISTER').showError();
+				}
+			}
+			
+			//----------------------------------
+			//  saveResult
+			//----------------------------------
+			/**
+			 *  Processa resultado da interação com a base de dados
+			 *  Envia email informando que registro foi efetuado com sucessso
+			 * 
+			 *  @return void    
+			 */    
+			protected function saveResult(useResult:Object):void
+			{
+				//Configura os dados da conta de envio		
+				var useMail:UseMail = useFX.mail("mail.email.alog.com.br", "123qwe@");
+				useMail.from("portal@parceirolg.com.br")
+					.reply("portal@parceirolg.com.br")
+					.name("Parceiro LG")
+					.subject("Novo cadastro")
+					.message("Seu cadastro foi realizado com sucesso, aguarde..., clique no link abaixo para confirmar seu registro....")
+					.addTo([useRegister.user_email])
+					.send(sendMailResult);
+			}
+			
+			//----------------------------------
+			//  sendMailResult
+			//----------------------------------
+			/**
+			 *  Processa resultado do envio de mensagem de e-mail.
+			 * 
+			 *  @return void    
+			 */    
+			protected function sendMailResult(useResult:Object):void
+			{
+				var url:String = useFX.baseUrl + '/admin'; 
+				navigateToURL(new URLRequest(url), '_parent');	
+			}
+			
+			//----------------------------------
+			//  cancel
+			//----------------------------------
+			/**
+			 *  Cancela processo de novo registro e retorna para a tela admin
+			 * 
+			 *  @return void    
+			 */    
+			private function cancel(event:Event):void{
+				useFX.cancelValidate(save, cancelEvent, 'Cadastro de usuário');
+			}	
+			
+			//----------------------------------
+			//  cancelEvent
+			//----------------------------------
+			/**
+			 * @private
+			 */ 
+			protected function cancelEvent(event:Event):void
+			{
+				var url:String = useFX.baseUrl + '/admin'; 
+				navigateToURL(new URLRequest(url), '_parent');	
+			}
+			
+		]]>
+	</fx:Script>
+	<!--  titleHeight="30"-->
+	<s:Panel width="550" height="452" horizontalCenter="0" 
+			 verticalCenter="0" title="Cadastre-se">
+		<s:controlBarContent>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button id="btSave" height="30" label="Solicitar aprovação" enabled="false"/>
+			<s:Button id="btCancel" height="30" label="Cancelar" buttonMode="true"
+					  styleName="btCancel" useHandCursor="true"/>
+		</s:controlBarContent>
+		
+		<s:Label x="204" y="20" text="Perfil" textAlign="right"/>
+		<s:DropDownList id="ddType" x="250" y="20" width="247" labelField="title"/>
+		<s:Label x="204" y="52" text="Nome" textAlign="right"/>
+		<s:TextInput id="tiName" x="250" y="52" width="247"/>
+		<s:Label x="173" y="83" text="Sobrenome" textAlign="right"/>
+		<s:TextInput id="tiLastname" x="250" y="83" width="247"/>
+		<s:Label x="178" y="114" text="Seu e-mail" textAlign="right"/>
+		<s:TextInput id="tiUserEmail" x="250" y="114" width="247" change="validate()"/>
+		<s:Label x="142" y="146" width="97" height="32" text="Insira o e-mail novamente"
+				 textAlign="right"/>
+		<s:TextInput id="tiUserEmailRepeat" x="250" y="146" width="247" change="validate()"/>
+		<s:Label x="202" y="180" text="Senha" textAlign="right"/>
+		<s:TextInput id="tiUserPassword" x="250" y="180" width="247" displayAsPassword="true"
+					 change="validate()"/>
+		<s:Label x="142" y="212" width="97" height="32" text="Insira a senha novamente"
+				 textAlign="right"/>
+		<s:TextInput id="tiUserPasswordRepeat" x="250" y="212" width="247" 
+					 displayAsPassword="true" change="validate()"/>
+		<s:Label x="199" y="245" text="Eu sou" textAlign="right"/>
+		<s:DropDownList id="ddSex" x="250" y="245" width="146" buttonMode="true"
+						prompt="Selecione o gênero" useHandCursor="true"/>
+		<s:Label x="142" y="279" width="97" height="32" text="Data de nascimento" textAlign="right"/>
+		<s:DropDownList id="ddBirthDay" x="250" y="279" width="70" buttonMode="true" prompt="Dia"
+						useHandCursor="true"/>
+		<s:DropDownList id="ddBirthMonth" x="326" y="279" width="90" buttonMode="true" prompt="Mês"
+						useHandCursor="true"/>
+		<s:DropDownList id="ddBirthYear" x="424" y="279" width="70" buttonMode="true" prompt="Ano"
+						useHandCursor="true"/>
+		<s:RichText x="250" y="319" width="247"
+					text="Seu cadastro depende da aprovação do administrador do sistema. Você receberá em seu e-mail a aprovação de seu registro."
+					verticalAlign="justify"/>
+	</s:Panel>
+</s:Module>

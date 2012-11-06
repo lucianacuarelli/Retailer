@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="150" creationComplete="create()">
+	
+	<fx:Metadata>
+		[Event(name="selectionChange", type="flash.events.Event")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//----------------------------------
+			//  icons
+			//----------------------------------
+			[Embed('/assets/icons/accordion/icVideos.png')]
+			[Bindable] public var icVideos:Class;
+			
+			[Embed('/assets/icons/accordion/icVideosOver.png')]
+			[Bindable] public var icVideosOver:Class;
+			
+			[Embed('/assets/icons/accordion/icFeaturesOver.png')]
+			[Bindable] public var icFeaturesOver:Class;
+			
+			[Embed('/assets/icons/accordion/icFeatures.png')]
+			[Bindable] public var icFeatures:Class;
+			
+			[Embed('/assets/icons/accordion/icLogosOver.png')]
+			[Bindable] public var icLogosOver:Class;
+			
+			[Embed('/assets/icons/accordion/icLogos.png')]
+			[Bindable] public var icLogos:Class;
+			
+			[Embed('/assets/icons/accordion/icFlashOver.png')]
+			[Bindable] public var icFlashOver:Class;
+			
+			[Embed('/assets/icons/accordion/icFlash.png')]
+			[Bindable] public var icFlash:Class;
+			
+			[Embed('/assets/icons/accordion/icHtmlsOver.png')]
+			[Bindable] public var icHtmlsOver:Class;
+			
+			[Embed('/assets/icons/accordion/icHtmls.png')]
+			[Bindable] public var icHtmls:Class;
+			
+			[Embed('/assets/icons/accordion/icPsdsOver.png')]
+			[Bindable] public var icPsdsOver:Class;
+			
+			[Embed('/assets/icons/accordion/icPsds.png')]
+			[Bindable] public var icPsds:Class;
+			
+			[Embed('/assets/icons/accordion/icPdfsOver.png')]
+			[Bindable] public var icPdfsOver:Class;
+			
+			[Embed('/assets/icons/accordion/icPdfs.png')]
+			[Bindable] public var icPdfs:Class;
+			
+			[Embed('/assets/icons/accordion/icOutrosOver.png')]
+			[Bindable] public var icOutrosOver:Class;
+			
+			[Embed('/assets/icons/accordion/icOutros.png')]
+			[Bindable] public var icOutros:Class;
+			
+			[Embed('/assets/icons/accordion/icImagesOver.png')]
+			[Bindable] public var icImagesOver:Class;
+			
+			[Embed('/assets/icons/accordion/icImages.png')]
+			[Bindable] public var icImages:Class;
+			
+			[Embed('/assets/icons/accordion/icManualOver.png')]
+			[Bindable] public var icManualOver:Class;
+			
+			[Embed('/assets/icons/accordion/icManual.png')]
+			[Bindable] public var icManual:Class;
+			
+			[Embed('/assets/icons/accordion/icEspecificacoesOver.png')]
+			[Bindable] public var icEspecificacoesOver:Class;
+			
+			[Embed('/assets/icons/accordion/icEspecificacoes.png')]
+			[Bindable] public var icEspecificacoes:Class;
+			
+			//------------------------------------------------------------------
+			//
+			//  Constants
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			// SELECTION_CHANGE
+			//----------------------------------
+			/**
+			 *  Evento disparado toda a seleção do list é alterada. 
+			 */  
+			public static const SELECTION_CHANGE:String			= 'selectionChange';		
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  dataProvider
+			//----------------------------------
+			/**
+			 *  Gerencia a lista de tipos de recursos
+			 * 
+			 *  @return void 
+			 */
+			private var _dataProvider:ArrayCollection; 
+			
+			//----------------------------------
+			//  selectedId
+			//----------------------------------
+			private var _selectedId:String; 
+
+			/**
+			 *  Identificador do item selecinado
+			 * 
+			 *  @return void 
+			 */
+			public function get selectedId():String
+			{
+				return _selectedId;
+			}
+			
+			//------------------------------------------------------------------
+			//
+			//  Constants
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Popula os componentes pré-definidos,
+			 * 
+			 *  @return void  
+			 */	
+			public function create() : void
+			{
+				this._dataProvider = new ArrayCollection([
+					{image1:icImagesOver, image2:icImages, text1:"Imagens", data:"IMG", label:"Imagens"},
+					{image1:icEspecificacoesOver, image2:icEspecificacoes, text1:"Esp. Técnicas", data:"EST", label:"Esp. Técnicas"},
+					{image1:icManualOver, image2:icManual, text1:"Manual", data:"MNL", label:"Manual"},
+					{image1:icVideosOver, image2:icVideos, text1:"Vídeos", data:"VDO", label:"Vídeos"},
+					{image1:icLogosOver, image2:icLogos, text1:"Logos", data:"LGO", label:"Logos"},
+					{image1:icFeaturesOver, image2:icFeatures, text1:"Features", data:"FTE", label:"Features"},
+					{image1:icFlashOver, image2:icFlash, text1:"Flash", data:"FLA", label:"Flash"},
+					{image1:icHtmlsOver, image2:icHtmls, text1:"Html", data:"HTM", label:"Html"},
+					{image1:icPsdsOver, image2:icPsds, text1:"PSD", data:"PSD", label:"PSD"},
+					{image1:icPdfsOver, image2:icPdfs, text1:"PDF", data:"PDF", label:"PDF"},
+					{image1:icOutrosOver, image2:icOutros, text1:"OUT", data:"OUT", label:"OUT"}
+				]); 
+				
+				lsMenu.dataProvider = this._dataProvider;
+			}
+			
+			//----------------------------------
+			//  totalCount
+			//----------------------------------
+			/**
+			 *  Recebe o resultados da contagem na lista, configura no dataprovider 
+			 *  do menu os valores correspondente de cada item
+			 * 
+			 *  @return void 
+			 */
+			public function totalCount(value:Array):void
+			{
+				create();
+				
+				//Procura por elementos do tipo de recueso no resultado da busca
+				for each (var item:Object in value) 
+				{
+					//Procura por elementos do tipo de recueso na lista de menu
+					for each (var subItem:Object in this._dataProvider) 
+					{
+						if(item.resource_type == subItem.data){
+							subItem.text1 = subItem.label+'('+item.total+')';
+							continue;
+						}
+					}
+				}
+				
+				this._dataProvider.refresh();
+				lsMenu.selectedIndex = 0;
+				changeItem(null);
+			}			
+			
+			//----------------------------------
+			//  changeItem
+			//----------------------------------
+			/**
+			 *  Evento dexecutado toda que um item é selecionado
+			 * 
+			 *  @return void 
+			 */		
+			protected function changeItem(event:IndexChangeEvent):void
+			{
+				this._selectedId = lsMenu.selectedItem.data;
+				
+				if(this._selectedId)
+					//Evento disparado toda vez que a seleção no list é alterada
+					dispatchEvent(new Event(SELECTION_CHANGE));
+			}
+			
+			//----------------------------------
+			//  reset
+			//----------------------------------
+			/**
+			 *  Limpa totais de conteudos relacionados a produtos
+			 * 
+			 *  @return void 
+			 */		
+			public function reset():void
+			{
+				create();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="5">
+		<s:fill>
+			<s:SolidColor color="#EBEBEB"/>
+		</s:fill>
+	</s:Rect>
+	<s:List id="lsMenu" left="5" right="5" top="35" bottom="5" borderVisible="false"
+			change="changeItem(event)" contentBackgroundAlpha="0"
+			itemRenderer="modules.lg.layout.itemRenderer.IrResourcesSelect">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+	</s:List>
+	<s:Group width="100%">
+		<s:Rect width="100%" height="28" topLeftRadiusX="5" topRightRadiusX="5">
+			<s:fill>
+				<s:SolidColor color="#333333"/>
+			</s:fill>
+		</s:Rect>
+		<s:RichText x="9" y="8" color="#FFFFFF" styleName="subTitle" text="Tipo de Conteúdo"/>
+	</s:Group>
+</s:Group>

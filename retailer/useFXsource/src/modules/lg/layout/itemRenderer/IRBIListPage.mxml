@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:ui="devdoo.ui.*"
+				width="100%" autoDrawBackground="true" dataChange="dataChange()">
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseFX;
+			
+			import mx.events.FlexEvent;
+			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Popula os dados do item render.
+			 * 
+			 *  @return void
+			 */ 
+			private function dataChange():void
+			{
+				//Verifica se recebeu data
+				if(data)
+				{
+					lbUrl.text = data.url_active;
+					lbName.text ='Nome do produto: ' + data.product_name;
+					lbTotal.text = 'Interações: '+data.total ;
+					uiProgressBar.value(int(data.total));
+				}
+			}
+			
+			protected function lbId_doubleClickHandler(event:MouseEvent):void
+			{
+				UseFX.start().openUrl(data.url_active, "_blank");
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup width="100%" paddingBottom="5" paddingLeft="10" paddingRight="0" paddingTop="5"
+			  doubleClick="lbId_doubleClickHandler(event)" doubleClickEnabled="true">
+		<s:HGroup width="100%" verticalAlign="middle">
+		<s:VGroup width="100%">
+			<s:Label width="100%"  id="lbName"/>
+			<s:Label id="lbUrl" width="100%" height="13" fontSize="10"/>
+		</s:VGroup>
+			<s:Label width="100" id="lbTotal"/>
+			<ui:UiProgressBar id="uiProgressBar" visible="true" width="100" height="8"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:ItemRenderer>

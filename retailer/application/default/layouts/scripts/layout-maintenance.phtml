@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+	<html>
+		<head>
+		<!-- title -->
+		<title>Parceiros LG</title>
+		
+		<!-- styles -->
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" type="text/css"/>
+		<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/colorbox/colorbox.css" type="text/css"/>
+		<!--[if IE 6]>
+			<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/ie6/styles.css" type="text/css"/>
+		<![endif]-->
+			
+		<!-- scripts -->
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/colorbox/jquery.colorbox-min.js"></script>
+		
+		<!-- metatags -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(".iframe").colorbox({iframe:true, width:"980px", height:"610px", opacity:0.8});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="PageLogin">
+<?= $this->layout()->content ?>
+		</div>
+	</body>
+</html>

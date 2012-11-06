@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+		<head>
+		<title>Parceiros LG</title>
+		
+		<!-- metatags -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		
+		<!-- styles -->
+		<link rel="stylesheet" href="<?= $this->useDefault->opensource ?>/mediaelement/mediaelementplayer.min.css" />
+			
+		<!-- scripts -->
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jquery/jquery-1.7.1.min.js"></script>
+	 	<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/usejs/usejs4.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jQueryRaty/jquery.raty.min.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/jTruncate/jquery.jtruncate.pack.js"></script>
+		<script type="text/javascript" src="<?= $this->useDefault->opensource ?>/mediaelement/mediaelement-and-player.min.js"></script>
+		
+		<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/stylesContentDetail.css" />
+		<!--<link rel="stylesheet" href="<?= $this->useDefault->styles ?>/styles.css" />-->
+		
+		<script type="text/javascript">
+			function  centerpopup(url,nome,altura,largura){
+				var minimo = screen.width/4;
+				var maximo = screen.height - 100;
+				
+				var w = (largura > minimo) ? largura : (minimo < maximo)  ? largura : maximo;
+				var h = (altura > minimo)  ? altura: (minimo < maximo)  ? altura : maximo;
+				
+				var l = (screen.width/2) - w/2;
+				var t = (screen.height/2) - h/2;
+				var argumentos = 'copyhistory=yes,width='+w+',height='+h+',left='+l+',top='+t+',screenX='+l+',screenY='+t;
+				var novajan = window.open(url,nome, argumentos);
+			}
+			$(document).ready(function(){
+				$('#star').raty({
+					path: '<?= $this->useDefault->opensource ?>/jQueryRaty/images/',
+					half:  true,
+					start: <?= $this->contentDetail->rating_average ?>,
+					space: false,
+					readOnly: true
+				});
+				
+				$('#confirRating').hide();
+				
+				$('.UiStarRating').raty({
+					path: '<?= $this->useDefault->opensource ?>/jQueryRaty/images/',
+					half:  true,
+					space: false,
+					click: function(score, evt) {
+						var total_rating = score;
+						var lgResourcesId = $('#lgResourcesId').val();
+						Use.ajax({
+						  type: 'POST',
+						  url: '<?= $this->baseUrl ?>/ajax/saverating?format=html',
+				  		  dataType: 'html',
+						  data: {total_rating:total_rating, id:lgResourcesId},
+						  success: function(data){
+						  	
+						  	$('#star').empty().raty({
+								path: '<?= $this->useDefault->opensource ?>/jQueryRaty/images/',
+								half:  true,
+								start: data,
+								space: false,
+								readOnly: true
+							});
+						  	
+						  	$('#UiRatingVote').remove();
+						  	$('#confirRating').show();
+						  },
+							error: function(data){},
+							cache:false
+						});
+	  				}
+				});
+				
+				$('.VScrollbar').tinyscrollbar();
+				$('.HScrollbar').tinyscrollbar({ axis: 'x'});
+				
+			    $('.UiTextComments').jTruncate({  
+			        length: 200,  
+			        minTrail: 0,  
+			        moreText: "[+] leia mais",  
+			        lessText: "[-] recolher ",  
+			        ellipsisText: " (truncated)",  
+			        moreAni: "fast",  
+			        lessAni: 1000  
+			    }); 
+			     
+				$('#player1').mediaelementplayer();
+				
+				//Mostra o formulario de comentario
+				$('#form-comment').hide();
+				$('#addComent').click( function(){
+					$('#showComments').hide();	
+					$('#form-send-mail').hide();	
+					$('#form-comment').show();	
+				});
+				
+				//Mostra o formulario de envio de email
+				$('#form-send-mail').hide();
+				$('#confirSendMail').hide();
+				$('#sendMailFriend').click( function(){
+					$('#showComments').hide();
+					$('#form-comment').hide();
+					$('#form-send-mail').show();	
+				});
+
+				//Cancela e esconde formulario de comentario e mostra lista de comentarios 	
+				$('#cancelComment').click( function(){
+					$('#message').val('');
+					$('#form-comment').hide();
+					$('#showComments').show();
+				});
+				
+				//Cancela e esconde formulario de envio de email e mostra lista de comentarios
+				$('#cancelSendMail').click( function(){
+					$('#emailFriend').val('');
+					$('#emailSubject').val('');
+					$('#emailMessage').val('');
+				  	$('#form-send-mail').hide();	
+				  	$('#showComments').show();
+				});
+	
+				$('#sendMail').click( function(){
+					var mail = $('#emailFriend').val();
+					var subject = $('#emailSubject').val();
+					var message = $('#emailMessage').val();
+					var lgResourcesId = $('#lgResourcesId').val();
+					Use.ajax({
+					  type: 'POST',
+					  url: '<?= $this->baseUrl ?>/ajax/sendmailfriend?format=html',
+				  	  dataType: 'html',
+					  data: {mail:mail, subject:subject, message:message, lg_resources_id:lgResourcesId},
+					  success: function(data){
+					  	$('#confirSendMail').show();
+					  	$('#emailFriend').val('');
+						$('#emailSubject').val('');
+						$('#emailMessage').val('');
+					  	$('#form-send-mail').hide();
+					  	$('#showComments').show();
+					  	
+					  	setTimeout("$('#confirSendMail').hide()",2000)
+					  },
+						error: function(data){},
+						cache:false
+					});	
+				});
+				
+				$('#saveComment').click( function(){
+					var message = $('#message').val();
+					var lgResourcesId = $('#lgResourcesId').val();
+					Use.ajax({
+					  type: 'POST',
+					  url: '<?= $this->baseUrl ?>/ajax/savecomment?format=html',
+				  	  dataType: 'html',
+					  data: {message:message, lg_resources_id:lgResourcesId},
+					  success: function(data){
+					  	showComment(<?= $this->contentDetail->id ?>);
+					  	$('#message').val('');
+					  	$('#form-comment').hide();
+					  	$('#showComments').show();
+					  },
+						error: function(data){},
+						cache:false
+					});	
+				});
+				showComment(<?= $this->contentDetail->id ?>);
+			});
+			
+			function showComment(lgResourcesId)
+			{
+				Use.ajax({
+				  type: 'POST',
+				  url: '<?= $this->baseUrl ?>/ajax/showcomment?format=html',
+				  dataType: 'html',
+				  data: {lg_resources_id:lgResourcesId},
+				  success: function(data){
+				  	if(data)
+				  	{
+					  	$('#showComments').html(data);
+					  	$('.VScrollbar').tinyscrollbar();
+				  	}
+				  },
+					error: function(data) {},
+					cache:false
+				});	
+			}
+	
+			function addShowDownload(obj, lgResourcesId)
+			{
+				Use.ajax({
+				  	type: 'POST',
+			  	   	url: '<?= $this->baseUrl ?>/ajax/adddownload?format=html',
+				  	dataType: 'html',
+			  	  	data: {resource_id:lgResourcesId, total_download:true},
+			   		success: function(data){
+			   			//$(obj).attr('src', '<?= $this->useDefault->images ?>/bt/btVerLista.png');
+			   			$('#UiLiDownload').html('<a href="<?= $this->baseUrl ?>/listdownload" target="_parent"><img alt="" src="<?= $this->useDefault->images ?>/bt/btVerLista.png"/></a>');
+			   			
+					},
+					error: function(data){},
+					cache:false
+				});
+			}
+		</script>	
+</head>
+<body>
+	<?= $this->layout()->content ?>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:GridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+					xmlns:s="library://ns.adobe.com/flex/spark"
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					width="100%" height="100%" clipAndEnableScrolling="true"
+					dataChange="dataChange()">
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDate;
+			import devdoo.fx.UseFX;
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------			
+			//----------------------------------
+			//  dataChange
+			//----------------------------------
+			/**
+			 *  Popula o total de retailers
+			 * 
+			 *  @return void
+			 */
+			private function dataChange():void
+			{
+				//Verifica se existem dados
+				if(!data) return;
+				
+				var useDate:UseDate = UseFX.start().date();
+				var dateNow:int = int(useDate.format('U'));
+				var dateHighlight:int = data.USE_LG_PRODUCTS_highlight_date_out;
+				
+				//Verifica se o produto está em destaque
+				if(dateHighlight >= dateNow){
+					grHighlight.alpha = 1;
+					useDate = UseFX.start().date(int(data.USE_LG_PRODUCTS_highlight_date_out));
+					grHighlight.toolTip = "Destaque até "+ useDate.format('d/m/Y');
+				}else{
+					grHighlight.alpha = 0.1;
+				}
+				
+				var dateNew:int = data.USE_LG_PRODUCTS_status_new_date_out;
+				
+				//Verifica se o produto é novo
+				if(dateNew >= dateNow){
+					grNew.alpha = 1;
+					useDate = UseFX.start().date(int(data.USE_LG_PRODUCTS_status_new_date_out));
+					grNew.toolTip = "Novo até "+  useDate.format('d/m/Y');
+				}else{
+					grNew.alpha = 0.1;
+				}
+				
+				var datePublish:int = data.USE_LG_PRODUCTS_date_out;
+				
+				//Verifica se o produto está na data de publicação
+				if(datePublish >= dateNow){
+					grPublish.alpha = 1;
+				}else{
+					grPublish.alpha = 0.1;
+				}
+				
+				useDate = UseFX.start().date(int(data.USE_LG_PRODUCTS_date_in));
+				var useDateOut:UseDate = UseFX.start().date(int(data.USE_LG_PRODUCTS_date_out));
+				grPublish.toolTip = "Publicado em "+ useDate.format('d/m/Y') +" até "+ useDateOut.format('d/m/Y');
+				
+				//Verifica a situação do recurso
+				switch(data.USE_LG_PRODUCTS_product_status)
+				{
+					case "AGA":
+					{
+						ptSolidColor.color = 0xFF5800;
+						ptSolidColorStroke.color = 0xB20000;
+						grStatus.toolTip = "Aguardando aprovação";
+						break;
+					}
+						
+					case "NAP":
+					{
+						ptSolidColor.color = 0xFF5800;
+						ptSolidColorStroke.color = 0xB20000;
+						grStatus.toolTip = "Não aprovado";
+						break;
+					}
+						
+					case "APR":
+					{
+						ptSolidColor.color = 0xFF5800;
+						ptSolidColorStroke.color = 0xB20000;
+						grStatus.toolTip = "Aprovado";
+						break;
+					}
+					
+					case "AND":
+					{
+						ptSolidColor.color = 0xFF5800;
+						ptSolidColorStroke.color = 0xB20000;
+						grStatus.toolTip = "Aprovado e despublicado";
+						break;
+					}	
+						
+					case "APP":
+					{
+						if(datePublish >= dateNow){
+							ptSolidColor.color = 0xB8CB1B;
+							ptSolidColorStroke.color = 0x57AC33;
+							grStatus.toolTip = "Aprovado e publicado";
+						}else{
+							ptSolidColor.color = 0xFF9300;
+							ptSolidColorStroke.color = 0xFFCB00;
+							grStatus.toolTip = "Aprovado e data de publicação vencida";
+						}
+						break;
+					}
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup verticalCenter="0" horizontalCenter="0">
+		
+		<s:Group id="grHighlight" alpha="1">
+			<s:Group x="0" y="0">
+				<s:Path x="0.678" y="1.4" winding="nonZero" data="M 13.672 16.18 C 13.615 16.18 13.489 16.165 13.286 16.058 L 8.88 13.742 C 8.744 13.668 8.595 13.651 8.496 13.651 C 8.364 13.651 8.236 13.68 8.129 13.735 C 8.045 13.78 3.713 16.058 3.713 16.058 C 3.511 16.165 3.384 16.18 3.327 16.18 C 3.203 16.114 3.156 15.967 3.204 15.686 L 4.053 10.733 C 4.102 10.463 3.946 10.192 3.784 10.032 L 0.247 6.584 C 0.013 6.356 -0.009 6.208 0.002 6.174 C 0.013 6.14 0.117 6.033 0.441 5.986 L 5.398 5.265 C 5.63 5.231 5.863 5.059 5.976 4.835 L 8.184 0.359 C 8.329 0.066 8.464 0 8.5 0 C 8.545 0 8.681 0.088 8.815 0.36 L 11.025 4.837 C 11.139 5.062 11.369 5.232 11.602 5.266 L 16.558 5.986 C 16.882 6.033 16.986 6.141 16.997 6.174 C 17.008 6.208 16.987 6.356 16.753 6.584 L 13.167 10.08 C 12.994 10.247 12.907 10.519 12.95 10.758 L 13.795 15.687 C 13.842 15.968 13.795 16.114 13.76 16.156 L 13.672 16.18 Z">
+					<s:fill>
+						<s:LinearGradient x="8.855" y="16.348" scaleX="16.3506" rotation="268">
+							<s:GradientEntry ratio="0" color="#FFEE00"/>
+							<s:GradientEntry ratio="1" color="#F77E0A"/>
+						</s:LinearGradient>
+					</s:fill>
+				</s:Path>
+				<s:Path x="0.178" y="0.9"
+						data="M 9 1.35 L 10.248 3.879 L 11.081 5.568 C 11.269 5.938 11.633 6.204 12.028 6.26 L 12.751 6.365 L 13.868 6.528 L 16.688 6.938 L 14.648 8.926 L 13.525 10.02 L 13.321 10.219 C 13.028 10.502 12.885 10.944 12.956 11.339 L 12.99 11.539 L 13.271 13.175 L 13.751 15.974 L 11.289 14.681 L 9.898 13.95 L 9.629 13.808 C 9.44 13.706 9.222 13.651 8.997 13.651 C 8.785 13.651 8.579 13.699 8.388 13.797 C 8.311 13.838 7.564 14.233 6.725 14.672 L 4.248 15.975 L 4.734 13.138 L 4.941 11.93 L 5.044 11.33 C 5.129 10.861 4.889 10.426 4.631 10.171 L 3.245 8.821 L 1.313 6.937 L 4.13 6.528 L 5.495 6.329 L 5.969 6.26 C 6.362 6.204 6.736 5.929 6.929 5.547 L 7.073 5.255 L 7.759 3.865 L 9 1.35 M 9.001 0 C 8.723 0 8.447 0.212 8.236 0.638 L 6.862 3.423 C 6.444 4.272 6.068 5.031 6.03 5.109 C 5.991 5.187 5.9 5.26 5.826 5.271 C 5.752 5.281 4.925 5.401 3.986 5.538 L 0.869 5.991 C -0.07 6.128 -0.282 6.78 0.398 7.442 L 2.546 9.537 C 3.225 10.198 3.848 10.805 3.932 10.887 C 4.013 10.967 4.072 11.086 4.06 11.151 C 4.049 11.215 3.909 12.034 3.749 12.969 L 3.211 16.102 C 3.095 16.782 3.355 17.18 3.827 17.18 C 4.005 17.18 4.215 17.122 4.446 17.001 L 7.19 15.557 C 8.03 15.118 8.78 14.721 8.857 14.68 C 8.895 14.661 8.945 14.651 8.997 14.651 C 9.05 14.651 9.107 14.663 9.15 14.686 C 9.233 14.729 9.986 15.127 10.826 15.567 L 13.554 17.001 C 13.785 17.122 13.995 17.18 14.172 17.18 C 14.645 17.18 14.903 16.782 14.788 16.102 L 14.256 13.006 C 14.096 12.071 13.955 11.245 13.942 11.17 C 13.928 11.094 13.961 10.991 14.014 10.94 C 14.067 10.889 14.666 10.303 15.344 9.644 L 17.602 7.442 C 18.281 6.78 18.069 6.128 17.13 5.991 L 14.012 5.538 C 13.073 5.401 12.247 5.281 12.173 5.271 C 12.098 5.26 12.01 5.189 11.973 5.116 C 11.937 5.043 11.564 4.287 11.144 3.437 L 9.763 0.638 C 9.552 0.212 9.276 0 9.001 0 L 9.001 0 Z"
+						winding="nonZero">
+					<s:fill>
+						<s:SolidColor color="#5A5A5A"/>
+					</s:fill>
+				</s:Path>
+			</s:Group>
+			<s:Group x="0" y="0" alpha="0.2">
+				<s:Path x="0.22" y="0.798"
+						data="M 9 2.48 L 9.799 4.101 L 10.635 5.794 C 10.895 6.307 11.403 6.676 11.956 6.754 L 12.679 6.86 L 13.796 7.022 L 15.613 7.287 L 14.299 8.568 L 13.176 9.662 L 12.974 9.859 C 12.558 10.26 12.363 10.864 12.463 11.423 L 12.498 11.624 L 12.778 13.26 L 13.087 15.061 L 11.521 14.238 L 10.131 13.507 L 9.868 13.37 C 9.607 13.226 9.305 13.151 8.997 13.151 C 8.706 13.151 8.421 13.218 8.153 13.356 C 8.076 13.397 7.33 13.791 6.492 14.23 L 4.912 15.06 L 5.227 13.222 L 5.434 12.014 L 5.536 11.419 C 5.638 10.859 5.433 10.261 4.98 9.814 L 3.594 8.463 L 2.387 7.286 L 4.202 7.022 L 5.567 6.824 L 6.041 6.755 C 6.598 6.674 7.107 6.303 7.378 5.767 L 7.522 5.477 L 8.207 4.086 L 9 2.48 M 9.001 0 C 8.723 0 8.447 0.212 8.236 0.638 L 6.862 3.423 C 6.444 4.272 6.068 5.031 6.03 5.109 C 5.991 5.187 5.9 5.26 5.826 5.271 C 5.752 5.281 4.925 5.401 3.986 5.538 L 0.869 5.991 C -0.07 6.128 -0.282 6.78 0.398 7.442 L 2.546 9.537 C 3.225 10.198 3.848 10.805 3.932 10.887 C 4.013 10.967 4.072 11.086 4.06 11.151 C 4.049 11.215 3.909 12.034 3.749 12.969 L 3.211 16.102 C 3.095 16.782 3.355 17.18 3.827 17.18 C 4.005 17.18 4.215 17.122 4.446 17.001 L 7.19 15.557 C 8.03 15.118 8.78 14.721 8.857 14.68 C 8.895 14.661 8.945 14.651 8.997 14.651 C 9.05 14.651 9.107 14.663 9.15 14.686 C 9.233 14.729 9.986 15.127 10.826 15.567 L 13.554 17.001 C 13.785 17.122 13.995 17.18 14.172 17.18 C 14.645 17.18 14.903 16.782 14.788 16.102 L 14.256 13.006 C 14.096 12.071 13.955 11.245 13.942 11.17 C 13.928 11.094 13.961 10.991 14.014 10.94 C 14.067 10.889 14.666 10.303 15.344 9.644 L 17.602 7.442 C 18.281 6.78 18.069 6.128 17.13 5.991 L 14.012 5.538 C 13.073 5.401 12.247 5.281 12.173 5.271 C 12.098 5.26 12.01 5.189 11.973 5.116 C 11.937 5.043 11.564 4.287 11.144 3.437 L 9.763 0.638 C 9.552 0.212 9.276 0 9.001 0 L 9.001 0 Z"
+						winding="nonZero">
+					<s:fill>
+						<s:SolidColor color="#000100"/>
+					</s:fill>
+				</s:Path>
+			</s:Group>
+		</s:Group>
+		
+		<s:Group id="grNew" alpha="1">
+			<s:Path x="0.813" y="0.855"
+					data="M 13.19 10.331 C 13.19 10.88 12.851 11.627 12.437 11.989 L 7.785 16.062 C 7.371 16.424 6.694 16.423 6.281 16.06 L 1.651 11.991 C 1.238 11.628 0.9 10.88 0.9 10.331 L 0.9 1.9 C 0.9 1.35 1.35 0.9 1.9 0.9 L 12.19 0.9 C 12.74 0.9 13.19 1.35 13.19 1.9 L 13.19 10.331 Z"
+					winding="nonZero">
+				<s:stroke>
+					<s:SolidColorStroke weight="1.8" caps="none" joints="miter" miterLimit="4" color="#24A4E1"/>
+				</s:stroke>
+			</s:Path>
+			<s:Rect x="4" y="4" width="8" height="2">
+				<s:fill>
+					<s:SolidColor color="0x24A4E1"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect x="4" y="7" width="8" height="2">
+				<s:fill>
+					<s:SolidColor color="0x24A4E1"/>
+				</s:fill>
+			</s:Rect>
+		</s:Group>
+		
+		<s:Group id="grPublish">
+			<s:Path x="3.027" y="0.149" width="2.292" height="4.398"
+					data="M 1.969 3.676 L 1.969 1.75 L 1.969 0 L 0 0 L 0 1.75 L 0 3.676 L 1.969 3.676 Z M 1.531 0.43 L 1.531 1.75 L 1.531 3.246 L 0.438 3.246 L 0.438 1.75 L 0.438 0.43 L 1.531 0.43 Z"
+					winding="nonZero">
+				<s:fill>
+					<s:SolidColor color="0x444444"/>
+				</s:fill>
+			</s:Path>
+			<s:Path x="12.224" y="0.149" width="2.292" height="4.398"
+					data="M 1.969 3.676 L 1.969 1.75 L 1.969 0 L 0 0 L 0 1.75 L 0 3.676 L 1.969 3.676 Z M 1.531 0.43 L 1.531 1.75 L 1.531 3.246 L 0.438 3.246 L 0.438 1.75 L 0.438 0.43 L 1.531 0.43 Z"
+					winding="nonZero">
+				<s:fill>
+					<s:SolidColor color="0x444444"/>
+				</s:fill>
+			</s:Path>
+			<s:Path x="0.605" y="2.243" width="16.295" height="14.657"
+					data="M 11.952 0 L 11.952 1.926 L 9.983 1.926 L 9.983 0 L 4.049 0 L 4.049 1.926 L 2.081 1.926 L 2.081 0 L 0 0 L 0 12.25 L 14.001 12.25 L 14.001 0 L 11.952 0 Z M 13.176 11.406 L 0.824 11.406 L 0.824 2.828 L 13.176 2.828 L 13.176 11.406 Z"
+					winding="nonZero">
+				<s:fill>
+					<s:SolidColor color="0x444444"/>
+				</s:fill>
+			</s:Path>
+			<s:Path x="3.498" y="7.127" width="10.507" height="7.263"
+					data="M 7.497 1.175 L 7.497 0 L 6.622 0 L 6.622 1.175 L 4.952 1.175 L 4.952 0 L 4.077 0 L 4.077 1.175 L 2.406 1.175 L 2.406 0 L 1.531 0 L 1.531 1.175 L 0 1.175 L 0 2.05 L 1.531 2.05 L 1.531 4.019 L 0 4.019 L 0 4.894 L 1.531 4.894 L 1.531 6.07 L 2.406 6.07 L 2.406 4.894 L 4.077 4.894 L 4.077 6.07 L 4.952 6.07 L 4.952 4.894 L 6.622 4.894 L 6.622 6.07 L 7.497 6.07 L 7.497 4.894 L 9.028 4.894 L 9.028 4.019 L 7.497 4.019 L 7.497 2.05 L 9.028 2.05 L 9.028 1.175 L 7.497 1.175 Z M 4.077 4.019 L 2.406 4.019 L 2.406 2.05 L 4.077 2.05 L 4.077 4.019 Z M 4.952 2.05 L 6.622 2.05 L 6.622 4.019 L 4.952 4.019 L 4.952 2.05 Z"
+					winding="nonZero">
+				<s:fill>
+					<s:SolidColor color="0x444444"/>
+				</s:fill>
+			</s:Path>
+		</s:Group>
+		
+		<s:Group id="grStatus">
+			<s:Path x="0.253" y="0.744" winding="nonZero" data="M 0.684 0.073 L 0.893 0.022 C 1.121 -0.03 1.358 0.01 1.559 0.136 C 1.76 0.262 1.9 0.457 1.953 0.686 L 5.937 17.865 C 6.048 18.34 5.751 18.815 5.276 18.924 L 5.067 18.975 C 4.839 19.026 4.605 18.987 4.401 18.862 C 4.2 18.736 4.06 18.541 4.007 18.313 L 0.024 1.132 C -0.087 0.659 0.21 0.182 0.684 0.073 Z">
+				<s:fill>
+					<s:SolidColor color="#444444"/>
+				</s:fill>
+			</s:Path>
+			<s:Path x="2.811" y="2.377" winding="nonZero" data="M 4.973 9.531 C 4.14 9.503 3.471 9.475 2.632 9.135 L 0.782 1.16 C 0.93 1.264 1.077 1.367 1.231 1.462 C 1.925 1.895 2.603 2.173 3.245 2.289 C 3.726 2.374 4.163 2.351 4.585 2.328 C 5.457 2.278 6.359 2.23 7.974 3.236 C 9.037 3.899 10.132 7.958 10.805 11.635 C 10.39 11.287 9.931 10.94 9.455 10.643 C 8.823 10.251 8.224 9.985 7.672 9.852 C 6.569 9.587 5.721 9.558 4.973 9.531 Z">
+				<s:fill>
+					<s:SolidColor id="ptSolidColor" color="#B8CB1B"/>
+				</s:fill>
+				<s:stroke>
+					<s:SolidColorStroke id="ptSolidColorStroke" caps="none" joints="miter" miterLimit="4" color="#57AC33"/>
+				</s:stroke>
+			</s:Path>
+		</s:Group>
+	</s:HGroup>
+	
+</s:GridItemRenderer>

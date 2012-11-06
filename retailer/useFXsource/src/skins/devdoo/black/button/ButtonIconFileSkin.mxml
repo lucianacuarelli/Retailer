@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		minWidth="123" minHeight="30">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[        
+			[Bindable] private var _colorIconUp:uint = 0xD10000;
+			[Bindable] private var _colorIconOver:uint = 0xFFFFFF;
+			[Bindable] private var _colorIconDown:uint = 0x666666;
+			[Bindable] private var _colorIconDisabled:uint = 0xFFFFFF;
+			
+			[Bindable] private var _colorTextUp:uint = 0xFFFFFF;
+			[Bindable] private var _colorTextOver:uint = 0xFFFFFF;
+			[Bindable] private var _colorTextDown:uint = 0xFFFFFF;
+			[Bindable] private var _colorTextDisabled:uint = 0xFFFFFF;
+			
+			[Bindable] private var _colorDetailUp:uint = 0x666666;
+			[Bindable] private var _colorDetailOver:uint = 0xD10000;
+			[Bindable] private var _colorDetailDown:uint = 0x666666;
+			[Bindable] private var _colorDetailDisabled:uint = 0xFFFFFF;
+			
+			[Bindable] private var _backgroundColorIconUp:uint = 0x000000;
+			[Bindable] private var _backgroundColorIconOver:uint = 0xD10000;
+			[Bindable] private var _backgroundColorIconDown:uint = 0x666666;
+			[Bindable] private var _backgroundColorIconDisabled:uint = 0xFFFFFF;
+			
+			[Bindable] private var _backgroundColorButtonUp:uint = 0x333333;
+			[Bindable] private var _backgroundColorButtonOver:uint = 0x252525;
+			[Bindable] private var _backgroundColorButtonDown:uint = 0x333333;
+			[Bindable] private var _backgroundColorButtonDisabled:uint = 0x333333;
+			
+			
+			/**
+			 *  @private
+			 */
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number) : void
+			{
+				this._colorIconUp = getStyle("colorIconUp");
+				this._colorIconOver = getStyle("colorIconOver");
+				this._colorIconDown = getStyle("colorIconDown");
+				this._colorIconDisabled = getStyle("colorIconDisabled");
+				
+				this._colorTextUp = getStyle("colorTextUp");
+				this._colorTextOver = getStyle("colorTextOver");
+				this._colorTextDown = getStyle("colorTextDown");
+				this._colorTextDisabled = getStyle("colorTextDisabled");
+				
+				this._colorDetailUp = getStyle("colorDetailUp");
+				this._colorDetailOver = getStyle("colorDetailOver");
+				this._colorDetailDown = getStyle("colorDetailDown");
+				this._colorDetailDisabled = getStyle("colorDetailDisabled");
+				
+				this._backgroundColorIconUp = getStyle("backgroundColorIconUp");
+				this._backgroundColorIconOver = getStyle("backgroundColorIconOver");
+				this._backgroundColorIconDown = getStyle("backgroundColorIconDown");
+				this._backgroundColorIconDisabled = getStyle("backgroundColorIconDisabled");
+				
+				this._backgroundColorButtonUp = getStyle("backgroundColorButtonUp");
+				this._backgroundColorButtonOver = getStyle("backgroundColorButtonOver");
+				this._backgroundColorButtonDown = getStyle("backgroundColorButtonDown");
+				this._backgroundColorButtonDisabled = getStyle("backgroundColorButtonDisabled");
+				
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+		]]>        
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	
+	<s:Rect top="2" bottom="2" left="2" right="2" radiusX="3"
+			alpha.disabled="0.35">
+		<s:fill>
+			<s:SolidColor color="{this._backgroundColorButtonUp}"
+						  color.disabled="{this._backgroundColorButtonDisabled}"
+						  color.down="{this._backgroundColorButtonDown}"
+						  color.over="{this._backgroundColorButtonOver}"/>
+		</s:fill>
+	</s:Rect>
+	
+	<s:RichText id="labelDisplay" left="41" top="0" bottom="0" right="0" fontFamily="Myriad Web Pro"
+				fontSize="15" 
+				alpha.disabled="0.35" verticalAlign="middle"
+				paddingTop="13" paddingBottom="10" paddingLeft="8" paddingRight="10"
+				color="{this._colorTextUp}"
+				color.disabled="{this._colorTextDisabled}"
+				color.down="{this._colorTextDown}"
+				color.over="{this._colorTextOver}"/>
+	
+	<s:Group width="8" height="8" right="3" bottom="3"
+			 alpha.disabled="0.35">
+		<s:Rect x="4" y="4" width="4" height="4" radiusX="1">
+			<s:fill>
+				<s:SolidColor color="{this._colorDetailUp}"
+							  color.disabled="{this._colorDetailDisabled}"
+							  color.down="{this._colorDetailDown}"
+							  color.over="{this._colorDetailOver}"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="5" y="0" width="3" height="3" alpha="0.7" radiusX="1">
+			<s:fill>
+				<s:SolidColor color="{this._colorDetailUp}"
+							  color.disabled="{this._colorDetailDisabled}"
+							  color.down="{this._colorDetailDown}"
+							  color.over="{this._colorDetailOver}"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="0" y="5" width="3" height="3" alpha="0.7" radiusX="1">
+			<s:fill>
+				<s:SolidColor color="{this._colorDetailUp}"
+							  color.disabled="{this._colorDetailDisabled}"
+							  color.down="{this._colorDetailDown}"
+							  color.over="{this._colorDetailOver}"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:Group left="2" top="2" bottom="2" width="37"
+			 alpha.disabled="0.35">
+		<s:Rect width="100%" height="100%" alpha="0.3" topLeftRadiusX="3" bottomLeftRadiusX="3"
+				alpha.over="1">
+			<s:fill>
+				<s:SolidColor color="{this._backgroundColorIconUp}"
+							  color.disabled="{this._backgroundColorIconDisabled}"
+							  color.down="{this._backgroundColorIconDown}"
+							  color.over="{this._backgroundColorIconOver}"/>
+			</s:fill>
+		</s:Rect>
+		
+		<s:Group x="10" verticalCenter="0" height="15"
+				 alpha.disabled="0.35">
+			<s:Rect x="3" y="5" width="16" height="10" radiusX="1">
+				<s:fill>
+					<s:SolidColor color="{this._colorIconUp}"
+								  color.disabled="{this._colorIconDisabled}"
+								  color.down="{this._colorIconDown}"
+								  color.over="{this._colorIconOver}"/>
+				</s:fill>
+			</s:Rect>
+			<s:Path x="0.491" y="0.231" width="14.066" height="13.264"
+					data="M 16.175 0 L 13.996 3.237 L 0 3.237 L 0 17.749 L 2.305 17.749 L 2.305 5.352 L 22.353 5.352 L 22.353 4.007 L 22.353 3.237 L 22.353 0 L 16.175 0 Z"
+					winding="nonZero">
+				<s:fill>
+					<s:SolidColor color="{this._colorIconUp}"
+								  color.disabled="{this._colorIconDisabled}"
+								  color.down="{this._colorIconDown}"
+								  color.over="{this._colorIconOver}"/>
+				</s:fill>
+			</s:Path>
+		</s:Group>
+		
+	</s:Group>
+	<s:Group x="39" y="0" width="2" height="100%"
+			 alpha.disabled="0.35">
+		<s:Rect x="0" y="0" width="1" height="100%" alpha="0.3" radiusX="0">
+			<s:fill>
+				<s:SolidColor color="#000000"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="1" y="0" width="1" height="100%" alpha="0.3" radiusX="0">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
+	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="4"
+			alpha.disabled="0.35">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#525152" joints="miter" miterLimit="4"
+								weight="1"/>
+		</s:stroke>
+	</s:Rect>
+</s:Skin>

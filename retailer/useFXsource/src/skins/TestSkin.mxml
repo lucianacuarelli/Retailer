@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		width="123" height="30">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Rect x="2" y="2" width="119" height="26" radiusX="3"
+			alpha.disabled="0.35000000000000003">
+		<s:fill>
+			<s:LinearGradient rotation="0">
+				<s:GradientEntry alpha="1.0" color="0x2D3134" ratio="0"/>
+				<s:GradientEntry alpha="1" color="0x000000" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:RichText color="#FFFFFF" fontFamily="Myriad Pro" fontSize="14" tabStops="S0 S50"
+				text="Arquivos"
+				x.disabled="51" y.disabled="9" alpha.disabled="0.35000000000000003"
+				color.disabled="#333333"
+				x.down="51" y.down="9" alpha.down="0.3" color.down="0x7D8184"
+				x.over="51" y.over="9"
+				left.up="51" verticalCenter.up="1"/>
+	<s:Rect x="39" y="2" width="1" height="26" alpha="0.6" radiusX="0"
+			alpha.disabled="0.35000000000000003">
+		<s:fill>
+			<s:SolidColor color="#000000"/>
+		</s:fill>
+	</s:Rect>
+	<s:Group x="112" y="18"
+			 alpha.disabled="0.35000000000000003">
+		<s:Rect x="4" y="4" width="4" height="4" radiusX="1">
+			<s:fill>
+				<s:SolidColor color.disabled="#999999"
+							  color.down="#666666"
+							  color.over="#009CFF"
+							  color.up="#999999"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="5" y="0" width="3" height="3" alpha="0.7000000000000001" radiusX="1">
+			<s:fill>
+				<s:SolidColor color.disabled="#999999"
+							  color.down="#666666"
+							  color.over="#009CFF"
+							  color.up="#999999"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="0" y="5" width="3" height="3" alpha="0.7000000000000001" radiusX="1">
+			<s:fill>
+				<s:SolidColor color.disabled="#999999"
+							  color.down="#666666"
+							  color.over="#009CFF"
+							  color.up="#999999"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:Rect x="40" y="2" width="1" height="26" alpha="0.2" radiusX="0"
+			alpha.disabled="0.35000000000000003">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect x="2" y="2" width="37" height="26" alpha="0.3" radiusX="3"
+			alpha.disabled="0.35000000000000003"
+			alpha.over="1">
+		<s:fill>
+			<s:SolidColor color="#000000"
+						  color.over="#C61557"/>
+		</s:fill>
+	</s:Rect>
+	<s:Group x="10" y="7"
+			 alpha.disabled="0.35000000000000003">
+		<s:Rect x="3" y="5" width="16" height="10" radiusX="1">
+			<s:fill>
+				<s:SolidColor color="0x7D8184"
+							  color.over="#FFFFFF"/>
+			</s:fill>
+		</s:Rect>
+		<s:Path x="0.491" y="0.231" width="14.066" height="13.264"
+				data="M 16.175 0 L 13.996 3.237 L 0 3.237 L 0 17.749 L 2.305 17.749 L 2.305 5.352 L 22.353 5.352 L 22.353 4.007 L 22.353 3.237 L 22.353 0 L 16.175 0 Z"
+				winding="nonZero">
+			<s:fill>
+				<s:SolidColor color="0x7D8184"
+							  color.over="#FFFFFF"/>
+			</s:fill>
+		</s:Path>
+	</s:Group>
+	<s:Rect x="0.5" y="0.5" width="122" height="29" radiusX="4"
+			alpha.disabled="0.35000000000000003">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#525152" joints="miter" miterLimit="4"
+								weight="1"/>
+		</s:stroke>
+	</s:Rect>
+</s:Skin>

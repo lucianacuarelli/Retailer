@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDate;
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//------------------------------------
+			// dateFinish
+			//------------------------------------
+			
+			private var useDate:UseDate;
+			
+			//------------------------------------
+			// dateStart
+			//------------------------------------
+			/**
+			 * NOTDOC
+			 */ 
+			public function get dateStart():String
+			{
+				if(dfStart.text){
+					useDate = UseFX.start().date(dfStart.selectedDate);
+					return useDate.format('Y-m-d');
+				}else
+					return '';
+			}
+			
+			/**
+			 * NOTDOC
+			 */ 
+			public function set dateStart(value:String):void
+			{
+				var date:Date;
+				var arDate:Array = value.split('/');
+				if(arDate.length > 1){
+					date = new Date(arDate[2],arDate[1],arDate[0]);
+				}else{
+					var useDate:UseDate = UseFX.start().date(int(value));
+					date = useDate.date;
+				}
+				
+				dfStart.selectedDate = date;
+			}
+			
+			//------------------------------------
+			// dateFinish
+			//------------------------------------
+			/**
+			 * NOTDOC
+			 */ 
+			public function get dateFinish():String
+			{
+				if(dfFinish.text){
+					useDate = UseFX.start().date(dfFinish.selectedDate);
+					return useDate.format('Y-m-d');
+				}else
+					return '';
+			}
+			
+			/**
+			 * NOTDOC
+			 */ 
+			public function set dateFinish(value:String):void
+			{
+				var date:Date;
+				var arDate:Array = value.split('/');
+				if(arDate.length > 1){
+					date = new Date(arDate[2],arDate[1],arDate[0]);
+				}else{
+					var useDate:UseDate = UseFX.start().date(int(value));
+					date = useDate.date;
+				}
+				
+				dfFinish.selectedDate = date;
+			}
+		]]>
+	</fx:Script>
+	<s:Label text="Início: "/>
+	<mx:DateField id="dfStart" formatString="DD/MM/YYYY" width="100"/>
+	<s:Label text="Término: "/>
+	<mx:DateField id="dfFinish" formatString="DD/MM/YYYY" width="100"/>
+</s:HGroup>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<actionScriptProperties analytics="false" mainApplicationPath="WebIndexRegister.mxml" projectUUID="17fea375-8a79-4c25-98c3-dfa00f756dce" version="10">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderLocation="C:/AppServ/www/retailer/public/useFXapplication" outputFolderPath="bin-debug" removeUnusedRSL="true" rootURL="http://localhost/retailer/admin" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="0">
+      <libraryPathEntry kind="4" path="">
+        <excludedEntries>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/core.swc" useDefaultLinkType="false"/>
+        </excludedEntries>
+      </libraryPathEntry>
+      <libraryPathEntry kind="3" linkType="1" path="C:/AppServ/library/UseOS/UseOS.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="C:/AppServ/library/UseFX/UseDevDoo.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="C:/AppServ/library/UseFX/UseFX.swc" useDefaultLinkType="false"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="WebIndex.mxml"/>
+    <application path="AppServ/www/usestart/public/useFXapplication.mxml"/>
+    <application path="WebIndexRegister.mxml"/>
+  </applications>
+  <modules>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdAnalytcOperational.swf" optimize="true" sourcePath="src/modules/lg/MdAnalytcOperational.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdBiTotalDailyInteraction.swf" optimize="true" sourcePath="src/modules/lg/MdBiTotalDailyInteraction.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/app/MdLogManager.swf" optimize="true" sourcePath="src/modules/app/MdLogManager.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterRetailers.swf" optimize="true" sourcePath="src/modules/register/MdRegisterRetailers.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterRetailersCollaborators.swf" optimize="true" sourcePath="src/modules/register/MdRegisterRetailersCollaborators.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterNewAdmin.swf" optimize="true" sourcePath="src/modules/register/MdRegisterNewAdmin.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdAnalytcUsability.swf" optimize="true" sourcePath="src/modules/lg/MdAnalytcUsability.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdProductsFeatured.swf" optimize="true" sourcePath="src/modules/lg/MdProductsFeatured.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/app/MdProductsResourcesRetailers.swf" optimize="true" sourcePath="src/modules/app/MdProductsResourcesRetailers.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdAnalytcResources.swf" optimize="true" sourcePath="src/modules/lg/MdAnalytcResources.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterTradeMarketingRetailers.swf" optimize="true" sourcePath="src/modules/register/MdRegisterTradeMarketingRetailers.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdBIUsers.swf" optimize="true" sourcePath="src/modules/lg/MdBIUsers.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdActionsBanner.swf" optimize="true" sourcePath="src/modules/lg/MdActionsBanner.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdActionsPromotional.swf" optimize="true" sourcePath="src/modules/lg/MdActionsPromotional.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdBusinessIntelligence.swf" optimize="true" sourcePath="src/modules/lg/MdBusinessIntelligence.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterDigitalMarketing.swf" optimize="true" sourcePath="src/modules/register/MdRegisterDigitalMarketing.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/app/MdMenu.swf" optimize="true" sourcePath="src/modules/app/MdMenu.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdAnalytcRetailers.swf" optimize="true" sourcePath="src/modules/lg/MdAnalytcRetailers.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdAnalytcProducts.swf" optimize="true" sourcePath="src/modules/lg/MdAnalytcProducts.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdProducts.swf" optimize="true" sourcePath="src/modules/lg/MdProducts.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdBITotalDownload.swf" optimize="true" sourcePath="src/modules/lg/MdBITotalDownload.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterTradeMarketing.swf" optimize="true" sourcePath="src/modules/register/MdRegisterTradeMarketing.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterConfigurations.swf" optimize="true" sourcePath="src/modules/register/MdRegisterConfigurations.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdActionsCampaign.swf" optimize="true" sourcePath="src/modules/lg/MdActionsCampaign.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdAnalytcTrajectories.swf" optimize="true" sourcePath="src/modules/lg/MdAnalytcTrajectories.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdActionsIntitutionais.swf" optimize="true" sourcePath="src/modules/lg/MdActionsIntitutionais.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdBITotalAccess.swf" optimize="true" sourcePath="src/modules/lg/MdBITotalAccess.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdProductsRetailers.swf" optimize="true" sourcePath="src/modules/lg/MdProductsRetailers.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdBITopResource.swf" optimize="true" sourcePath="src/modules/lg/MdBITopResource.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterProductManager.swf" optimize="true" sourcePath="src/modules/register/MdRegisterProductManager.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/app/MdProfile.swf" optimize="true" sourcePath="src/modules/app/MdProfile.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdMessagesX.swf" optimize="true" sourcePath="src/modules/lg/MdMessagesX.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdBITotalInteraction.swf" optimize="true" sourcePath="src/modules/lg/MdBITotalInteraction.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/lg/MdProductsResources.swf" optimize="true" sourcePath="src/modules/lg/MdProductsResources.mxml"/>
+    <module application="src/WebIndexRegister.mxml" destPath="modules/lg/MdBiTotalPages.swf" optimize="true" sourcePath="src/modules/lg/MdBiTotalPages.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterBoth.swf" optimize="true" sourcePath="src/modules/register/MdRegisterBoth.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/app/MdModel.swf" optimize="true" sourcePath="src/modules/app/MdModel.mxml"/>
+    <module application="src/WebIndex.mxml" destPath="modules/register/MdRegisterCollaborators.swf" optimize="true" sourcePath="src/modules/register/MdRegisterCollaborators.mxml"/>
+  </modules>
+  <buildCSSFiles/>
+  <flashCatalyst validateFlashCatalystCompatibility="false"/>
+</actionScriptProperties>

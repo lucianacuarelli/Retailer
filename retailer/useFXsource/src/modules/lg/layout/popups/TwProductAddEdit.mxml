@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" 
+				  xmlns:ui="devdoo.ui.*"
+				  width="600" height="384"
+				  creationComplete="create()"
+				  close="cancel(event)">
+	
+	<fx:Declarations>
+		<!-- Validadores -->
+		<mx:NumberValidator id="PRODUCT_vlCategory"
+							source="{ddCategory}"
+							lowerThanMinError="Necessário escolher uma categoria de produto."
+							property="selectedIndex"
+							minValue="0"/>
+		
+		<mx:NumberValidator id="PRODUCT_vlSubCategory"
+							source="{ddSubCategory}"
+							lowerThanMinError="Necessário escolher uma sub-categoria de produto."
+							property="selectedIndex"
+							minValue="0"/>
+		
+		<mx:StringValidator id="PRODUCT_vlProductsCode" source="{tiProductsCode}" property="text" 
+							minLength="1" maxLength="32"
+							requiredFieldError="Necessário digitar um código de produto."
+							tooShortError="O código de produto deve ter no mínimo uma caractere." 
+							tooLongError="O código de produto pode ter no maximo 32 caracteres."/>
+		
+		<mx:StringValidator id="PRODUCT_vlProductsTtitle" source="{tiProductsTtitle}" property="text" 
+							minLength="1" maxLength="255"
+							requiredFieldError="Necessário digitar um título de produto."
+							tooShortError="O código de produto deve ter no mínimo uma caractere." 
+							tooLongError="O código de produto pode ter no maximo 255 caracteres."/>
+		
+		<mx:StringValidator id="PRODUCT_vlDateIn" source="{dfDateIn}" property="text" 
+							minLength="10" maxLength="10"
+							requiredFieldError="Necessário escolher a data início da publicação do produto."
+							tooShortError="A data deve ter no minimo 10 caractere, exemplo: 26/07/1971." 
+							tooLongError="A data deve ter no maximo 10 caractere, exemplo: 26/07/1971."/>
+		
+		<mx:StringValidator id="PRODUCT_vlDateOut" source="{dfDateOut}" property="text" 
+							minLength="10" maxLength="10"
+							requiredFieldError="Necessário escolher até quando o produto deve ficar publicado."
+							tooShortError="A data deve ter no minimo 10 caractere, exemplo: 26/07/1971." 
+							tooLongError="A data deve ter no maximo 10 caractere, exemplo: 26/07/1971."/>
+		
+		<mx:StringValidator id="PRODUCT_vlShowHomeDateOut" source="{dfShowHomeDateOut}" property="text" 
+							minLength="10" maxLength="10"
+							requiredFieldError="Necessário escolher até quando o produto deve ser mostrado na home como destaque."
+							tooShortError="A data deve ter no minimo 10 caractere, exemplo: 26/07/1971." 
+							tooLongError="A data deve ter no maximo 10 caractere, exemplo: 26/07/1971."/>
+		
+		<mx:StringValidator id="PRODUCT_vlStatusNewDateOut" source="{dfStatusNewDateOut}" property="text" 
+							minLength="10" maxLength="10"
+							requiredFieldError="Necessário escolher até quando o produto deve ser mostrado como novo."
+							tooShortError="A data deve ter no minimo 10 caractere, exemplo: 26/07/1971." 
+							tooLongError="A data deve ter no maximo 10 caractere, exemplo: 26/07/1971."/>
+	</fx:Declarations>	
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseActionNotification;
+			import devdoo.fx.UseComboBox;
+			import devdoo.fx.UseDate;
+			import devdoo.fx.UseFX;
+			
+			import modules.lg.data.DataProducts;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.CalendarLayoutChangeEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  _productType
+			//----------------------------------
+			/**
+			 *  Recebe o tipo de produto.  
+			 */  
+			private var _productType:String
+			
+			//----------------------------------
+			//  this._dataProducts
+			//----------------------------------
+			/**
+			 *  Gerênciador de dados de produtos.  
+			 */  
+			public var _dataProducts:DataProducts;
+			
+			//----------------------------------
+			//  acProductsStatus
+			//----------------------------------
+			/**
+			 *  Indica todas as opções de status que podem ser atribuidas a um produto ou recurso  
+			 */  
+			[Bindable] public var acProductsStatus:ArrayCollection = new ArrayCollection([
+				{data:"AGA", label:"Aguardando aprovação"},
+				{data:"NAP", label:"Não aprovado"},
+				{data:"APR", label:"Aprovado"},
+				{data:"APP", label:"Aprovado e publicado"},
+				{data:"AND", label:"Aprovado e despublicado"}
+			]);
+			
+			//------------------------------------------------------------------
+			//
+			//  Methods
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 *  Evento executado no momento em que a aplicação for criada completamente.
+			 * 
+			 *  Cria todos os componentes de edição de registro,
+			 * 
+			 *  Recupera a instância da classe de gerenciamento da módulo, 
+			 *  Cria instância do modelo de tabela,
+			 *  Verifica se está em modo de edicção, 
+			 *  Popula os componentes pré-definidos,
+			 *  Adiciona os eventos pré-definidos,
+			 *  Configura permissão de acesso.
+			 * 
+			 *  @return void  
+			 */
+			private function create() : void
+			{
+				//Recupera a instância da classe de gerenciamento da popup
+				useFX = UseFX.startPopup(this);
+				
+				//Cria gerenciador de dados de produto
+				this._dataProducts = new DataProducts();
+				
+				//Recuepar o tipo de produto
+				this._productType = useFX.session("productType");
+				
+				ddProductStatus.dataProvider = acProductsStatus;
+				ddProductStatus.selectedIndex = 0;
+				
+				//Verifica se está em modo de edicção
+				if(useFX.isEdit || useFX.isCopy)
+				{
+					//Configura modelo de tabela com dados retornados da base de dados
+					this._dataProducts.useLgProducts.data = useFX.data.useLgProducts;
+					
+					//Verifica se esta em modo copy para duplicar registro
+					if( useFX.isCopy ){ 
+						//Remove a id do registro para evitar conflito de integridade da base de dados
+						//useRegister.id 			= null;
+					}		
+				}
+				
+				//Popula os componentes pré-definidos
+				populate();
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();		
+				
+				//Adiciona gerenciamento de log
+				changeLog();
+				
+				//Configura validadores de componentes
+				validade();
+				
+				//Configura permissão de acesso
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  populate
+			//----------------------------------
+			/**
+			 *  Popula os componentes pré-definidos.
+			 * 
+			 *  @return void  
+			 */	
+			private function populate():void
+			{
+				//Popula categoria
+				ddCategory.dataProvider = useFX.session('lgCategory');
+				
+				if(useFX.isEdit){
+					//Popula o categoria de produto
+					UseComboBox.selectLabelField(ddCategory, 'id', this._dataProducts.useLgProducts.category_id);
+					
+					//Popula o subCategoria de produto
+					this._dataProducts.populateSubCategory(this._dataProducts.useLgProducts.category_id, populateSubCategoryResult);
+					
+					var useDate:UseDate;
+					
+					//Configura os dados do campo data de publicaçao do produto
+					useDate = new UseDate(int(this._dataProducts.useLgProducts.date_in));
+					dfDateIn.text = useDate.format('d/m/Y');
+					//Configura os dados do campo data de saida do produto
+					useDate = new UseDate(int(this._dataProducts.useLgProducts.date_out));
+					dfDateOut.text = useDate.format('d/m/Y');
+					//Configura os dados do campo de saída do produto do destaque
+					useDate = new UseDate(int(this._dataProducts.useLgProducts.highlight_date_out));
+					dfShowHomeDateOut.text = useDate.format('d/m/Y');
+					//Configura os dados do campo saída do produto como novo
+					useDate = new UseDate(int(this._dataProducts.useLgProducts.status_new_date_out));
+					dfStatusNewDateOut.text = useDate.format('d/m/Y');
+					
+					//Popula o status de produto
+					UseComboBox.selectLabelField(ddProductStatus, 'data', this._dataProducts.useLgProducts.product_status);
+					
+					//Verifica se perfil do usuário esta na lista de permissão
+					var listProfiles:Array = useFX.session("listProfiles");
+					
+					ddProductStatus.enabled = false;
+					ddProductStatus.enabled = false;
+					
+					for each (var item:String in listProfiles) 
+					{
+						if(useFX.user.info.register_profile_id == item){
+							ddProductStatus.enabled = true;
+							ddProductStatus.enabled = true;
+							break;
+						}
+					}					
+					
+				}
+				else{
+					//Data de início da publicação
+					useDate = useFX.date();
+					dfDateIn.selectedDate = useDate.date;
+					//Data de término da publicação
+					useDate.date.fullYear += 2;
+					dfDateOut.selectedDate = useDate.date;
+					//Período de Destaque e Novidade da publicação
+					useDate = useFX.date();
+					useDate.date.date += 30;
+					dfShowHomeDateOut.selectedDate = useDate.date;
+					dfStatusNewDateOut.selectedDate = useDate.date;
+				}
+				
+				tiProductsCode.text = this._dataProducts.useLgProducts.code;
+				tiProductsTtitle.text = this._dataProducts.useLgProducts.title;
+				taObservation.text = this._dataProducts.useLgProducts.observation_status;
+			}		
+			
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */	
+			private function addEvents():void
+			{
+				btCancel.addEventListener(MouseEvent.CLICK, cancel);
+				btSave.addEventListener(MouseEvent.CLICK, save);
+				//btAddCategory.addEventListener(MouseEvent.CLICK, addEditCategory);
+				btAddSubCategory.addEventListener(MouseEvent.CLICK, addEditSubCategory);
+				
+				ddCategory.addEventListener(IndexChangeEvent.CHANGE, populateSubCategory);
+			}
+			
+			//----------------------------------
+			//  changeLog
+			//----------------------------------
+			/**
+			 *  Adiciona gerenciamento de log para componentes
+			 * 
+			 *  @return void
+			 */	
+			private function changeLog():void
+			{
+				useFX.startLog(true, saveCheck)
+					.changeLog(ddCategory, IndexChangeEvent.CHANGE, 'Categoria')
+					.changeLog(ddSubCategory, IndexChangeEvent.CHANGE, "Sub-Categoria")
+					.changeLog(ddProductStatus, IndexChangeEvent.CHANGE, "Status de Produto")
+					.changeLog(tiProductsCode, Event.CHANGE, "Código do Produto")
+					.changeLog(tiProductsTtitle, Event.CHANGE, "Título do produto")
+					.changeLog(taObservation, Event.CHANGE, "Observação de Status")
+					.changeLog(dfDateIn, CalendarLayoutChangeEvent.CHANGE, "Data de Publicação")
+					.changeLog(dfDateOut, CalendarLayoutChangeEvent.CHANGE, "Data de Despublicação")
+					.changeLog(dfShowHomeDateOut, CalendarLayoutChangeEvent.CHANGE, "Data de Destaque")
+					.changeLog(dfStatusNewDateOut, CalendarLayoutChangeEvent.CHANGE, "Data Novo Até");
+			}
+			
+			//----------------------------------
+			//  validade
+			//----------------------------------    	
+			/**
+			 * Configura lista de validadores.
+			 *  
+			 * @return void  
+			 */	
+			private function validade():void
+			{
+				//Adiciona lista de validadores do formulário cliente
+				useFX.validate('PRODUCT')
+					.addItem('Categoria:', PRODUCT_vlCategory)
+					.addItem('Sub-Categoria:', PRODUCT_vlSubCategory)
+					.addItem('Código do Produto:', PRODUCT_vlProductsCode)
+					.addItem('Nome do Produto:', PRODUCT_vlProductsTtitle)
+					.addItem('Publicar em:', PRODUCT_vlDateIn)
+					.addItem('Publicar até:', PRODUCT_vlDateOut)
+					.addItem('Em destaque até:', PRODUCT_vlShowHomeDateOut)
+					.addItem('Novo até:', PRODUCT_vlStatusNewDateOut);
+			}			
+			
+			//----------------------------------
+			//  accessControl
+			//----------------------------------    	
+			/**
+			 * Gerência o controle de acesso e uso de usuários no módulo.
+			 *  
+			 * @return void  
+			 */	
+			private function accessControl(event:Event):void
+			{
+				useFX.accessControl( ddCategory.selectedIndex > -1 )
+					.accessControlEdit( btAddSubCategory )
+					.accessControlEdit( ddSubCategory );
+				
+				/* useFX.accessControl( useFX.user.info.register_profile_id == "3" )
+				.accessControlEdit( ddProductStatus ); */
+				
+				//Configura botão salvar
+				saveCheck(null);
+			}
+			
+			//----------------------------------
+			//  populateSubCategory
+			//----------------------------------
+			/**
+			 *  
+			 * 	Realiza consulta na base de dados para popular as subcategorias
+			 *  
+			 * @return void
+			 */	
+			private function populateSubCategory(event:IndexChangeEvent):void
+			{
+				//Recupera a categoria selecionada
+				var categoryId:String = useFX.select(ddCategory, 'id');
+				
+				//Popula o componente indicado
+				this._dataProducts.populateSubCategory(categoryId, populateSubCategoryResult);
+				
+				accessControl(null);
+			}
+			
+			//----------------------------------
+			//  populateSubCategoryResult
+			//----------------------------------
+			/**
+			 *  
+			 * 	Realiza consulta na base de dados para popular as subcategorias
+			 *  
+			 * @return void  
+			 */	
+			private function populateSubCategoryResult(useResult:*):void
+			{
+				//Prepara resultado obtido da consulta na base de dados
+				var acSubCategory:ArrayCollection = useFX.populateCollection(useResult.useRegisterGroups);
+				
+				//Configura na sessão a lista de subCategorias
+				useFX.session('lgSubCategory', acSubCategory);
+				
+				//Popula SubCategoria
+				ddSubCategory.dataProvider = acSubCategory;
+				
+				//Popula o categoria de produto
+				UseComboBox.selectLabelField(ddSubCategory, 'id', this._dataProducts.useLgProducts.subcategory_id);
+			}			
+			
+			//----------------------------------
+			//  addEditCategory
+			//----------------------------------
+			/**
+			 *  
+			 * 	Abre popup para adicionar nova categoria
+			 *  
+			 * @return void  
+			 */	
+			private function addEditCategory(useResult:*):void
+			{
+				//Abre popup para adicionar nova categoria
+				useFX.addPopup(TwCategoryAddEdit, 'Editar categorias', popupResult);
+			}
+			
+			//----------------------------------
+			//  addEditSubCategory
+			//----------------------------------
+			/**
+			 *  
+			 * 	Abre popup para adicionar nova categoria
+			 *  
+			 * @return void  
+			 */	
+			private function addEditSubCategory(useResult:*):void
+			{
+				//Recupera a id da categoria selecionada para guardar na sessão
+				useFX.session('selectedCategoryId', useFX.select(ddCategory, 'id'));
+				
+				//Abre popup para adicionar nova categoria
+				useFX.addPopup(TwSubCategoryAddEdit, 'Editar sub-categoria de '+ useFX.select(ddCategory, 'title'), popupResult);
+			}			
+			
+			//----------------------------------
+			//  popupResult
+			//----------------------------------
+			/**
+			 *  Evento executado ao termino da edição de categorias e sub-categorias.
+			 * 
+			 *  @param useResult Configurações de interação com a base de dados.
+			 *  @return void 
+			 */			
+			private function popupResult(useResult:*):void{}				
+			
+			//----------------------------------
+			//  saveCheck
+			//----------------------------------    	
+			/**
+			 * 	Verifica se houve alguma alteração na edição, para ativar botão salvar
+			 * 
+			 *  @return void  
+			 */	
+			private function saveCheck(event:Event):void
+			{
+				useFX.accessControl(useFX.isChangedLog)
+					.accessControlAdd( btSave );
+			}
+			
+			//----------------------------------
+			//  save
+			//----------------------------------    	
+			/**
+			 * 	Prepara dados para gravar na base de dados.
+			 * 
+			 *  Atualiza modelo de tabela de cada componente necessário para 
+			 *  interação com a base de dados.
+			 * 
+			 *  @return void  
+			 */	
+			private function save(event:Event):void
+			{
+				this._dataProducts.useLgProducts.product_status 			=  useFX.select(ddProductStatus, "data");
+				this._dataProducts.useLgProducts.product_type 				=  this._productType;
+				this._dataProducts.useLgProducts.code 						=  tiProductsCode.text;
+				this._dataProducts.useLgProducts.title 						=  tiProductsTtitle.text;
+				this._dataProducts.useLgProducts.category_id 				=  useFX.select(ddCategory, 'id');
+				this._dataProducts.useLgProducts.subcategory_id 			=  useFX.select(ddSubCategory, 'id');
+				this._dataProducts.useLgProducts.observation_status 		=  taObservation.text;
+				
+				if(this._dataProducts.useLgProducts.product_status == "APP")
+					this._dataProducts.useLgProducts.is_active = 1;
+				else
+					this._dataProducts.useLgProducts.is_active = 0;
+				
+				var useDate:UseDate = useFX.date();
+				
+				//Início de Publicação
+				useDate = useFX.date(dfDateIn.selectedDate);
+				this._dataProducts.useLgProducts.date_in = useDate.format('U');
+				//Término de Publicação
+				useDate = useFX.date(dfDateOut.selectedDate);
+				this._dataProducts.useLgProducts.date_out = useDate.format('U');
+				//Período de Destaque
+				useDate = useFX.date(dfShowHomeDateOut.selectedDate);
+				this._dataProducts.useLgProducts.highlight_date_out =  useDate.format('U');
+				//Período de Novidade
+				useDate = useFX.date(dfStatusNewDateOut.selectedDate);
+				this._dataProducts.useLgProducts.status_new_date_out = useDate.format('U');
+				
+				//Verifica se o formulário está validado
+				if(useFX.validate('PRODUCT').isValid()){
+					//Verifica se o registro já existe na base de dados 
+					this._dataProducts.saveProducts(saveResult);
+				}else{
+					useFX.validate('PRODUCT').showError();
+				}
+			}
+			
+			//----------------------------------
+			//  saveResult
+			//----------------------------------
+			/**
+			 *  Evento disparado após interação com a base de dados.
+			 * 
+			 *  Processa o resultado obtido, atualizando o modelo de tabela principal,
+			 *  Retorna dados para atualizar datagrid e fecha a popup.  
+			 *
+			 *  @return void
+			 */ 			
+			private function saveResult(useResult:*):void
+			{
+				//Processa o resultado obtido, atualizando o modelo de tabela principal
+				useResult = useFX.saveResult(this._dataProducts.useLgProducts, useResult, true, true, "Produto");
+				
+				//Recupera o nome do usuário logado
+				var userName:String = useFX.user.info.user_name;	
+				
+				//Configura mensagem de novo produto
+				var messageInsert:String =  userName + " adicionou novo produto "+ this._dataProducts.useLgProducts.title;
+				
+				//Cria ação para gerar notificações de novo produto
+				var useActionNotification:UseActionNotification = useFX.actionNotification('NEW_PRODUCT', UseActionNotification.INSERT);
+				useActionNotification.message(messageInsert)
+					.messageMail(messageInsert)
+					.data({id:(this._dataProducts.useLgProducts.id), event:"showProduct", param:"Mala"})
+					.moduleDir('lg')
+					.moduleFile('MdProducts')
+					.sourceId(useResult.USE_LG_PRODUCTS_id)
+					.sorceTable(this._dataProducts.useLgProducts.table);
+				
+				//Registra ação no gerenciador de notificações	
+				useFX.saveResultNotification(useActionNotification);
+				
+				/*
+				//Cria ação para gerar notificações de novo produto
+				var useActionNotification:UseActionNotification = useFX.actionNotification('NEW_PRODUCT');
+				useActionNotification.message(messageInsert)
+				.messageMail(messageInsert)
+				.data({id:(this._dataProducts.useLgProducts.id), event:"showProduct", param:"Mala"})
+				//.startModule('lg', 'MdProducts')
+				.source(useResult.USE_LG_PRODUCTS_id, this._dataProducts.useLgProducts.table);
+				
+				//Registra ação no gerenciador de notificações	
+				useFX.saveResultNotification(useActionNotification, UseActionNotification.INSERT);
+				*/
+				
+				
+				//Configura mensagem de produto atualizado
+				var messageUpdate:String = userName + " atualizou o produto "+ this._dataProducts.useLgProducts.title;
+				
+				//Cria ação para gerar notificações de produto atualizado
+				useActionNotification = useFX.actionNotification('UPDATE_PRODUCT_STORE_ID'+54, UseActionNotification.UPDATE);
+				useActionNotification.message(messageUpdate)
+					.messageMail(messageUpdate+'EMAIL')
+					.data({id:(this._dataProducts.useLgProducts.id), event:"showProduct", param:"Mala"})
+					.moduleDir('lg')
+					.moduleFile('MdProducts')
+					.sourceId(useResult.USE_LG_PRODUCTS_id)
+					.sorceTable(this._dataProducts.useLgProducts.table);
+				
+				//Registra ação no gerenciador de notificações	
+				useFX.saveResultNotification(useActionNotification);
+				
+				//Retorna dados para atualizar datagrid e fecha a popup
+				useFX.closePopup(this, useResult);
+			}
+			
+			//----------------------------------
+			//  cancel
+			//----------------------------------
+			/**
+			 *  Fecha a popup.
+			 *  @return void
+			 */ 		
+			private function cancel(event:Event):void{
+				useFX.cancelPopup(this, save, 'Cadastro de produto');
+			}			
+		]]>
+	</fx:Script>
+	<s:controlBarContent>
+		<mx:Spacer width="100%"/>
+		<s:Button id="btSave" label="Salvar" styleName="btSave"/>
+		<s:Button id="btCancel" label="Cancelar" buttonMode="true" styleName="btCancel"
+				  useHandCursor="true"/>
+	</s:controlBarContent>
+	
+	<s:VGroup right="10" top="20" width="170" gap="2">
+		<s:Label text="Código do produto"/>
+		<s:TextInput id="tiProductsCode" width="100%" maxChars="32"/>
+	</s:VGroup>
+	
+	<s:VGroup y="104" left="10" right="10" gap="8">
+		<s:VGroup width="100%" gap="2">
+			<s:Label text="Nome do produto"/>
+			<s:TextInput id="tiProductsTtitle" width="100%" maxChars="255"/>
+		</s:VGroup>
+	</s:VGroup>
+	<mx:HRule y="153" left="10" right="10"/>
+	<s:HGroup left="10" right="10" top="170" height="65" gap="10">
+		<s:VGroup x="8" y="37" gap="2">
+			<s:Label text="Status do produto"/>
+			<s:DropDownList id="ddProductStatus" width="165"/>
+		</s:VGroup>
+		<s:VGroup x="8" y="37" width="100%" height="100%" gap="2">
+			<s:Label text="Observação"/>
+			<s:TextArea id="taObservation" width="100%" height="100%"/>
+		</s:VGroup>
+	</s:HGroup>
+	<mx:HRule y="240" left="10" right="10"/>
+	<s:HGroup left="10" right="10" bottom="15" gap="20">
+		<s:VGroup>
+			<s:Label text="Publicar em:"/>
+			<mx:DateField id="dfDateIn"
+						  firstDayOfWeek="0"
+						  formatString="DD/MM/YYYY" 
+						  dayNames="['D','S','T','Q','Q','S','S']" 
+						  monthNames="['Janeiro','Fevereiro','Março','Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']"/>
+		</s:VGroup>
+		<s:VGroup>
+			<s:Label text="Publicar até:"/>
+			<mx:DateField id="dfDateOut"
+						  firstDayOfWeek="0"
+						  formatString="DD/MM/YYYY" 
+						  dayNames="['D','S','T','Q','Q','S','S']" 
+						  monthNames="['Janeiro','Fevereiro','Março','Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']"/>
+		</s:VGroup>
+		<mx:VRule height="40"/>
+		<s:VGroup>
+			<s:Label text="Em destaque até:"/>
+			<mx:DateField id="dfShowHomeDateOut"
+						  firstDayOfWeek="0"
+						  formatString="DD/MM/YYYY" 
+						  dayNames="['D','S','T','Q','Q','S','S']" 
+						  monthNames="['Janeiro','Fevereiro','Março','Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']"/>
+		</s:VGroup>
+		<mx:VRule height="40"/>
+		<s:VGroup>
+			<s:Label text="Novo até:"/>
+			<mx:DateField id="dfStatusNewDateOut"
+						  firstDayOfWeek="0"
+						  formatString="DD/MM/YYYY" 
+						  dayNames="['D','S','T','Q','Q','S','S']" 
+						  monthNames="['Janeiro','Fevereiro','Março','Abril', 'Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']"/>
+		</s:VGroup>
+	</s:HGroup>
+	<s:VGroup x="10" y="10" width="162" gap="10">
+		<s:VGroup gap="2">
+			<s:Label text="Categoria"/>
+			<s:HGroup width="100%" gap="2">
+				<s:DropDownList id="ddCategory" width="180" labelField="title"/>
+			</s:HGroup>
+		</s:VGroup>
+		<s:VGroup x="8" y="37" gap="2">
+			<s:Label text="Sub-Categoria"/>
+			<s:HGroup width="100%" gap="2">
+				<s:DropDownList id="ddSubCategory" width="180" labelField="title"/>
+				<s:Button id="btAddSubCategory" width="29" label="+" toolTip="Adicionar ou editar sub-categorias"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:VGroup>
+</s:TitleWindow>

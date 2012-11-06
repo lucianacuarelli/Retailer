@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ui="devdoo.register.layout.ui.*"
+		  xmlns:userInterface="modules.lg.layout.userInterface.*"
+		  width="100%" height="100%" 
+		  creationComplete="create()" xmlns:groups="modules.intelicar.layout.groups.*">
+	<s:layout>
+		<s:HorizontalLayout gap="10" paddingBottom="10" paddingTop="10"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import devdoo.fx.UseDataGrid;
+			import devdoo.fx.UseDebug;
+			import devdoo.fx.UseFX;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabAddress;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabCorporate;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabDetail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabEmail;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabGroups;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPersonal;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabPhone;
+			import devdoo.register.layout.groups.tabs.GrRegisterTabSocialMedia;
+			
+			import modules.intelicar.data.DataIntelicar;
+			import modules.intelicar.layout.poupup.TwAddEditEquipament;
+			
+			import mx.collections.ArrayCollection;
+			
+			//------------------------------------------------------------------
+			//
+			//  Attributes
+			//
+			//------------------------------------------------------------------
+			//----------------------------------
+			//  useFX
+			//----------------------------------
+			/**
+			 *  Instância da classe de gerenciamento de módulo.  
+			 */  
+			public var useFX:UseFX;
+			
+			//----------------------------------
+			//  dataIntelicar
+			//----------------------------------
+			/**
+			 *  Gerencia todas as interações com a base de dados  
+			 */  
+			private var _dataIntelicar:DataIntelicar;
+
+			//----------------------------------
+			//  dataProviderEquipament
+			//----------------------------------
+			/**
+			 *  Lista de equipamentos  
+			 */  
+			private var _dataProviderEquipament:ArrayCollection;
+
+			//----------------------------------
+			//  selectedItem
+			//----------------------------------
+			/**
+			 *  Item selecionado  
+			 */  
+			private var _selectedItem:Object;
+			
+			//----------------------------------
+			//  create
+			//----------------------------------
+			/**
+			 * Instância o componente de registro e define as configurações default  
+			 * 
+			 *  @return void
+			 */
+			public function create():void
+			{
+				//Recupera a instância da classe de gerenciamento da módulo
+				useFX = UseFX.startModule('Gerenciador de Distribuidor');
+				
+				registerDistributorPersonal.start(UiRegister.PERSONAL)
+								 		   .defaultProfile('4')
+										   .statusManagerIds([1,3])
+										   .addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+										   .addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+										   .addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+										   .addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+										   .addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+										   .addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+										   .pageSize(25)
+										   .create();
+				registerDistributorPersonal.populate();
+				
+				registerDistributorCorporate.start(UiRegister.COMMERCIAL)
+											.defaultProfile('4')
+											.statusManagerIds([1,3])
+											.addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.COMMERCIAL)
+											.addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+											.addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+											.addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+											.addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+											.addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+											.pageSize(25)
+											.create();
+				registerDistributorCorporate.populate();
+
+				registerDistributorCorporateUsers.start(UiRegister.PERSONAL)
+												 .defaultProfile('7')
+												 .statusManagerIds([1,3])
+												 .addTabDefault('Geral', GrRegisterTabPersonal, GrRegisterTabCorporate, UiRegister.PERSONAL)
+												 .addTab('Endereço', GrRegisterTabAddress, UiRegister.PERSONAL_AND_COMMERCIAL)
+												 .addTab('Telefones', GrRegisterTabPhone, UiRegister.PERSONAL_AND_COMMERCIAL)
+												 .addTab('Detalhes', GrRegisterTabDetail, UiRegister.PERSONAL_AND_COMMERCIAL)
+												 .addTab('Mídia Social', GrRegisterTabSocialMedia, UiRegister.PERSONAL_AND_COMMERCIAL)
+												 .addTab('E-Mails', GrRegisterTabEmail, UiRegister.PERSONAL_AND_COMMERCIAL)
+												 .pageSize(25)
+												 .create();
+
+				//Cria gerenciador de dados
+				this._dataIntelicar = new DataIntelicar();
+				
+				grListEquipament.accessControl( false );
+				
+				//Adiciona os eventos pré-definidos
+				addEvents();					
+			}
+
+			//----------------------------------
+			//  addEvents
+			//----------------------------------
+			/**
+			 *  Adiciona eventos aos componentes pré-definidos.
+			 * 
+			 *  @return void
+			 */
+			private function addEvents():void
+			{
+				registerDistributorPersonal.addEventListener(UiRegister.SELECTION_CHANGE, showDetail);
+				registerDistributorCorporate.addEventListener(UiRegister.SELECTION_CHANGE, showParent);
+				registerDistributorCorporateUsers.addEventListener(UiRegister.SELECTION_CHANGE, showDetail);
+				grListEquipament.addEventListener(GrEquipment.ADD_POPUP, addEquipament);
+			}
+			
+			//----------------------------------
+			//  showParent
+			//----------------------------------
+			/**
+			 * Consulta a base de dados registros relacionados com a tabela pai.  
+			 * 
+			 *  @return void
+			 */
+			protected function showParent(event:Event):void
+			{
+				registerDistributorCorporateUsers.populateParent(registerDistributorCorporate.selectedItem.USE_REGISTER_id);
+				registerInfo.showDetail(registerDistributorCorporate.selectedItem);
+			}
+			
+			//----------------------------------
+			//  populateResult
+			//----------------------------------    	
+			/**
+			 * 	Recebe o resultado da consulta da lista de equipamento,
+			 *  Popula o comoponente UseComboBox com os equipamentos.
+			 * 
+			 *  @return void  
+			 */	
+			private function populateResult(useResult:*):void
+			{
+				this._dataProviderEquipament = useFX.populateCollection(useResult.useEquipamento);
+			}
+			
+			//----------------------------------
+			//  showDetail
+			//----------------------------------
+			/**
+			 * Consulta na base de dados detalhes do registro indicado.  
+			 * 
+			 *  @return void
+			 */
+			protected function showDetail(event:Event):void
+			{
+				if(tbContent.selectedIndex == 0)
+					this._selectedItem = registerDistributorPersonal.selectedItem;
+				else
+					this._selectedItem = registerDistributorCorporate.selectedItem;
+				
+				registerInfo.showDetail(this._selectedItem);
+				this._dataIntelicar.populateDistributorEquipment(this._selectedItem.USE_REGISTER_id, showDetailResult);
+			}
+			
+			//----------------------------------
+			//  showDetailResult
+			//----------------------------------
+			/**
+			 * Processa o resultado da busca na base de dados.  
+			 * 
+			 *  @return void
+			 */
+			protected function showDetailResult(useResult:*):void
+			{
+				//grListEquipament.dataProvider = new ArrayCollection( useResult.useEquipamento );
+				grListEquipament.dataProvider = useFX.populateCollection(useResult.useEquipamento);
+				grListEquipament.accessControl( true );
+				
+				this._dataIntelicar.populateSelectEquipment(this._selectedItem.USE_REGISTER_id, populateResult);
+			}
+			
+			//----------------------------------
+			//  addEquipament
+			//----------------------------------
+			/**
+			 * Abre poupup para adicionar um novo registro de equipamento.  
+			 * 
+			 *  @return void
+			 */
+			protected function addEquipament(event:Event):void
+			{ 
+				if(tbContent.selectedIndex == 0)
+					this._selectedItem = registerDistributorPersonal.selectedItem;
+				else
+					this._selectedItem = registerDistributorCorporate.selectedItem;
+				
+				var twAddEditEquipament:TwAddEditEquipament = useFX.openPopup(TwAddEditEquipament, "Cadastro de Equipamento", popupResult);
+					twAddEditEquipament.registerId = this._selectedItem.USE_REGISTER_id;
+					twAddEditEquipament.dataProvider = this._dataProviderEquipament;
+					twAddEditEquipament.create();
+			}
+
+			//----------------------------------
+			//  editEquipament
+			//----------------------------------
+			/**
+			 * Abre poupup para editar um registro de equipamento.  
+			 * 
+			 *  @return void
+			 */
+			protected function editEquipament(event:Event):void
+			{
+				useFX.editPopup('POPULATE_SELECT_EQUIPAMENT', TwAddEditEquipament, "Cadastro de Equipamento", popupResult);				
+			}
+			
+			//----------------------------------
+			//  popupResult
+			//----------------------------------
+			/**
+			 *  NOTDOC
+			 *  Evento executado ao termino da edição.
+			 * 
+			 *  @param useResult Configurações de interação com a base de dados.
+			 *  @return void 
+			 */			
+			private function popupResult(useResult:*):void
+			{
+				showDetail(null);
+			}	
+			
+		]]>
+	</fx:Script>
+	<s:VGroup width="100%" height="100%">
+		<s:TabBar id="tbContent" dataProvider="{vsContent}" />
+		<mx:ViewStack id="vsContent" width="100%" height="100%" creationPolicy="all">
+			<s:NavigatorContent label="Pessoa Física" width="100%" height="100%">
+				<s:SkinnableContainer width="100%" height="100%"
+									  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+					<ui:UiRegister id="registerDistributorPersonal" title="Pessoa Física" subTitle="Gerencia o registros dos distribuidores pessoa física"/>
+				</s:SkinnableContainer>
+			</s:NavigatorContent>
+			<s:NavigatorContent label="Pessoa Juríca" width="100%" height="100%">
+				<s:VGroup width="100%" height="100%">
+					<s:SkinnableContainer left="0" right="10" top="10" bottom="10" width="100%" height="70%"
+										  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+						
+						<ui:UiRegister id="registerDistributorCorporate" title="Pessoa Jurídica" subTitle="Gerencia o registros dos distribuidores pessoa jurídica"/>
+					</s:SkinnableContainer>
+					
+					<s:SkinnableContainer left="0" right="10" top="10" bottom="10" width="100%" height="100%"
+										  skinClass="devdoo.sk.container.white.SkContainerCornerRight">
+						
+						<ui:UiRegister id="registerDistributorCorporateUsers" title="Funcionários" subTitle="Gerencia o registros dos funcionários dos distribuidores pessoa jurídica"/>
+					</s:SkinnableContainer>
+				</s:VGroup>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+	</s:VGroup>
+	<ui:UiRegisterInfo id="registerInfo"/>
+	
+	<groups:GrEquipment id="grListEquipament" width="200" height="100%" title="Equipamento" itemRenderer="modules.intelicar.layout.itemRender.irSelectedEquipament"/>
+	
+</s:Module>

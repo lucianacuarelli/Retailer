@@ -1,0 +1,109 @@
+<div id="PageContent">
+	<div class="usePageTitle">
+		<h3><?= $this->category ?></h3>
+	</div>
+	<? if(count($this->listSubcategory) > 0): ?>
+		<table style="width: 880px; margin: auto;">
+			<tr>
+				<td align="left">
+					<? if(empty($this->params->subcategory_id)): ?>
+						<a href="<?= $this->baseUrl .'/content/'. $this->params->id ?>"><strong>Todos</strong></a>
+					<? else: ?>
+						<a href="<?= $this->baseUrl .'/content/'. $this->params->id ?>">Todos</a>
+					<? endif; ?>
+					<? foreach($this->listSubcategory as $itemSubcategory): ?>
+						<? if(!empty($this->params->subcategory_id) && $this->params->subcategory_id == $itemSubcategory->id): ?>
+							&nbsp;|&nbsp;&nbsp;<a href="<?= $this->baseUrl .'/content/'. $this->params->id .'/'. $itemSubcategory->id ?>"><strong><?= $itemSubcategory->title ?></strong></a>
+						<? else: ?>
+							&nbsp;|&nbsp;&nbsp;<a href="<?= $this->baseUrl .'/content/'. $this->params->id .'/'. $itemSubcategory->id ?>"><?= $itemSubcategory->title ?></a>
+						<? endif; ?>
+					<? endforeach; ?>
+				</td>
+			</tr>
+		</table>
+	<? endif; ?>
+	<div class="useClear"></div>
+	<div id="UiListProduct">
+		<div class="UiWrap">
+			<table style="width: 990px; margin: auto;">
+			    <tr>
+				    <!-- Verifica se deve mostrar paginador -->
+					<? if($this->totalItens > 0): ?>
+					    <!-- Monta as colunas da tabela com a lista de produtos -->
+					    <?php foreach ($this->listProducts as $key => $value): ?>
+					        <td align="center" style="padding: 10px;">
+								<div class="UiImage" style="height: 120px;">
+									<a href="<?= $this->baseUrl ?>/contentshow/<?= $value->source_id ?>/resources" >
+										<?
+											if(!empty($value->image_filename))
+												$image = $this->baseUrl . $value->image_url .'/thumb/'. $value->image_filename;
+											else
+												$image = $this->useDefault->images .'/lgLogo.jpg';
+											echo '<img alt="" src="'. $image .'"/>'; 
+										?>
+									</a>
+								</div>
+								<div class="UiTitle">
+									<table width="100%" border="0">
+										<tr>
+											<td align="center" style="padding: 0px;">
+												<? if($value->status_new_date_out > date('Y-m-d')): ?>
+													<a href="<?= $this->baseUrl ?>/contentshow/<?= $value->source_id ?>/resources" >
+														<img alt="" src="<?= $this->useDefault->images ?>/new.gif"/>
+													</a>
+												<? else: ?>
+													<img alt="" width="38" height="17" src="<?= $this->useDefault->images ?>/usePixel.gif"/>
+												<? endif; ?>
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #CCCCCC; height: 1px; padding: 0px;">
+											</td>
+										</tr>
+										<tr>
+											<td align="center">
+												<a href="<?= $this->baseUrl ?>/contentshow/<?= $value->source_id ?>/resources" >
+													<span class="UiTitle" style="font-size: 11px;">
+														<?= UseZF_Util::useTruncate($value->product_title,40) ?>
+													</span>
+												</a>
+											</td>
+										</tr>
+									</table>
+								</div>
+					        </td>
+					        <!-- Verifica se e multiplo de 5 para criar uma nova linha -->
+					        <? if(($key + 1) % 4 == 0) echo  '</tr><tr>'; ?>
+				    	<?php endforeach; ?>
+				    <? else: ?>
+					    <td align="center" style="height:120px; padding: 10px;">
+						    <table border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+							    <td><img alt="" src="<?= $this->useDefault->images ?>/icons/iconAlertMenor.png" /></td>
+							    <td style="width: 300px; font-weight: bold; font-size: 14px; color: #404040;">Nenhum produto encontrado.</td>
+							  </tr>
+							</table>
+					    </td>
+				    <? endif; ?>
+			    </tr>
+			    <tr>
+			    	<td colspan="5" align="center">
+			    		<!-- Verifica se deve mostrar paginador -->
+						<? if($this->totalItens > 20): ?>
+				    		<!-- Verifica se deve mostrar o paginador do tipo subcategoria -->
+				    		<? if(!empty($this->params->subcategory_id)): ?>
+								<?= $this->paginationControl($this->paginator, 'Sliding', 'pagination-content-subcategory.phtml'); ?>
+							<? else: ?>
+								<?= $this->paginationControl($this->paginator, 'Sliding', 'pagination-content.phtml'); ?>
+							<? endif; ?>
+						<? endif; ?>
+			    	</td>
+			    </tr>
+			</table>
+		</div>
+	</div>
+	<div class="UiLastContent">
+		<?= $this->showLastContent ?>
+	</div>
+	<div class="useClear"></div>
+</div>
